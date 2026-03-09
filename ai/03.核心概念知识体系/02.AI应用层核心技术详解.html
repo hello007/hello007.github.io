@@ -1,0 +1,2355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI应用层核心技术详解</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.8;
+            color: #4b5563;
+            background: #f5f7fa;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .hero-meta {
+            font-size: 16px;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: flex;
+            gap: 40px;
+        }
+
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2563eb;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: block;
+            color: #6b7280;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .nav-link:hover {
+            background: #f3f4f6;
+            color: #2563eb;
+        }
+
+        .nav-link.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 40px 0 25px 0;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2563eb;
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: 500;
+            color: #374151;
+            margin: 30px 0 20px 0;
+        }
+
+        h4 {
+            font-size: 20px;
+            font-weight: 500;
+            color: #4b5563;
+            margin: 25px 0 15px 0;
+        }
+
+        p {
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+
+        strong {
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        code {
+            background: #f3f4f6;
+            color: #dc2626;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        pre code {
+            background: transparent;
+            color: #f3f4f6;
+            padding: 0;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        .info-box {
+            background: #e0e7ff;
+            border-left: 4px solid #6366f1;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box h4, .warning-box h4, .success-box h4, .highlight-box h4 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2563eb;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s;
+            font-size: 24px;
+            border: none;
+            z-index: 1000;
+        }
+
+        .back-to-top:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        @media (max-width: 968px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                max-height: none;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            h2 {
+                font-size: 26px;
+            }
+
+            h3 {
+                font-size: 20px;
+            }
+
+            .content-card {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero h1 {
+                font-size: 24px;
+            }
+
+            .hero-meta {
+                font-size: 14px;
+            }
+
+            h2 {
+                font-size: 22px;
+            }
+
+            h3 {
+                font-size: 18px;
+            }
+
+            .content-card {
+                padding: 20px;
+            }
+        }
+
+        @media print {
+            .sidebar {
+                display: none;
+            }
+
+            .back-to-top {
+                display: none;
+            }
+
+            .content-card {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+
+            h2 {
+                page-break-after: avoid;
+            }
+        }
+
+        .emoji-large {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>AI应用层核心技术详解</h1>
+        <div class="hero-meta">
+            <p><strong>文档定位：</strong>AI应用开发的核心技术深度解析</p>
+            <p><strong>学习目标：</strong>掌握RAG、Agent等AI应用开发必备技术</p>
+            <p><strong>适合人群：</strong>已完成AI基础层学习的Java开发者</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-card">
+                <h3 class="sidebar-title">目录导航</h3>
+                <ul class="nav-links">
+                    <li><a href="#1-rag检索增强生成" class="nav-link">1. RAG（检索增强生成）</a></li>
+                    <li><a href="#2-vector-database向量数据库" class="nav-link">2. Vector Database（向量数据库）</a></li>
+                    <li><a href="#3-agent智能体" class="nav-link">3. Agent（智能体）</a></li>
+                    <li><a href="#4-function-calling函数调用" class="nav-link">4. Function Calling（函数调用）</a></li>
+                    <li><a href="#5-chain-of-thought思维链" class="nav-link">5. Chain of Thought（思维链）</a></li>
+                    <li><a href="#6-multimodal多模态" class="nav-link">6. Multimodal（多模态）</a></li>
+                    <li><a href="#7-knowledge-graph知识图谱" class="nav-link">7. Knowledge Graph（知识图谱）</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="content">
+            <section id="1-rag检索增强生成" class="content-card">
+                <h2>1. RAG（检索增强生成）</h2>
+
+                <h3><span class="emoji-large">🎯</span> 掌握程度：必须掌握</h3>
+
+                <h3>什么是RAG？</h3>
+
+                <p><strong>通俗解释：</strong><br>
+                RAG就像"开卷考试"。LLM是考生，知识库是教科书。考生回答问题时，可以翻阅教科书找到相关内容，然后基于这些内容回答问题。</p>
+
+                <p><strong>技术定义：</strong><br>
+                Retrieval-Augmented Generation，通过检索外部知识库，增强LLM生成答案的准确性和可靠性。</p>
+
+                <h3>为什么需要RAG？</h3>
+
+                <h4>问题1：LLM的知识有局限</h4>
+
+                <pre><code>LLM的问题：
+❌ 训练数据有截止日期
+   问："2025年最新的Java版本是什么？"
+   答：不知道（训练数据只到2023年）
+
+❌ 不懂私有知识
+   问："公司的报销流程是什么？"
+   答：不知道
+
+❌ 容易"幻觉"
+   问："我们公司有客户支持热线吗？"
+   答：可能编造一个错误号码</code></pre>
+
+                <h4>RAG的解决方案</h4>
+
+                <pre><code>RAG的优势：
+✅ 实时知识
+   检索最新文档，获取最新信息
+
+✅ 私有知识
+   检索公司内部文档，获取私有知识
+
+✅ 可靠答案
+   基于真实文档，减少幻觉
+
+✅ 可追溯
+   标注答案来源，方便验证</code></pre>
+
+                <h3>RAG工作流程</h3>
+
+                <pre><code>┌─────────────────────────────────────────────────┐
+│ RAG完整流程                                      │
+└─────────────────────────────────────────────────┘
+
+1. 文档准备阶段（离线）
+   ┌──────────────┐
+   │ 原始文档      │  (PDF, Word, Wiki, HTML)
+   └──────┬───────┘
+          ↓
+   ┌──────────────┐
+   │ 文档解析      │  (Tika, BeautifulSoup)
+   └──────┬───────┘
+          ↓
+   ┌──────────────┐
+   │ 文本分块      │  (Chunking: 500-1000字符)
+   └──────┬───────┘
+          ↓
+   ┌──────────────┐
+   │ 向量化       │  (Embedding Model)
+   └──────┬───────┘
+          ↓
+   ┌──────────────┐
+   │ 存入向量库    │  (Vector Database)
+   └──────────────┘
+
+2. 检索阶段（在线）
+   ┌──────────────┐
+   │ 用户问题      │
+   └──────┬───────┘
+          ↓
+   ┌──────────────┐
+   │ 向量化       │
+   └──────┬───────┘
+          ↓
+   ┌──────────────┐
+   │ 相似度检索    │  (Vector Search)
+   └──────┬───────┘
+          ↓
+   ┌──────────────┐
+   │ Top-K文档    │  (相关文档片段)
+   └──────────────┘
+
+3. 生成阶段
+   ┌──────────────┐
+   │ 问题+文档     │
+   └──────┬───────┘
+          ↓
+   ┌──────────────┐
+   │ LLM生成      │  (Prompt Engineering)
+   └──────┬───────┘
+          ↓
+   ┌──────────────┐
+   │ 带引用的答案  │
+   └──────────────┘</code></pre>
+
+                <div class="highlight-box">
+                    <h4><span class="emoji-large">💡</span> RAG vs Fine-tuning（微调）</h4>
+                    <p><strong>RAG适用场景：</strong></p>
+                    <ul>
+                        <li>需要频繁更新知识（如新闻、产品信息）</li>
+                        <li>需要引用来源（如法律、医疗文档）</li>
+                        <li>数据量不大但质量高</li>
+                        <li>避免模型幻觉</li>
+                    </ul>
+                    <p><strong>Fine-tuning适用场景：</strong></p>
+                    <ul>
+                        <li>需要学习特定风格或格式</li>
+                        <li>数据量很大（百万级样本）</li>
+                        <li>需要降低推理成本</li>
+                    </ul>
+                </div>
+
+                <h3>RAG核心技术点</h3>
+
+                <h4>1. 文档分块（Chunking）策略</h4>
+
+                <pre><code>// 固定大小分块
+chunk_size = 500
+overlap = 50
+
+// 语义分块（按段落、章节）
+// 适合结构化文档
+
+// 问答对分块
+// 适合FAQ文档</code></pre>
+
+                <h4>2. 相似度计算方法</h4>
+
+                <pre><code>余弦相似度（Cosine Similarity）:
+similarity = cos(θ) = (A·B) / (||A|| × ||B||)
+范围：[-1, 1]，越接近1越相似
+
+欧氏距离（Euclidean Distance）:
+distance = √Σ(ai - bi)²
+范围：[0, ∞]，越小越相似
+
+点积（Dot Product）:
+similarity = A·B = Σ(ai × bi)
+适合归一化后的向量</code></pre>
+
+                <h4>3. 检索优化技巧</h4>
+
+                <div class="success-box">
+                    <h4><span class="emoji-large">✅</span> 混合检索（Hybrid Search）</h4>
+                    <p>结合向量检索和关键词检索（BM25），提升准确率</p>
+                    <pre><code>// 伪代码
+vector_results = vector_search(query, top_k=10)
+keyword_results = bm25_search(query, top_k=10)
+final_results = rerank(vector_results + keyword_results)</code></pre>
+                </div>
+
+                <div class="info-box">
+                    <h4><span class="emoji-large">💡</span> 重排序（Reranking）</h4>
+                    <p>使用更精细的模型对检索结果重新排序</p>
+                    <pre><code>// Cross-Encoder Reranker
+for doc in retrieved_docs:
+    score = cross_encoder.score(query, doc)
+    doc.score = score
+sort by score desc</code></pre>
+                </div>
+
+                <h3>Java实现RAG</h3>
+
+                <div class="highlight-box">
+                    <h4><span class="emoji-large">🔧</span> 技术栈推荐</h4>
+                    <ul>
+                        <li><strong>向量库：</strong>Milvus、Weaviate、Pgvector（PostgreSQL插件）</li>
+                        <li><strong>Embedding模型：</strong>OpenAI Embedding API、HuggingFace模型</li>
+                        <li><strong>LLM调用：</strong>LangChain4j、Spring AI</li>
+                        <li><strong>文档处理：</strong>Apache Tika、Jsoup</li>
+                    </ul>
+                </div>
+
+                <pre><code>// LangChain4j RAG示例（简化版）
+public class RagExample {
+    public static void main(String[] args) {
+        // 1. 加载文档
+        DocumentLoader loader = new FileSystemDocumentLoader();
+        List&lt;Document&gt; documents = loader.load("./docs");
+
+        // 2. 文本分块
+        TextSplitter splitter = new RecursiveCharacterTextSplitter(
+            500,  // chunk size
+            50    // overlap
+        );
+        List&lt;TextSegment&gt; segments = splitter.splitAll(documents);
+
+        // 3. 向量化并存储
+        EmbeddingModel embeddingModel = OpenAiEmbeddingModel.builder()
+            .apiKey("your-api-key")
+            .build();
+
+        InMemoryEmbeddingStore&lt;TextSegment&gt; store = new InMemoryEmbeddingStore&lt;&gt;();
+        for (TextSegment segment : segments) {
+            Embedding embedding = embeddingModel.embed(segment).content();
+            store.add(embedding, segment);
+        }
+
+        // 4. 检索
+        String query = "什么是RAG？";
+        Embedding queryEmbedding = embeddingModel.embed(query).content();
+        List&lt;EmbeddingMatch&lt;TextSegment&gt;&gt; matches = store.findRelevant(queryEmbedding, 3);
+
+        // 5. 构建Prompt并生成
+        String context = matches.stream()
+            .map(match -&gt; match.embedded().text())
+            .collect(Collectors.joining("\n"));
+
+        String prompt = String.format("""
+            基于以下信息回答问题：
+
+            %s
+
+            问题：%s
+            """, context, query);
+
+        ChatLanguageModel model = OpenAiChatModel.builder()
+            .apiKey("your-api-key")
+            .build();
+
+        String answer = model.generate(prompt);
+        System.out.println(answer);
+    }
+}</code></pre>
+
+                <h3>RAG实战案例</h3>
+
+                <h4>案例1：智能客服系统</h4>
+                <pre><code>场景：用户咨询产品问题
+技术栈：
+- 文档源：产品手册、FAQ知识库
+- 向量库：Milvus
+- LLM：GPT-4
+- 前端：Spring Boot + WebSocket
+
+流程：
+1. 用户输入问题
+2. RAG检索相关文档
+3. LLM生成答案+来源链接
+4. 返回给用户
+5. 记录反馈，持续优化</code></pre>
+
+                <h4>案例2：法律文档检索</h4>
+                <pre><code>场景：律师查询法律条文
+技术栈：
+- 文档源：法律条文数据库
+- 向量库：Weaviate
+- LLM：Claude-3
+- 特点：必须提供准确引用
+
+关键点：
+1. 精确的来源标注
+2. 支持多轮对话
+3. 支持文档对比</code></pre>
+
+                <h3>RAG常见问题</h3>
+
+                <div class="warning-box">
+                    <h4><span class="emoji-large">⚠️</span> 挑战与解决方案</h4>
+                    <table>
+                        <tr>
+                            <th>挑战</th>
+                            <th>解决方案</th>
+                        </tr>
+                        <tr>
+                            <td>检索不相关</td>
+                            <td>优化分块策略、使用混合检索、添加重排序</td>
+                        </tr>
+                        <tr>
+                            <td>答案不准确</td>
+                            <td>调整Prompt、增加上下文长度、使用更好的LLM</td>
+                        </tr>
+                        <tr>
+                            <td>处理长文档</td>
+                            <td>使用父文档检索、分层索引</td>
+                        </tr>
+                        <tr>
+                            <td>多模态内容</td>
+                            <td>使用多模态Embedding模型、OCR处理图片</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3>学习路径</h3>
+                <ol>
+                    <li>理解RAG基本原理和应用场景</li>
+                    <li>学习向量相似度计算方法</li>
+                    <li>掌握文档分块和Embedding技术</li>
+                    <li>实践简单RAG系统（基于内存向量库）</li>
+                    <li>学习生产级向量数据库（Milvus/Weaviate）</li>
+                    <li>优化检索质量（混合检索、重排序）</li>
+                    <li>构建完整RAG应用（智能客服/文档问答）</li>
+                </ol>
+            </section>
+
+            <section id="2-vector-database向量数据库" class="content-card">
+                <h2>2. Vector Database（向量数据库）</h2>
+
+                <h3><span class="emoji-large">🎯</span> 掌握程度：必须掌握</h3>
+
+                <h3>什么是向量数据库？</h3>
+
+                <p><strong>通俗解释：</strong><br>
+                传统数据库按"完全匹配"查找（如：WHERE name = '张三'），向量数据库按"相似度"查找（如：找跟"苹果"意思相近的词）。</p>
+
+                <p><strong>技术定义：</strong><br>
+                专门用于存储、索引和查询高维向量的数据库，支持高效的近似最近邻（ANN）搜索。</p>
+
+                <h3>为什么需要向量数据库？</h3>
+
+                <pre><code>传统数据库的问题：
+❌ 不支持语义搜索
+   搜索"智能手机"，找不到"手机"
+❌ 不支持相似度计算
+   无法判断两个文档的相似程度
+❌ 性能差
+   高维向量计算非常慢
+
+向量数据库的优势：
+✅ 语义搜索
+   理解词义、语境
+✅ 高效检索
+   索引技术加速查询（ANN算法）
+✅ 大规模存储
+   支持十亿级向量
+✅ 实时更新
+   支持增删改查</code></pre>
+
+                <h3>向量数据库核心概念</h3>
+
+                <h4>1. 向量（Embedding）</h4>
+                <pre><code>// 文本转向量示例
+"苹果" → [0.1, -0.3, 0.8, ..., 0.5]  // 1536维（OpenAI）
+"水果" → [0.2, -0.1, 0.9, ..., 0.4]
+
+// 向量维度：通常在256-4096之间
+// 数值范围：通常归一化到[-1, 1]或[0, 1]</code></pre>
+
+                <h4>2. 距离度量（Distance Metrics）</h4>
+                <pre><code>常用距离计算方法：
+
+1. 欧氏距离（L2）
+   distance = √Σ(xi - yi)²
+   适用：图像相似度
+
+2. 余弦相似度（Cosine）
+   similarity = Σ(xi × yi) / (√Σxi² × √Σyi²)
+   适用：文本相似度（最常用）
+
+3. 内积（IP, Inner Product）
+   similarity = Σ(xi × yi)
+   适用：归一化后的向量，计算最快
+
+4. 汉明距离（Hamming）
+   统计不同位数的个数
+   适用：二值向量</code></pre>
+
+                <h4>3. 索引算法（Index Algorithms）</h4>
+
+                <div class="info-box">
+                    <h4><span class="emoji-large">💡</span> ANN（Approximate Nearest Neighbor）</h4>
+                    <p>精确搜索太慢，ANN用"近似"换"速度"，牺牲一点点精度换取100倍性能提升。</p>
+                </div>
+
+                <table>
+                    <tr>
+                        <th>算法</th>
+                        <th>原理</th>
+                        <th>优点</th>
+                        <th>缺点</th>
+                    </tr>
+                    <tr>
+                        <td>FLAT</td>
+                        <td>暴力遍历所有向量</td>
+                        <td>100%召回率</td>
+                        <td>慢，不适合大数据</td>
+                    </tr>
+                    <tr>
+                        <td>IVF</td>
+                        <td>聚类分区，只搜相关区</td>
+                        <td>平衡速度和精度</td>
+                        <td>需要调参nprobe</td>
+                    </tr>
+                    <tr>
+                        <td>HNSW</td>
+                        <td>图结构，多层导航</td>
+                        <td>最快，精度高</td>
+                        <td>内存占用大</td>
+                    </tr>
+                    <tr>
+                        <td>ANNOY</td>
+                        <td>随机森林分割</td>
+                        <td>内存友好</td>
+                        <td>构建索引慢</td>
+                    </tr>
+                    <tr>
+                        <td>PQ</td>
+                        <td>向量压缩（量化）</td>
+                        <td>省内存，速度快</td>
+                        <td>精度下降</td>
+                    </tr>
+                </table>
+
+                <h3>主流向量数据库对比</h3>
+
+                <table>
+                    <tr>
+                        <th>数据库</th>
+                        <th>特点</th>
+                        <th>适用场景</th>
+                        <th>Java生态支持</th>
+                    </tr>
+                    <tr>
+                        <td>Milvus</td>
+                        <td>开源，功能强大，性能高</td>
+                        <td>生产环境首选</td>
+                        <td>⭐⭐⭐⭐⭐ SDK完善</td>
+                    </tr>
+                    <tr>
+                        <td>Chroma</td>
+                        <td>轻量级，易用</td>
+                        <td>原型开发、学习</td>
+                        <td>⭐⭐⭐ REST API</td>
+                    </tr>
+                    <tr>
+                        <td>Weaviate</td>
+                        <td>云原生，GraphQL接口</td>
+                        <td>现代应用、多模态</td>
+                        <td>⭐⭐⭐⭐ SDK完善</td>
+                    </tr>
+                    <tr>
+                        <td>Pinecone</td>
+                        <td>托管服务，全托管</td>
+                        <td>快速上线、无运维</td>
+                        <td>⭐⭐⭐⭐ REST API</td>
+                    </tr>
+                    <tr>
+                        <td>Qdrant</td>
+                        <td>Rust实现，高性能</td>
+                        <td>高并发场景</td>
+                        <td>⭐⭐⭐⭐ SDK完善</td>
+                    </tr>
+                    <tr>
+                        <td>Pgvector</td>
+                        <td>PostgreSQL插件</td>
+                        <td>已有PG的场景</td>
+                        <td>⭐⭐⭐⭐⭐ JDBC直接用</td>
+                    </tr>
+                </table>
+
+                <h3>Milvus实战（推荐）</h3>
+
+                <div class="highlight-box">
+                    <h4><span class="emoji-large">🔧</span> 为什么选择Milvus？</h4>
+                    <ul>
+                        <li>开源免费，社区活跃</li>
+                        <li>性能强悍，支持十亿级向量</li>
+                        <li>功能完善（支持过滤、多向量、容灾）</li>
+                        <li>Java SDK完善</li>
+                        <li>云原生架构，支持K8s部署</li>
+                    </ul>
+                </div>
+
+                <h4>Docker快速启动Milvus</h4>
+                <pre><code># 1. 下载docker-compose文件
+wget https://github.com/milvus-io/milvus/releases/download/v2.3.0/milvus-standalone-docker-compose.yml -O docker-compose.yml
+
+# 2. 启动Milvus
+docker-compose up -d
+
+# 3. 验证运行
+docker ps  # 应该看到milvus-standalone容器</code></pre>
+
+                <h4>Java操作Milvus</h4>
+                <pre><code>// Maven依赖
+&lt;dependency&gt;
+    &lt;groupId&gt;io.milvus&lt;/groupId&gt;
+    &lt;artifactId&gt;milvus-sdk-java&lt;/artifactId&gt;
+    &lt;version&gt;2.3.4&lt;/version&gt;
+&lt;/dependency&gt;
+
+// Java代码示例
+public class MilvusExample {
+    public static void main(String[] args) {
+        // 1. 连接Milvus
+        MilvusServiceClient client = new MilvusServiceClient(
+            ConnectParam.newBuilder()
+                .withHost("localhost")
+                .withPort(19530)
+                .build()
+        );
+
+        // 2. 创建Collection
+        String collectionName = "documents";
+
+        // 定义Schema
+        FieldType fieldType1 = FieldType.newBuilder()
+            .withName("id")
+            .withDataType(DataType.Int64)
+            .withPrimaryKey(true)
+            .withAutoID(true)
+            .build();
+
+        FieldType fieldType2 = FieldType.newBuilder()
+            .withName("embedding")
+            .withDataType(DataType.FloatVector)
+            .withDimension(1536)  // OpenAI dimension
+            .build();
+
+        CreateCollectionParam createParam = CreateCollectionParam.newBuilder()
+            .withCollectionName(collectionName)
+            .withFieldType(fieldType1, fieldType2)
+            .build();
+
+        R&lt;RpcStatus&gt; response = client.createCollection(createParam);
+
+        // 3. 插入数据
+        List&lt;InsertParam.Field&gt; fields = new ArrayList&lt;&gt;();
+
+        // 准备向量数据
+        List&lt;List&lt;Float&gt;&gt; vectors = new ArrayList&lt;&gt;();
+        vectors.add(Arrays.asList(0.1f, 0.2f, ...));  // 1536维
+        vectors.add(Arrays.asList(0.3f, 0.4f, ...));
+
+        fields.add(new InsertParam.Field("embedding", vectors));
+
+        InsertParam insertParam = InsertParam.newBuilder()
+            .withCollectionName(collectionName)
+            .withFields(fields)
+            .build();
+
+        client.insert(insertParam);
+
+        // 4. 创建索引
+        CreateIndexParam indexParam = CreateIndexParam.newBuilder()
+            .withCollectionName(collectionName)
+            .withFieldName("embedding")
+            .withIndexType(IndexType.HNSW)  // 使用HNSW算法
+            .withMetricType(MetricType.COSINE)
+            .withExtraParam("{\"M\":16,\"efConstruction\":64}")
+            .build();
+
+        client.createIndex(indexParam);
+
+        // 5. 加载Collection
+        client.loadCollection(LoadCollectionParam.newBuilder()
+            .withCollectionName(collectionName)
+            .build());
+
+        // 6. 向量搜索
+        List&lt;List&lt;Float&gt;&gt; queryVectors = new ArrayList&lt;&gt;();
+        queryVectors.add(Arrays.asList(0.15f, 0.25f, ...));  // 查询向量
+
+        SearchParam searchParam = SearchParam.newBuilder()
+            .withCollectionName(collectionName)
+            .withVectorFieldName("embedding")
+            .withVectors(queryVectors)
+            .withTopK(10)  // 返回最相似的10个结果
+            .withMetricType(MetricType.COSINE)
+            .build();
+
+        R&lt;SearchResult&gt; searchResponse = client.search(searchParam);
+
+        // 处理搜索结果
+        for (SearchResult.QueryResp queryResp : searchResponse.getData().getResults()) {
+            for (Object id : queryResp.getIds().getIntId().getDataList()) {
+                System.out.println("找到相似文档ID: " + id);
+            }
+        }
+    }
+}</code></pre>
+
+                <h3>向量数据库实战技巧</h3>
+
+                <div class="success-box">
+                    <h4><span class="emoji-large">✅</span> 性能优化最佳实践</h4>
+                    <ol>
+                        <li><strong>选择合适索引：</strong>
+                            <ul>
+                                <li>小数据（&lt;100万）：FLAT或IVF_FLAT</li>
+                                <li>中等数据（100万-1000万）：IVF_SQ8或HNSW</li>
+                                <li>大数据（&gt;1000万）：HNSW + PQ</li>
+                            </ul>
+                        </li>
+                        <li><strong>调整索引参数：</strong>
+                            <ul>
+                                <li>nlist（聚类数）：数据量的平方根（如100万数据→nlist=1024）</li>
+                                <li>nprobe（搜索聚类数）：越大越准但越慢（推荐10-50）</li>
+                            </ul>
+                        </li>
+                        <li><strong>使用过滤：</strong>
+                            <ul>
+                                <li>先过滤后搜索（减少搜索范围）</li>
+                                <li>利用标量字段（如category、date）</li>
+                            </ul>
+                        </li>
+                        <li><strong>批量操作：</strong>
+                            <ul>
+                                <li>批量插入（每次1000-10000条）</li>
+                                <li>批量查询</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="warning-box">
+                    <h4><span class="emoji-large">⚠️</span> 常见问题</h4>
+                    <table>
+                        <tr>
+                            <th>问题</th>
+                            <th>原因</th>
+                            <th>解决方法</th>
+                        </tr>
+                        <tr>
+                            <td>搜索结果不相关</td>
+                            <td>Embedding模型不合适</td>
+                            <td>换更好的模型（如text-embedding-3-large）</td>
+                        </tr>
+                        <tr>
+                            <td>查询很慢</td>
+                            <td>没建索引或索引不当</td>
+                            <td>创建HNSW索引，调整参数</td>
+                        </tr>
+                        <tr>
+                            <td>内存占用太高</td>
+                            <td>向量太多或维度太高</td>
+                            <td>使用PQ压缩，降维（PCA）</td>
+                        </tr>
+                        <tr>
+                            <td>精度不够</td>
+                            <td>ANN算法牺牲了精度</td>
+                            <td>增加nprobe，或用FLAT精确搜索</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3>向量数据库 vs 传统数据库</h3>
+
+                <pre><code>场景对比：
+
+1. 电商商品搜索
+   传统数据库：按名称、ID精确搜索
+   向量数据库：按图片、描述语义搜索
+
+2. 用户推荐
+   传统数据库：基于规则、标签匹配
+   向量数据库：基于用户行为向量相似度
+
+3. 文档问答
+   传统数据库：全文关键词搜索（LIKE）
+   向量数据库：语义理解，找到相关段落</code></pre>
+
+                <h3>学习路径</h3>
+                <ol>
+                    <li>理解向量相似度计算（余弦、欧氏）</li>
+                    <li>学习Embedding模型（如何将文本转向量）</li>
+                    <li>掌握ANN索引算法原理（HNSW、IVF）</li>
+                    <li>Docker本地部署Milvus</li>
+                    <li>Java SDK实践（增删改查）</li>
+                    <li>性能优化（索引选择、参数调优）</li>
+                    <li>生产环境部署（K8s、监控、容灾）</li>
+                </ol>
+            </section>
+
+            <section id="3-agent智能体" class="content-card">
+                <h2>3. Agent（智能体）</h2>
+
+                <h3><span class="emoji-large">🎯</span> 掌握程度：必须掌握</h3>
+
+                <h3>什么是Agent？</h3>
+
+                <p><strong>通俗解释：</strong><br>
+                LLM是"大脑"，Agent是"有手有脚的完整人"。</p>
+                <ul>
+                    <li>LLM：只能思考、回答问题</li>
+                    <li>Agent：能思考+能行动（搜索网络、操作API、读取文件等）</li>
+                </ul>
+
+                <p><strong>技术定义：</strong><br>
+                AI Agent = LLM + Planning（规划）+ Memory（记忆）+ Tools（工具）</p>
+
+                <h3>为什么需要Agent？</h3>
+
+                <pre><code>LLM的局限：
+❌ 只能"说"，不能"做"
+   用户："帮我查明天天气"
+   LLM："对不起，我无法访问实时数据"
+
+❌ 无法处理复杂任务
+   用户："帮我规划一次日本旅行"
+   LLM：需要分步骤（查机票、订酒店、查攻略...）
+
+❌ 没有"记忆"
+   对话结束就忘记上下文
+
+Agent的能力：
+✅ 自主规划
+   复杂任务拆解成子任务
+
+✅ 使用工具
+   调用搜索、计算器、API等
+
+✅ 记忆管理
+   记住历史对话和结果
+
+✅ 自主决策
+   根据结果调整下一步行动</code></pre>
+
+                <h3>Agent核心架构</h3>
+
+                <pre><code>┌─────────────────────────────────────────────────┐
+│              AI Agent 架构                         │
+└─────────────────────────────────────────────────┘
+
+用户输入
+    ↓
+┌─────────────────────────────────────────────┐
+│  1. Perception（感知层）                       │
+│     接收用户输入 + 环境状态                    │
+└──────────────────┬──────────────────────────┘
+                   ↓
+┌─────────────────────────────────────────────┐
+│  2. Brain（大脑层 - LLM）                     │
+│     - Planning（规划）：任务分解               │
+│     - Reasoning（推理）：决策下一步行动          │
+│     - Reflection（反思）：评估结果              │
+└──────────────────┬──────────────────────────┘
+                   ↓
+┌─────────────────────────────────────────────┐
+│  3. Memory（记忆层）                          │
+│     - Short-term：当前对话上下文               │
+│     - Long-term：向量数据库存储历史经验         │
+└──────────────────┬──────────────────────────┘
+                   ↓
+┌─────────────────────────────────────────────┐
+│  4. Action（行动层 - Tools）                  │
+│     - Search：网络搜索                        │
+│     - Code：执行代码                          │
+│     - API：调用外部服务                       │
+│     - File：读写文件                          │
+└──────────────────┬──────────────────────────┘
+                   ↓
+              执行结果反馈
+                   ↓
+              回到Brain层决策
+                   ↓
+              最终返回用户</code></pre>
+
+                <h3>Agent关键技术</h3>
+
+                <h4>1. Planning（规划）</h4>
+
+                <div class="highlight-box">
+                    <h4><span class="emoji-large">🔧</span> 任务规划方法</h4>
+                    <p><strong>ReAct框架（最常用）：</strong></p>
+                    <pre><code>Thought（思考）：我需要做什么
+Action（行动）：执行某个工具
+Observation（观察）：得到什么结果
+...循环...
+Final Answer：最终答案
+
+示例：
+Thought：用户想知道北京的天气
+Action：调用weather_api(city="北京")
+Observation：得到"北京今天晴天，25度"
+Thought：已经获取到天气信息
+Action：Final Answer("北京今天晴天，气温25度")</code></pre>
+                </div>
+
+                <h4>2. Memory（记忆）</h4>
+
+                <table>
+                    <tr>
+                        <th>记忆类型</th>
+                        <th>实现方式</th>
+                        <th>用途</th>
+                    </tr>
+                    <tr>
+                        <td>短期记忆</td>
+                        <td>上下文窗口（Token）</td>
+                        <td>当前对话</td>
+                    </tr>
+                    <tr>
+                        <td>长期记忆</td>
+                        <td>向量数据库（RAG）</td>
+                        <td>历史经验、知识库</td>
+                    </tr>
+                    <tr>
+                        <td>工作记忆</td>
+                        <td>中间变量存储</td>
+                        <td>任务执行过程中</td>
+                    </tr>
+                </table>
+
+                <pre><code>// 记忆管理示例（LangChain）
+MemoryBuffer buffer = new ConversationBufferMemory();
+buffer.addUserMessage("我叫张三");
+buffer.addAIMessage("你好张三");
+
+// 后续对话会带上这些历史
+String response = agent.chat("我叫什么名字？");
+// 输出："你叫张三"</code></pre>
+
+                <h4>3. Tools（工具）</h4>
+
+                <pre><code>常用工具类型：
+
+1. 搜索类
+   - Google Search
+   - Wikipedia Search
+   - 网页爬虫
+
+2. 计算类
+   - Python执行器（Calculator）
+   - 代码解释器
+
+3. API类
+   - Weather API
+   - Stock API
+   - Email API
+   - Database API
+
+4. 文件类
+   - 读取文件
+   - 写入文件
+   - 向量库检索</code></pre>
+
+                <h3>Java实现Agent</h3>
+
+                <h4>使用LangChain4j</h4>
+
+                <pre><code>// Maven依赖
+&lt;dependency&gt;
+    &lt;groupId&gt;dev.langchain4j&lt;/groupId&gt;
+    &lt;artifactId&gt;langchain4j&lt;/artifactId&gt;
+    &lt;version&gt;0.29.1&lt;/version&gt;
+&lt;/dependency&gt;
+
+// Agent示例
+public class AgentExample {
+    public static void main(String[] args) {
+        // 1. 定义工具
+        Tool weatherTool = Tool.from(
+            WeatherService.class,
+            "getWeather",
+            "获取指定城市的天气信息"
+        );
+
+        // 2. 创建Agent
+        Assistant agent = Assistant.builder()
+            .modelName("gpt-4")
+            .tools(weatherTool)
+            .build();
+
+        // 3. 对话
+        String response = agent.chat("北京今天天气怎么样？");
+        System.out.println(response);
+
+        // Agent会自动：
+        // 1. 识别需要查询天气
+        // 2. 调用weatherTool
+        // 3. 基于返回结果生成答案
+    }
+}
+
+// 工具实现
+public class WeatherService {
+    @Tool("获取指定城市的天气信息")
+    public String getWeather(String city) {
+        // 调用天气API
+        return String.format("%s今天晴天，气温25度", city);
+    }
+}</code></pre>
+
+                <h3>Agent实战案例</h3>
+
+                <h4>案例1：个人助理Agent</h4>
+                <pre><code>能力：
+- 查询天气
+- 管理日程（Google Calendar API）
+- 发送邮件
+- 搜索信息
+
+实现：
+Assistant personalAssistant = Assistant.builder()
+    .modelName("gpt-4")
+    .tools(
+        weatherTool,
+        calendarTool,
+        emailTool,
+        searchTool
+    )
+    .memory(chatMemory)
+    .build();
+
+// 对话示例
+personalAssistant.chat("帮我查明天北京天气，如果有雨提醒我带伞");
+// Agent会：
+// 1. 调用weatherTool查询天气
+// 2. 判断是否有雨
+// 3. 调用calendarTool添加提醒事项
+// 4. 返回友好回复</code></pre>
+
+                <h4>案例2：代码助手Agent</h4>
+                <pre><code>能力：
+- 代码生成
+- 代码执行
+- 代码解释
+- Bug调试
+
+工具：
+- CodeExecutor：运行Python代码
+- FileEditor：读写代码文件
+- SearchEngine：搜索技术文档
+
+应用场景：
+personalAssistant.chat("帮我写一个Java快速排序算法");
+personalAssistant.chat("解释一下这段代码的作用");
+personalAssistant.chat("调试这个Bug：...");</code></pre>
+
+                <h4>案例3：客服Agent</h4>
+                <pre><code>能力：
+- 查询订单（调用订单API）
+- 处理退款（调用退款API）
+- 查询产品信息（RAG检索产品库）
+- 人工转接（复杂问题转人工）
+
+特点：
+- 多轮对话
+- 知识库检索
+- 工作流编排
+- 情感分析（识别客户情绪）</code></pre>
+
+                <h3>高级Agent架构</h3>
+
+                <div class="info-box">
+                    <h4><span class="emoji-large">💡</span> Multi-Agent（多智能体协作）</h4>
+                    <p>复杂任务需要多个Agent协作</p>
+                    <pre><code>示例：研究论文撰写Agent系统
+
+ResearchAgent（研究Agent）：
+- 搜索相关论文
+- 提取关键信息
+
+WritingAgent（写作Agent）：
+- 生成论文大纲
+- 撰写各章节内容
+
+ReviewAgent（审稿Agent）：
+- 检查语法错误
+- 评估逻辑连贯性
+
+Multi-Agent协调器：
+- 分配任务
+- 汇总结果
+- 迭代优化</code></pre>
+                </div>
+
+                <h3>Agent常见问题</h3>
+
+                <div class="warning-box">
+                    <h4><span class="emoji-large">⚠️</span> 挑战与解决</h4>
+                    <table>
+                        <tr>
+                            <th>挑战</th>
+                            <th>解决方案</th>
+                        </tr>
+                        <tr>
+                            <td>工具选择错误</td>
+                            <td>清晰的工具描述，示例引导</td>
+                        </tr>
+                        <tr>
+                            <td>无限循环</td>
+                            <td>设置最大步数限制</td>
+                        </tr>
+                        <tr>
+                            <td>记忆溢出</td>
+                            <td>总结压缩记忆，向量库存储</td>
+                        </tr>
+                        <tr>
+                            <td>工具调用失败</td>
+                            <td>错误处理和重试机制</td>
+                        </tr>
+                        <tr>
+                            <td>成本高昂</td>
+                            <td>缓存机制，小模型处理简单任务</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3>学习路径</h3>
+                <ol>
+                    <li>理解Agent概念和架构</li>
+                    <li>学习ReAct框架（Thought-Action-Observation）</li>
+                    <li>掌握工具定义和调用（Function Calling）</li>
+                    <li>实践简单Agent（带搜索工具）</li>
+                    <li>学习记忆管理（短期+长期）</li>
+                    <li>实现复杂Agent（多工具协作）</li>
+                    <li>探索Multi-Agent系统</li>
+                </ol>
+            </section>
+
+            <section id="4-function-calling函数调用" class="content-card">
+                <h2>4. Function Calling（函数调用）</h2>
+
+                <h3><span class="emoji-large">🎯</span> 掌握程度：必须掌握</h3>
+
+                <h3>什么是Function Calling？</h3>
+
+                <p><strong>通俗解释：</strong><br>
+                让LLM能够"调用函数"。不是LLM自己执行代码，而是LLM告诉你"应该调用哪个函数，传什么参数"，然后你的代码去执行。</p>
+
+                <p><strong>技术定义：</strong><br>
+                OpenAI等模型提供的功能，让LLM根据用户意图，输出结构化的函数调用请求（函数名+参数）。</p>
+
+                <h3>为什么需要Function Calling？</h3>
+
+                <pre><code>传统LLM的局限：
+❌ 只能返回文本
+   用户："北京今天天气"
+   LLM："我无法获取实时数据"
+
+❌ 无法精确提取参数
+   用户："帮我订明天北京到上海的机票"
+   LLM：需要你自己解析"明天"、"北京"、"上海"
+
+Function Calling的能力：
+✅ 结构化输出
+   LLM返回：{"function": "book_flight", "args": {...}}
+
+✅ 参数提取
+   自动从文本中提取结构化参数
+
+✅ 函数选择
+   根据用户意图选择合适的函数
+
+✅ 多轮对话
+   缺少参数时主动询问</code></pre>
+
+                <h3>Function Calling工作流程</h3>
+
+                <pre><code>┌─────────────────────────────────────────────────┐
+│         Function Calling 完整流程                │
+└─────────────────────────────────────────────────┘
+
+1. 定义函数（告诉LLM有哪些函数可用）
+
+   function getWeather(city: string, date: string) {
+       // 调用天气API
+   }
+
+2. 用户提问
+
+   用户："北京明天天气怎么样？"
+
+3. LLM分析意图并返回函数调用
+
+   LLM返回：
+   {
+     "function": "getWeather",
+     "arguments": {
+       "city": "北京",
+       "date": "2025-03-10"
+     }
+   }
+
+4. 代码执行函数
+
+   getWeather("北京", "2025-03-10")
+   → 返回："晴天，15-25度"
+
+5. 把结果传回LLM
+
+   把函数返回值告诉LLM
+
+6. LLM生成最终答案
+
+   LLM："北京明天晴天，气温15到25度"</code></pre>
+
+                <h3>Java实现Function Calling</h3>
+
+                <h4>使用OpenAI API</h4>
+
+                <pre><code>// Maven依赖
+&lt;dependency&gt;
+    &lt;groupId&gt;com.squareup.retrofit2&lt;/groupId&gt;
+    &lt;artifactId&gt;retrofit&lt;/artifactId&gt;
+    &lt;version&gt;2.9.0&lt;/version&gt;
+&lt;/dependency&gt;
+
+// 示例代码
+public class FunctionCallingExample {
+    public static void main(String[] args) {
+        OpenAiApi service = new OpenAiService("your-api-key");
+
+        // 1. 定义可用的函数
+        List&lt;ChatFunction&gt; functions = List.of(
+            ChatFunction.builder()
+                .name("getWeather")
+                .description("获取指定城市的天气信息")
+                .parameters(ChatFunctionParameters.builder()
+                    .type("object")
+                    .properties(Map.of(
+                        "city", Map.of(
+                            "type", "string",
+                            "description", "城市名称"
+                        ),
+                        "date", Map.of(
+                            "type", "string",
+                            "description", "日期（格式：YYYY-MM-DD）"
+                        )
+                    ))
+                    .required(List.of("city", "date"))
+                    .build())
+                .build()
+        );
+
+        // 2. 发送请求（带上函数定义）
+        ChatMessage userMessage = new ChatMessage(
+            ChatMessageRole.USER.value(),
+            "北京明天天气怎么样？"
+        );
+
+        ChatRequest request = ChatRequest.builder()
+            .model("gpt-4")
+            .messages(List.of(userMessage))
+            .functions(functions)
+            .functionCall("auto")  // 让模型自动决定是否调用函数
+            .build();
+
+        ChatResponse response = service.createChatCompletion(request);
+
+        // 3. 检查LLM是否想调用函数
+        if (response.getChoices().get(0).getMessage().getFunctionCall() != null) {
+            ChatFunctionCall functionCall = response.getChoices()
+                .get(0)
+                .getMessage()
+                .getFunctionCall();
+
+            String functionName = functionCall.getName();
+            String arguments = functionCall.getArguments();
+
+            // 解析参数
+            ObjectMapper mapper = new ObjectMapper();
+            Map&lt;String, Object&gt; args = mapper.readValue(
+                arguments,
+                new TypeReference&lt;Map&lt;String, Object&gt;&gt;() {}
+            );
+
+            // 4. 执行函数
+            String result = executeFunction(functionName, args);
+
+            // 5. 把结果返回给LLM
+            ChatMessage functionMessage = new ChatMessage(
+                ChatMessageRole.FUNCTION.value(),
+                result
+            );
+            functionMessage.setName(functionName);
+
+            ChatRequest followUpRequest = ChatRequest.builder()
+                .model("gpt-4")
+                .messages(List.of(
+                    userMessage,
+                    response.getChoices().get(0).getMessage(),
+                    functionMessage
+                ))
+                .build();
+
+            ChatResponse finalResponse = service
+                .createChatCompletion(followUpRequest);
+
+            System.out.println(finalResponse.getChoices()
+                .get(0)
+                .getMessage()
+                .getContent());
+        }
+    }
+
+    private static String executeFunction(
+        String functionName,
+        Map&lt;String, Object&gt; args
+    ) {
+        if (functionName.equals("getWeather")) {
+            String city = (String) args.get("city");
+            String date = (String) args.get("date");
+            // 调用真实的天气API
+            return String.format(
+                "%s %s 天气：晴天，气温15-25度",
+                city, date
+            );
+        }
+        return "Unknown function";
+    }
+}</code></pre>
+
+                <h4>使用LangChain4j（更简单）</h4>
+
+                <pre><code>// LangChain4j自动处理Function Calling
+public class LangChain4jExample {
+    public static void main(String[] args) {
+        // 1. 定义工具（普通Java方法）
+        public class WeatherTools {
+            @Tool("获取指定城市的天气信息")
+            public String getWeather(
+                @P("城市名称") String city,
+                @P("日期（YYYY-MM-DD）") String date
+            ) {
+                // 调用天气API
+                return String.format(
+                    "%s %s 天气：晴天，15-25度",
+                    city, date
+                );
+            }
+        }
+
+        // 2. 创建Agent（自动启用Function Calling）
+        Assistant agent = Assistant.builder()
+            .modelName("gpt-4")
+            .tools(new WeatherTools())
+            .build();
+
+        // 3. 对话（自动处理函数调用）
+        String response = agent.chat(
+            "北京明天天气怎么样？"
+        );
+
+        System.out.println(response);
+        // 输出：北京明天天气：晴天，15-25度
+    }
+}</code></pre>
+
+                <h3>Function Calling实战技巧</h3>
+
+                <div class="success-box">
+                    <h4><span class="emoji-large">✅</span> 最佳实践</h4>
+                    <ol>
+                        <li><strong>清晰的函数描述：</strong>
+                            <pre><code>// 好的描述
+"获取指定城市未来7天的天气预报，包括温度、降水概率"
+
+// 不好的描述
+"天气函数"</code></pre>
+                        </li>
+                        <li><strong>明确的参数类型：</strong>
+                            <pre><code>"type": "integer"  // 数字
+"type": "string"   // 文本
+"type": "boolean"  // 是/否
+"type": "array"    // 列表
+"enum": ["hot", "cold", "mild"]  // 枚举值</code></pre>
+                        </li>
+                        <li><strong>提供示例：</strong>
+                            <pre><code>在System Prompt中提供示例
+"示例：用户说'明天'指2025-03-10"</code></pre>
+                        </li>
+                        <li><strong>错误处理：</strong>
+                            <pre><code>try {
+    result = executeFunction(...);
+} catch (Exception e) {
+    // 把错误信息返回给LLM
+    // LLM会尝试其他方法或询问用户
+}</code></pre>
+                        </li>
+                    </ol>
+                </div>
+
+                <h3>常见应用场景</h3>
+
+                <table>
+                    <tr>
+                        <th>场景</th>
+                        <th>使用的函数</th>
+                    </tr>
+                    <tr>
+                        <td>智能客服</td>
+                        <td>查询订单、退款、物流跟踪</td>
+                    </tr>
+                    <tr>
+                        <td>个人助理</td>
+                        <td>日程管理、邮件发送、提醒</td>
+                    </tr>
+                    <tr>
+                        <td>数据分析</td>
+                        <td>SQL查询、图表生成</td>
+                    </tr>
+                    <tr>
+                        <td>代码助手</td>
+                        <td>代码执行、文件读写、Git操作</td>
+                    </tr>
+                    <tr>
+                        <td>智能家居</td>
+                        <td>控制灯光、温度、电器</td>
+                    </tr>
+                </table>
+
+                <h3>Function Calling vs 直接Prompt</h3>
+
+                <pre><code>传统Prompt方式：
+用户："帮我订北京到上海的机票"
+Prompt："从以下文本提取：出发地、目的地、日期"
+→ 不够灵活，容易出错
+
+Function Calling方式：
+自动识别意图，提取参数，调用函数
+→ 更准确、更可靠</code></pre>
+
+                <h3>学习路径</h3>
+                <ol>
+                    <li>理解Function Calling概念和流程</li>
+                    <li>学习OpenAI Function Calling API格式</li>
+                    <li>Java实现简单的函数调用</li>
+                    <li>使用LangChain4j简化开发</li>
+                    <li>处理多轮对话和错误情况</li>
+                    <li>实战：构建智能客服系统</li>
+                </ol>
+            </section>
+
+            <section id="5-chain-of-thought思维链" class="content-card">
+                <h2>5. Chain of Thought（思维链）</h2>
+
+                <h3><span class="emoji-large">🎯</span> 掌握程度：必须掌握</h3>
+
+                <h3>什么是Chain of Thought？</h3>
+
+                <p><strong>通俗解释：</strong><br>
+                让LLM"展示思考过程"。不是直接给答案，而是像数学题解题一样，一步步推理，最后得出答案。</p>
+
+                <p><strong>技术定义：</strong><br>
+                一种Prompt技巧，引导模型生成中间推理步骤，提升复杂问题的解决能力。</p>
+
+                <h3>为什么需要CoT？</h3>
+
+                <pre><code>传统LLM的问题：
+❌ 直接回答，容易出错
+   问："农夫有15只羊，除了6只都走了，还剩几只？"
+   直接回答：9只（错误！）
+
+❌ 复杂推理能力弱
+   多步骤问题容易跳步
+
+❌ 无法验证推理过程
+   不知道答案怎么来的
+
+CoT的优势：
+✅ 逐步推理
+   "先算总数15只，走了15-6=9只，还剩6只"
+
+✅ 提高准确率
+   复杂问题准确率提升30%+
+
+✅ 可解释性
+   能看到推理过程，便于调试</code></pre>
+
+                <h3>CoT核心方法</h3>
+
+                <h4>1. Zero-Shot CoT（零样本思维链）</h4>
+
+                <pre><code>方法：在Prompt中加一句"让我们一步步思考"
+
+Prompt示例：
+"""
+问题：农夫有15只羊，除了6只都走了，还剩几只？
+让我们一步步思考。
+"""
+
+模型输出：
+1. 农夫总共有15只羊
+2. "除了6只都走了"意思是只有6只没走
+3. 所以还剩6只羊
+4. 答案：6只
+
+✅ 简单有效，无需示例</code></pre>
+
+                <h4>2. Few-Shot CoT（少样本思维链）</h4>
+
+                <pre><code>方法：提供几个带推理过程的示例
+
+Prompt示例：
+"""
+Q：罗杰有5个网球，他又买了2罐网球，每罐3个。
+   现在他有多少个网球？
+A：罗杰一开始有5个球
+   2罐网球 × 每罐3个 = 6个
+   5 + 6 = 11个
+   答案：11个
+
+Q：食堂有23个苹果，如果他们用20个做午餐，
+   又买了6个，现在有多少个？
+A：让我们一步步思考。
+"""
+
+模型会模仿示例的推理风格。</code></pre>
+
+                <h4>3. Self-Consistency（自洽性）</h4>
+
+                <div class="info-box">
+                    <h4><span class="emoji-large">💡</span> 高级技巧</h4>
+                    <p>让模型生成多个推理路径，选择最一致的答案</p>
+                    <pre><code>// 伪代码
+paths = []
+for i in range(5):  // 生成5个推理路径
+    path = llm.generate(question, cot_prompt)
+    paths.append(path)
+
+// 统计最频繁的最终答案
+final_answer = most_common(paths)
+
+优点：进一步提高准确率
+缺点：成本增加（多次调用LLM）</code></pre>
+                </div>
+
+                <h3>Java实现CoT</h3>
+
+                <pre><code>public class ChainOfThoughtExample {
+    public static void main(String[] args) {
+        String question = "农夫有15只羊，除了6只都走了，还剩几只？";
+
+        // Zero-Shot CoT Prompt
+        String cotPrompt = String.format("""
+            请回答以下问题，并展示你的推理过程。
+
+            问题：%s
+
+            让我们一步步思考。
+            """, question);
+
+        String response = callLLM(cotPrompt);
+        System.out.println(response);
+        // 输出会包含完整的推理步骤
+    }
+
+    private static String callLLM(String prompt) {
+        // 调用LLM API
+        return "推理过程和最终答案";
+    }
+}</code></pre>
+
+                <h3>CoT最佳实践</h3>
+
+                <div class="success-box">
+                    <h4><span class="emoji-large">✅</span> 使用技巧</h4>
+                    <ol>
+                        <li><strong>合适的触发词：</strong>
+                            <ul>
+                                <li>"让我们一步步思考"</li>
+                                <li>"展示你的推理过程"</li>
+                                <li>"先分析...再得出结论"</li>
+                            </ul>
+                        </li>
+                        <li><strong>清晰的问题描述：</strong>
+                            <pre><code>// 好的提问
+"一个矩形长10cm，宽5cm，计算面积和周长"
+
+// 不好的提问
+"计算矩形"</code></pre>
+                        </li>
+                        <li><strong>结构化输出：</strong>
+                            <pre><code>Prompt："请按以下格式输出：
+1. 理解问题
+2. 分析已知条件
+3. 推理步骤
+4. 验证
+5. 最终答案"</code></pre>
+                        </li>
+                    </ol>
+                </div>
+
+                <h3>CoT应用场景</h3>
+
+                <table>
+                    <tr>
+                        <th>场景</th>
+                        <th>示例</th>
+                    </tr>
+                    <tr>
+                        <td>数学问题</td>
+                        <td>应用题、逻辑推理</td>
+                    </tr>
+                    <tr>
+                        <td>代码调试</td>
+                        <td>逐步分析错误原因</td>
+                    </tr>
+                    <tr>
+                        <td>法律分析</td>
+                        <td>案情推理、法条适用</td>
+                    </tr>
+                    <tr>
+                        <td>医疗诊断</td>
+                        <td>症状分析、诊断推理</td>
+                    </tr>
+                    <tr>
+                        <td>金融分析</td>
+                        <td>财务数据推理、风险评估</td>
+                    </tr>
+                </table>
+
+                <h3>学习路径</h3>
+                <ol>
+                    <li>理解CoT原理和价值</li>
+                    <li>掌握Zero-Shot和Few-Shot CoT</li>
+                    <li>实践不同类型的推理问题</li>
+                    <li>学习Self-Consistency等高级技巧</li>
+                    <li>在Agent中应用CoT</li>
+                </ol>
+            </section>
+
+            <section id="6-multimodal多模态" class="content-card">
+                <h2>6. Multimodal（多模态）</h2>
+
+                <h3><span class="emoji-large">🎯</span> 掌握程度：重要</h3>
+
+                <h3>什么是多模态？</h3>
+
+                <p><strong>通俗解释：</strong><br>
+                AI不仅能理解文字，还能理解图片、音频、视频等多种"模态"的信息。</p>
+
+                <p><strong>技术定义：</strong><br>
+                能够处理和生成多种类型数据（文本、图像、音频、视频）的AI模型。</p>
+
+                <h3>为什么需要多模态？</h3>
+
+                <pre><code>单模态LLM的局限：
+❌ 只能处理文本
+   发一张图片："这个是什么？"
+   文本LLM：无法回答
+
+❌ 无法理解视觉信息
+   图表、截图、照片都处理不了
+
+多模态的能力：
+✅ 图像理解
+   看图说话、图像描述、OCR
+
+✅ 图像生成
+   文生图（DALL-E、Midjourney）
+
+✅ 音频处理
+   语音识别、语音合成
+
+✅ 视频理解
+   视频内容分析
+
+✅ 跨模态检索
+   以图搜图、图文检索</code></pre>
+
+                <h3>主流多模态模型</h3>
+
+                <table>
+                    <tr>
+                        <th>模型</th>
+                        <th>能力</th>
+                        <th>特点</th>
+                    </tr>
+                    <tr>
+                        <td>GPT-4V</td>
+                        <td>文本+图像</td>
+                        <td>理解力强，支持复杂场景</td>
+                    </tr>
+                    <tr>
+                        <td>Claude 3</td>
+                        <td>文本+图像</td>
+                        <td>大窗口（200K tokens）</td>
+                    </tr>
+                    <tr>
+                        <td>Gemini</td>
+                        <td>文本+图像+视频+音频</td>
+                        <td>Google最新，原生多模态</td>
+                    </tr>
+                    <tr>
+                        <td>DALL-E 3</td>
+                        <td>文生图</td>
+                        <td>OpenAI，质量高</td>
+                    </tr>
+                    <tr>
+                        <td>Whisper</td>
+                        <td>语音转文本</td>
+                        <td>OpenAI，多语言支持</td>
+                    </tr>
+                </table>
+
+                <h3>Java多模态应用</h3>
+
+                <h4>1. 图像理解</h4>
+
+                <pre><code>// 使用GPT-4V分析图片
+public class ImageAnalysisExample {
+    public static void main(String[] args) {
+        // 1. 读取图片并转为Base64
+        String base64Image = encodeImageToBase64("chart.png");
+
+        // 2. 构造请求
+        ChatMessage message = ChatMessage.builder()
+            .role("user")
+            .content(List.of(
+                ContentPart.text("请描述这张图表的内容"),
+                ContentPart.imageUrl(
+                    "data:image/png;base64," + base64Image
+                )
+            ))
+            .build();
+
+        // 3. 调用GPT-4V
+        ChatResponse response = openAiService.chat(
+            "gpt-4-vision-preview",
+            List.of(message)
+        );
+
+        System.out.println(response.getContent());
+        // 输出：图片内容的详细描述
+    }
+}</code></pre>
+
+                <h4>2. 语音识别（Whisper）</h4>
+
+                <pre><code>// 语音转文本
+public class SpeechToTextExample {
+    public static void main(String[] args) {
+        OpenAiAudioService audioService =
+            new OpenAiAudioService("api-key");
+
+        File audioFile = new File("recording.mp3");
+
+        String transcription = audioService.transcribe(
+            audioFile,
+            "whisper-1"  // 模型版本
+        );
+
+        System.out.println(transcription);
+    }
+}</code></pre>
+
+                <h4>3. 图像生成（DALL-E）</h4>
+
+                <pre><code>// 文生图
+public class ImageGenerationExample {
+    public static void main(String[] args) {
+        OpenAiImageService imageService =
+            new OpenAiImageService("api-key");
+
+        ImageResponse response = imageService.generate(
+            ImageRequest.builder()
+                .prompt("一只可爱的猫在睡觉，油画风格")
+                .size("1024x1024")
+                .model("dall-e-3")
+                .build()
+        );
+
+        String imageUrl = response.getData().get(0).getUrl();
+        System.out.println("生成的图片：" + imageUrl);
+    }
+}</code></pre>
+
+                <h3>多模态实战案例</h3>
+
+                <h4>案例1：智能文档处理</h4>
+                <pre><code>场景：用户上传发票图片，自动提取信息
+
+流程：
+1. 用户上传发票图片
+2. OCR提取文字（Whisper + Tesseract）
+3. 多模态LLM分析结构化信息
+   - 日期、金额、公司名
+4. 存入数据库
+
+技术栈：
+- 图像理解：GPT-4V
+- OCR：Tesseract或云服务
+- 文档处理：Apache PDFBox</code></pre>
+
+                <h4>案例2：智能相册</h4>
+                <pre><code>场景：根据内容描述搜索照片
+
+实现：
+1. 上传照片时：
+   - 用多模态LLM生成描述（"海边的日落"）
+   - 存储描述+图片URL
+
+2. 搜索时：
+   - 用户输入"海边"
+   - 在描述中搜索
+   - 返回匹配照片</code></pre>
+
+                <h3>多模态学习路径</h3>
+                <ol>
+                    <li>了解多模态AI发展现状</li>
+                    <li>学习主流多模态模型（GPT-4V、Gemini）</li>
+                    <li>实践图像理解任务</li>
+                    <li>学习语音识别和合成</li>
+                    <li>探索图像生成（DALL-E、Midjourney API）</li>
+                    <li>构建多模态应用</li>
+                </ol>
+            </section>
+
+            <section id="7-knowledge-graph知识图谱" class="content-card">
+                <h2>7. Knowledge Graph（知识图谱）</h2>
+
+                <h3><span class="emoji-large">🎯</span> 掌握程度：重要</h3>
+
+                <h3>什么是知识图谱？</h3>
+
+                <p><strong>通俗解释：</strong><br>
+                把现实世界的知识用"实体-关系-实体"的三元组表示，形成一个巨大的网络结构。</p>
+
+                <p><strong>技术定义：</strong><br>
+                用图结构（节点和边）表示知识和关系的数据库技术。</p>
+
+                <h3>知识图谱示例</h3>
+
+                <pre><code>三元组示例：
+(苹果, 是一种, 水果)
+(苹果, 产地, 中国)
+(苹果, 颜色, 红色)
+(水果, 富含, 维生素C)
+
+图结构：
+   苹果 ---是一种---&gt; 水果
+    |                    |
+   产地                富含
+    |                    |
+   中国              维生素C
+    |
+   颜色
+    |
+   红色</code></pre>
+
+                <h3>知识图谱 vs 向量数据库</h3>
+
+                <table>
+                    <tr>
+                        <th>对比维度</th>
+                        <th>知识图谱</th>
+                        <th>向量数据库</th>
+                    </tr>
+                    <tr>
+                        <td>数据结构</td>
+                        <td>显式关系（三元组）</td>
+                        <td>隐式语义（向量）</td>
+                    </tr>
+                    <tr>
+                        <td>查询方式</td>
+                        <td>图查询语言（Cypher、Gremlin）</td>
+                        <td>向量相似度搜索</td>
+                    </tr>
+                    <tr>
+                        <td>适用场景</td>
+                        <td>复杂关系推理、路径查询</td>
+                        <td>语义搜索、推荐系统</td>
+                    </tr>
+                    <tr>
+                        <td>可解释性</td>
+                        <td>强（可追溯关系路径）</td>
+                        <td>弱（黑盒相似度）</td>
+                    </tr>
+                </table>
+
+                <h3>图数据库技术栈</h3>
+
+                <table>
+                    <tr>
+                        <th>数据库</th>
+                        <th>特点</th>
+                        <th>Java支持</th>
+                    </tr>
+                    <tr>
+                        <td>Neo4j</td>
+                        <td>最流行，功能完善</td>
+                        <td>⭐⭐⭐⭐⭐ JDBC、OGM</td>
+                    </tr>
+                    <tr>
+                        <td>ArangoDB</td>
+                        <td>多模型（图+文档）</td>
+                        <td>⭐⭐⭐⭐ Java Driver</td>
+                    </tr>
+                    <tr>
+                        <td>Amazon Neptune</td>
+                        <td>AWS托管，全托管</td>
+                        <td>⭐⭐⭐⭐ SDK</td>
+                    </tr>
+                </table>
+
+                <h3>Java操作Neo4j</h3>
+
+                <pre><code>// Maven依赖
+&lt;dependency&gt;
+    &lt;groupId&gt;org.neo4j.driver&lt;/groupId&gt;
+    &lt;artifactId&gt;neo4j-java-driver&lt;/artifactId&gt;
+    &lt;version&gt;4.4.9&lt;/version&gt;
+&lt;/dependency&gt;
+
+// 示例代码
+public class KnowledgeGraphExample {
+    public static void main(String[] args) {
+        // 1. 连接Neo4j
+        Driver driver = GraphDatabase.driver(
+            "bolt://localhost:7687",
+            AuthTokens.basic("neo4j", "password")
+        );
+
+        try (Session session = driver.session()) {
+            // 2. 创建节点和关系
+            session.run("CREATE (a:Person {name: '张三'})");
+            session.run("CREATE (c:Company {name: '阿里巴巴'})");
+            session.run("""
+                MATCH (a:Person {name: '张三'})
+                MATCH (c:Company {name: '阿里巴巴'})
+                CREATE (a)-[:WORKS_AT]->(c)
+                """);
+
+            // 3. 查询
+            Result result = session.run("""
+                MATCH (p:Person {name: '张三'})-[:WORKS_AT]-&gt;(c:Company)
+                RETURN p.name AS person, c.name AS company
+                """);
+
+            while (result.hasNext()) {
+                Record record = result.next();
+                System.out.printf("%s 在 %s 工作%n",
+                    record.get("person"),
+                    record.get("company")
+                );
+            }
+        }
+    }
+}</code></pre>
+
+                <h3>知识图谱 + LLM</h3>
+
+                <div class="highlight-box">
+                    <h4><span class="emoji-large">🔧</span> GraphRAG</h4>
+                    <p>结合知识图谱和RAG，提升检索质量</p>
+                    <pre><code>传统RAG问题：
+- 检索到相关段落，但可能缺少上下文
+- 无法理解实体间关系
+
+GraphRAG优势：
+1. 实体识别：从文本中提取实体（人名、公司名等）
+2. 关系抽取：识别实体间关系
+3. 知识图谱构建：存入图数据库
+4. 图检索：找到相关实体+关系
+5. 结合向量检索：混合搜索
+
+示例：
+用户："马云和阿里巴巴的关系？"
+向量检索：可能找不到直接相关段落
+知识图谱：马云 -[创始人]-&gt; 阿里巴巴</code></pre>
+                </div>
+
+                <h3>学习路径</h3>
+                <ol>
+                    <li>理解知识图谱概念（三元组、图结构）</li>
+                    <li>学习图查询语言（Cypher for Neo4j）</li>
+                    <li>Java操作Neo4j（CRUD）</li>
+                    <li>实践实体关系抽取（NER + RE）</li>
+                    <li>构建领域知识图谱</li>
+                    <li>探索GraphRAG（KG + RAG）</li>
+                </ol>
+            </section>
+
+            <section class="content-card">
+                <h2>总结</h2>
+
+                <div class="success-box">
+                    <h4><span class="emoji-large">🎯</span> AI应用层技术学习路线</h4>
+                    <ol>
+                        <li><strong>基础必备（第1-3个月）</strong>
+                            <ul>
+                                <li>RAG原理与实践</li>
+                                <li>向量数据库（Milvus）</li>
+                                <li>Embedding模型</li>
+                            </ul>
+                        </li>
+                        <li><strong>进阶能力（第4-6个月）</strong>
+                            <ul>
+                                <li>Agent开发（LangChain4j）</li>
+                                <li>Function Calling</li>
+                                <li>思维链提示技巧</li>
+                            </ul>
+                        </li>
+                        <li><strong>高级应用（第7-12个月）</strong>
+                            <ul>
+                                <li>多模态应用</li>
+                                <li>知识图谱+LLM</li>
+                                <li>生产环境优化</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="highlight-box">
+                    <h4><span class="emoji-large">💡</span> 学习建议</h4>
+                    <ul>
+                        <li><strong>先理解原理，再动手实践</strong></li>
+                        <li><strong>从简单项目开始，逐步增加复杂度</strong></li>
+                        <li><strong>关注Java生态（LangChain4j、Spring AI）</strong></li>
+                        <li><strong>持续学习，AI技术更新快</strong></li>
+                        <li><strong>加入社区，分享经验</strong></li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <button class="back-to-top" id="backToTop">↑</button>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Back to top button
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Active navigation link based on scroll position
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const scrollPosition = window.pageYOffset + 100;
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${sectionId}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

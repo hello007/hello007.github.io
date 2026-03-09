@@ -1,0 +1,23 @@
+{
+  "skill_name": "markdown-convert-html",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Convert evals/test-simple.md to HTML",
+      "expected_output": "A complete HTML file with responsive layout, sidebar navigation, styled code blocks, and proper formatting. The output should be saved as test-simple.html.",
+      "files": ["evals/test-simple.md"]
+    },
+    {
+      "id": 2,
+      "prompt": "Convert evals/test-complex.md to HTML with full styling",
+      "expected_output": "A professional HTML page with tables, code highlighting, multiple content boxes (info, warning, success, highlight), nested lists, and all interactive features (smooth scrolling, back-to-top button, active navigation).",
+      "files": ["evals/test-complex.md"]
+    },
+    {
+      "id": 3,
+      "prompt": "Convert evals/test-chinese.md to HTML, ensuring proper Chinese character support",
+      "expected_output": "An HTML page with proper Chinese font rendering, UTF-8 encoding, and all content displayed correctly. Should include all styling features and maintain the Chinese content integrity.",
+      "files": ["evals/test-chinese.md"]
+    }
+  ]
+}

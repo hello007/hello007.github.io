@@ -1,0 +1,2250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工程架构层概念详解</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.8;
+            color: #4b5563;
+            background: #f5f7fa;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .hero-meta {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-top: 15px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .sidebar h3 {
+            font-size: 18px;
+            color: #2563eb;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .nav-link:hover {
+            background: #f3f4f6;
+            color: #2563eb;
+            transform: translateX(5px);
+        }
+
+        .nav-link.active {
+            background: #2563eb;
+            color: white;
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .content-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        h2 {
+            font-size: 32px;
+            color: #1f2937;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2563eb;
+        }
+
+        h3 {
+            font-size: 24px;
+            color: #374151;
+            margin-top: 35px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        h4 {
+            font-size: 20px;
+            color: #4b5563;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        /* Code Blocks */
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+
+        code {
+            background: #f3f4f6;
+            color: #dc2626;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 12px;
+        }
+
+        /* Content Boxes */
+        .info-box {
+            background: #e0e7ff;
+            border-left: 4px solid #6366f1;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box h4, .warning-box h4, .success-box h4, .highlight-box h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        /* Links */
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2563eb;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s;
+            font-size: 24px;
+            border: none;
+            z-index: 1000;
+        }
+
+        .back-to-top:hover {
+            background: #1d4ed8;
+            transform: translateY(-3px);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        /* Strong emphasis */
+        strong {
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        /* Emphasis */
+        em {
+            color: #6b7280;
+        }
+
+        /* Horizontal Rule */
+        hr {
+            border: none;
+            border-top: 2px solid #e5e7eb;
+            margin: 40px 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                max-height: none;
+                margin-bottom: 20px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            h2 {
+                font-size: 26px;
+            }
+
+            h3 {
+                font-size: 20px;
+            }
+
+            .content-card {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero {
+                padding: 40px 15px;
+            }
+
+            .hero h1 {
+                font-size: 24px;
+            }
+
+            .content-card {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 22px;
+            }
+
+            h3 {
+                font-size: 18px;
+            }
+
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .sidebar {
+                display: none;
+            }
+
+            .back-to-top {
+                display: none;
+            }
+
+            .content-card {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+
+            .hero {
+                background: white;
+                color: #1f2937;
+                border-bottom: 2px solid #e5e7eb;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>工程架构层概念详解</h1>
+        <div class="hero-meta">
+            <p><strong>文档定位：</strong> AI应用工程化开发的架构和工具指南</p>
+            <p><strong>学习目标：</strong> 掌握AI应用开发的核心框架和工程实践</p>
+            <p><strong>适合人群：</strong> 已掌握AI基础和应用层技术的Java开发者</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <nav class="sidebar">
+            <h3>目录导航</h3>
+            <ul class="nav-links">
+                <li><a class="nav-link" href="#1-langchain4j">1. LangChain4j</a></li>
+                <li><a class="nav-link" href="#2-spring-ai">2. Spring AI</a></li>
+                <li><a class="nav-link" href="#3-api-rate-limiting速率限制">3. API Rate Limiting（速率限制）</a></li>
+                <li><a class="nav-link" href="#4-caching-strategy缓存策略">4. Caching Strategy（缓存策略）</a></li>
+                <li><a class="nav-link" href="#5-streaming-response流式响应">5. Streaming Response（流式响应）</a></li>
+                <li><a class="nav-link" href="#6-orchestration编排">6. Orchestration（编排）</a></li>
+                <li><a class="nav-link" href="#7-observability可观测性">7. Observability（可观测性）</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <section id="1-langchain4j" class="content-card">
+                <h2>1. LangChain4j</h2>
+
+                <h3>🎯 掌握程度：必须掌握</h3>
+
+                <h3>什么是LangChain4j？</h3>
+
+                <p><strong>通俗解释：</strong><br>
+                LangChain4j是"AI应用的Spring Boot"。就像Spring Boot简化了Web开发，LangChain4j简化了AI应用开发。</p>
+
+                <p><strong>技术定义：</strong><br>
+                Java语言的AI应用开发框架，提供LLM调用、RAG、Agent、Prompt管理等完整功能。</p>
+
+                <h3>为什么选择LangChain4j？</h3>
+
+                <pre><code>LangChain4j的优势：
+✅ 原生Java：纯Java实现，不是Python移植
+✅ 功能完善：覆盖RAG、Agent、Memory等
+✅ 易于集成：支持Spring Boot、Quarkus
+✅ 性能优秀：针对JVM优化
+✅ 社区活跃：快速迭代，文档完善</code></pre>
+
+                <h3>LangChain4j核心组件</h3>
+
+                <pre><code>LangChain4j架构：
+┌─────────────────────────────────────┐
+│       LangChain4j                   │
+├─────────────────────────────────────┤
+│ Model Layer（模型层）                │
+│  ├── ChatLanguageModel              │
+│  ├── StreamingChatModel             │
+│  ├── EmbeddingModel                 │
+│  └── ImageModel                     │
+├─────────────────────────────────────┤
+│ Service Layer（服务层）              │
+│  ├── ChatService                    │
+│  ├── EmbeddingService               │
+│  └── VectorStore                    │
+├─────────────────────────────────────┤
+│ Agent Layer（智能体层）              │
+│  ├── Agent                          │
+│  ├── Tool                           │
+│  └── Memory                         │
+└─────────────────────────────────────┘</code></pre>
+
+                <h3>快速开始示例</h3>
+
+                <pre><code>// 1. 添加依赖
+&lt;dependency&gt;
+    &lt;groupId&gt;dev.langchain4j&lt;/groupId&gt;
+    &lt;artifactId&gt;langchain4j&lt;/artifactId&gt;
+    &lt;version&gt;0.34.0&lt;/version&gt;
+&lt;/dependency&gt;
+
+// 2. 创建聊天模型
+ChatLanguageModel model = OpenAiChatModel.builder()
+    .apiKey("your-api-key")
+    .modelName("gpt-4")
+    .build();
+
+// 3. 发送消息
+String response = model.generate("Hello, LangChain4j!");
+System.out.println(response);</code></pre>
+
+                <h3>核心功能演示</h3>
+
+                <h4>1) RAG实现</h4>
+                <pre><code>// 创建向量存储
+EmbeddingModel embeddingModel = OpenAiEmbeddingModel.builder()
+    .apiKey("your-api-key")
+    .build();
+
+VectorStore vectorStore = InMemoryVectorStore.builder()
+    .embeddingModel(embeddingModel)
+    .build();
+
+// 添加文档
+Document document = Document.from("AI is transforming software development...");
+vectorStore.add(document);
+
+// 检索相关内容
+List&lt;EmbeddingMatch&gt; relevant = vectorStore.findRelevant(
+    "How is AI changing development?",
+    5
+);</code></pre>
+
+                <h4>2) Agent创建</h4>
+                <pre><code>// 定义工具
+class CalculatorTool {
+    @Tool("计算两个数的和")
+    double add(double a, double b) {
+        return a + b;
+    }
+}
+
+// 创建Agent
+Agent agent = Agent.builder()
+    .chatLanguageModel(model)
+    .tools(new CalculatorTool())
+    .build();
+
+// 执行任务
+String answer = agent.execute("计算 123 + 456");</code></pre>
+
+                <h4>3) Prompt管理</h4>
+                <pre><code>// 使用Prompt模板
+PromptTemplate promptTemplate = PromptTemplate.from("""
+    你是一个专业的{{role}}。
+    请用{{tone}}的语气回答用户问题。
+
+    问题：{{question}}
+    """);
+
+String prompt = promptTemplate.apply(
+    Map.of(
+        "role", "Java技术专家",
+        "tone", "友好专业",
+        "question", "什么是LangChain4j？"
+    )
+);
+
+String response = model.generate(prompt);</code></pre>
+
+                <div class="highlight-box">
+                    <h4>💡 实践建议</h4>
+                    <p><strong>学习路径：</strong></p>
+                    <ol>
+                        <li>从简单的LLM调用开始</li>
+                        <li>逐步加入RAG功能</li>
+                        <li>实践Agent和Tool使用</li>
+                        <li>掌握Memory和Prompt管理</li>
+                        <li>学习性能优化技巧</li>
+                    </ol>
+                    <p><strong>最佳实践：</strong></p>
+                    <ul>
+                        <li>合理使用连接池和并发控制</li>
+                        <li>实施请求缓存策略</li>
+                        <li>做好错误处理和重试机制</li>
+                        <li>监控Token使用和成本</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="2-spring-ai" class="content-card">
+                <h2>2. Spring AI</h2>
+
+                <h3>🎯 掌握程度：必须掌握</h3>
+
+                <h3>什么是Spring AI？</h3>
+
+                <p><strong>通俗解释：</strong><br>
+                Spring AI是"AI应用的Spring官方解决方案"。就像Spring Boot之于Web开发，Spring AI让AI开发更符合Spring生态。</p>
+
+                <p><strong>技术定义：</strong><br>
+                Spring官方AI应用框架，提供与Spring生态系统无缝集成的AI开发能力。</p>
+
+                <h3>为什么选择Spring AI？</h3>
+
+                <pre><code>Spring AI的优势：
+✅ 官方支持：Spring团队维护
+✅ 生态集成：与Spring Boot完美结合
+✅ 配置简单：熟悉Spring自动配置
+✅ 企业级：适合大规模生产环境
+✅ 社区强大：Spring生态支持</code></pre>
+
+                <h3>Spring AI核心概念</h3>
+
+                <pre><code>Spring AI架构：
+┌─────────────────────────────────────┐
+│       Spring AI                     │
+├─────────────────────────────────────┤
+│ Model Abstraction（模型抽象）        │
+│  ├── ChatModel                      │
+│  ├── EmbeddingModel                 │
+│  ├── ImageModel                     │
+│  └── StreamingModel                 │
+├─────────────────────────────────────┤
+│ Prompt Management（Prompt管理）      │
+│  ├── PromptTemplate                 │
+│  └── PromptManager                  │
+├─────────────────────────────────────┤
+│ Data Integration（数据集成）          │
+│  ├── VectorStore                    │
+│  ├── DocumentReader                 │
+│  └── Transformer                    │
+└─────────────────────────────────────┘</code></pre>
+
+                <h3>快速开始</h3>
+
+                <pre><code>// 1. 添加依赖
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.ai&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-ai-openai-spring-boot-starter&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0-M4&lt;/version&gt;
+&lt;/dependency&gt;
+
+// 2. 配置application.yml
+spring:
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4
+          temperature: 0.7
+
+// 3. 注入使用
+@Service
+public class ChatService {
+
+    @Autowired
+    private ChatModel chatModel;
+
+    public String chat(String message) {
+        return chatModel.call(message);
+    }
+}</code></pre>
+
+                <h3>核心功能</h3>
+
+                <h4>1) Prompt管理</h4>
+                <pre><code>@Service
+public class PromptService {
+
+    @Autowired
+    private ChatModel chatModel;
+
+    // 使用Prompt模板
+    public String askQuestion(String question) {
+        Prompt prompt = new Prompt(
+            "你是一个Java技术专家。请回答：" + question
+        );
+        return chatModel.call(prompt).getResult().getOutput().getContent();
+    }
+
+    // 结构化Prompt
+    public String structuredPrompt(String role, String question) {
+        Prompt prompt = new Prompt(
+            List.of(
+                new SystemMessage("你是" + role),
+                new UserMessage(question)
+            )
+        );
+        return chatModel.call(prompt).getResult().getOutput().getContent();
+    }
+}</code></pre>
+
+                <h4>2) RAG实现</h4>
+                <pre><code>@Service
+public class RagService {
+
+    @Autowired
+    private VectorStore vectorStore;
+
+    @Autowired
+    private ChatModel chatModel;
+
+    public String askWithRag(String question) {
+        // 1. 检索相关文档
+        List&lt;Document&gt; documents = vectorStore.similaritySearch(
+            SearchRequest.query(question).withTopK(5)
+        );
+
+        // 2. 构建上下文
+        String context = documents.stream()
+            .map(Document::getContent)
+            .collect(Collectors.joining("\n\n"));
+
+        // 3. 生成回答
+        String prompt = String.format("""
+            基于以下上下文回答问题：
+
+            上下文：
+            %s
+
+            问题：%s
+            """, context, question);
+
+        return chatModel.call(prompt);
+    }
+}</code></pre>
+
+                <h4>3) 流式响应</h4>
+                <pre><code>@Service
+public class StreamService {
+
+    @Autowired
+    private StreamingChatModel chatModel;
+
+    public Flux&lt;String&gt; streamChat(String message) {
+        return chatModel.stream(message)
+            .map(response -> response.getResult().getOutput().getContent());
+    }
+}
+
+// Controller中使用
+@GetMapping("/stream")
+public Flux&lt;String&gt; streamChat(@RequestParam String message) {
+    return streamService.streamChat(message);
+}</code></pre>
+
+                <div class="info-box">
+                    <h4>💡 Spring AI vs LangChain4j</h4>
+                    <p><strong>选择Spring AI：</strong></p>
+                    <ul>
+                        <li>项目已使用Spring Boot</li>
+                        <li>需要与企业级Spring集成</li>
+                        <li>团队熟悉Spring生态</li>
+                        <li>需要Spring自动配置优势</li>
+                    </ul>
+                    <p><strong>选择LangChain4j：</strong></p>
+                    <ul>
+                        <li>需要更灵活的AI功能</li>
+                        <li>想要更轻量的解决方案</li>
+                        <li>项目不使用Spring</li>
+                        <li>需要更快的特性更新</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ 实战建议</h4>
+                    <ol>
+                        <li><strong>从官方示例开始：</strong>Spring AI提供丰富的示例代码</li>
+                        <li><strong>利用自动配置：</strong>充分发挥Spring Boot的优势</li>
+                        <li><strong>关注版本更新：</strong>项目迭代快速，注意版本兼容</li>
+                        <li><strong>做好成本管理：</strong>配置合理的限流和缓存</li>
+                        <li><strong>测试驱动开发：</strong>AI功能需要充分测试</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section id="3-api-rate-limiting速率限制" class="content-card">
+                <h2>3. API Rate Limiting（速率限制）</h2>
+
+                <h3>🎯 掌握程度：必须掌握</h3>
+
+                <h3>什么是速率限制？</h3>
+
+                <p><strong>通俗解释：</strong><br>
+                就像高速公路收费站限制车辆通行速度，API速率限制保护服务不被过度调用。</p>
+
+                <p><strong>技术定义：</strong><br>
+                控制API请求频率的机制，防止服务过载和控制成本。</p>
+
+                <h3>为什么需要速率限制？</h3>
+
+                <pre><code>速率限制的作用：
+✅ 成本控制：防止API调用费用失控
+✅ 服务保护：避免超过提供商限制
+✅ 性能优化：合理分配系统资源
+✅ 用户体验：确保响应时间稳定
+✅ 合规要求：遵守API使用条款</code></pre>
+
+                <h3>常见限制类型</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>限制类型</th>
+                            <th>说明</th>
+                            <th>常见值</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>TPM (Tokens Per Minute)</td>
+                            <td>每分钟Token数</td>
+                            <td>90,000 (GPT-3.5)</td>
+                        </tr>
+                        <tr>
+                            <td>RPM (Requests Per Minute)</td>
+                            <td>每分钟请求数</td>
+                            <td>3,000 (GPT-3.5)</td>
+                        </tr>
+                        <tr>
+                            <td>TPD (Tokens Per Day)</td>
+                            <td>每天Token数</td>
+                            <td>150,000 (免费版)</td>
+                        </tr>
+                        <tr>
+                            <td>Concurrent</td>
+                            <td>并发请求数</td>
+                            <td>50-100</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>实现策略</h3>
+
+                <h4>1) 令牌桶算法</h4>
+                <pre><code>@Component
+public class RateLimiter {
+
+    private final Semaphore semaphore;
+    private final ScheduledExecutorService scheduler;
+
+    public RateLimiter(int maxRequests, int periodSeconds) {
+        this.semaphore = new Semaphore(maxRequests);
+        this.scheduler = Executors.newScheduledThreadPool(1);
+
+        // 定期补充令牌
+        scheduler.scheduleAtFixedRate(() -> {
+            semaphore.release(maxRequests - semaphore.availablePermits());
+        }, 0, periodSeconds, TimeUnit.SECONDS);
+    }
+
+    public boolean tryAcquire() {
+        return semaphore.tryAcquire();
+    }
+
+    public void acquire() throws InterruptedException {
+        semaphore.acquire();
+    }
+}</code></pre>
+
+                <h4>2) 滑动窗口算法</h4>
+                <pre><code>@Component
+public class SlidingWindowRateLimiter {
+
+    private final ConcurrentLinkedDeque&lt;Long&gt; timestamps;
+    private final int maxRequests;
+    private final long windowSizeMillis;
+
+    public SlidingWindowRateLimiter(int maxRequests, int windowSizeSeconds) {
+        this.maxRequests = maxRequests;
+        this.windowSizeMillis = windowSizeSeconds * 1000L;
+        this.timestamps = new ConcurrentLinkedDeque&lt;&gt;();
+    }
+
+    public synchronized boolean allowRequest() {
+        long now = System.currentTimeMillis();
+
+        // 移除窗口外的时间戳
+        while (!timestamps.isEmpty() &&
+               now - timestamps.peekFirst() > windowSizeMillis) {
+            timestamps.removeFirst();
+        }
+
+        // 检查是否允许请求
+        if (timestamps.size() < maxRequests) {
+            timestamps.addLast(now);
+            return true;
+        }
+
+        return false;
+    }
+}</code></pre>
+
+                <h4>3) Redis分布式限流</h4>
+                <pre><code>@Service
+public class RedisRateLimiter {
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    public boolean allowRequest(String key, int limit, int windowSeconds) {
+        long now = System.currentTimeMillis();
+        long windowStart = now - (windowSeconds * 1000);
+
+        String keyWithTime = "rate_limit:" + key;
+
+        // 使用Lua脚本保证原子性
+        String luaScript = """
+            local key = KEYS[1]
+            local now = tonumber(ARGV[1])
+            local window = tonumber(ARGV[2])
+            local limit = tonumber(ARGV[3])
+
+            -- 清理过期记录
+            redis.call('ZREMRANGEBYSCORE', key, 0, now - window)
+
+            -- 计数
+            local count = redis.call('ZCARD', key)
+
+            if count < limit then
+                redis.call('ZADD', key, now, now)
+                redis.call('EXPIRE', key, window / 1000)
+                return 1
+            else
+                return 0
+            end
+            """;
+
+        DefaultRedisScript&lt;Long&gt; script = new DefaultRedisScript&lt;&gt;(luaScript, Long.class);
+        Long result = redisTemplate.execute(
+            script,
+            Collections.singletonList(keyWithTime),
+            String.valueOf(now),
+            String.valueOf(windowSeconds * 1000),
+            String.valueOf(limit)
+        );
+
+        return result == 1;
+    }
+}</code></pre>
+
+                <h4>4) Spring Boot集成</h4>
+                <pre><code>@Configuration
+public class RateLimitConfig {
+
+    @Bean
+    public FilterRegistrationBean&lt;RateLimitFilter&gt; rateLimitFilter() {
+        FilterRegistrationBean&lt;RateLimitFilter&gt; registration = new FilterRegistrationBean&lt;&gt;();
+        registration.setFilter(new RateLimitFilter());
+        registration.addUrlPatterns("/api/*");
+        registration.setOrder(1);
+        return registration;
+    }
+}
+
+@Component
+public class RateLimitFilter implements Filter {
+
+    @Autowired
+    private RateLimiter rateLimiter;
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response,
+                        FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
+
+        String key = getClientIdentifier(req);
+
+        if (!rateLimiter.allowRequest(key)) {
+            res.setStatus(429); // Too Many Requests
+            res.getWriter().write("{\"error\":\"Rate limit exceeded\"}");
+            return;
+        }
+
+        chain.doFilter(request, response);
+    }
+
+    private String getClientIdentifier(HttpServletRequest request) {
+        // 使用IP或用户ID作为标识
+        return request.getRemoteAddr();
+    }
+}</code></pre>
+
+                <div class="warning-box">
+                    <h4>⚠️ 注意事项</h4>
+                    <ul>
+                        <li><strong>处理限制：</strong>捕获429错误并实现指数退避</li>
+                        <li><strong>并发控制：</strong>考虑多线程环境下的安全性</li>
+                        <li><strong>监控告警：</strong>实时监控限流情况</li>
+                        <li><strong>用户体验：</strong>提供友好的限流提示</li>
+                        <li><strong>动态调整：</strong>根据业务情况调整限制参数</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>💡 最佳实践</h4>
+                    <ol>
+                        <li><strong>分层限流：</strong>用户级 + API级 + 全局限流</li>
+                        <li><strong>优雅降级：</strong>达到限制时返回缓存结果</li>
+                        <li><strong>预热机制：</strong>系统启动时逐步增加流量</li>
+                        <li><strong>熔断保护：</strong>结合熔断器模式使用</li>
+                        <li><strong>异步处理：</strong>使用消息队列削峰填谷</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section id="4-caching-strategy缓存策略" class="content-card">
+                <h2>4. Caching Strategy（缓存策略）</h2>
+
+                <h3>🎯 掌握程度：必须掌握</h3>
+
+                <h3>什么是缓存策略？</h3>
+
+                <p><strong>通俗解释：</strong><br>
+                就像记笔记避免重复思考，AI缓存存储常见问题的答案，避免重复调用API。</p>
+
+                <p><strong>技术定义：</strong><br>
+                存储AI响应结果，相同或相似请求直接返回缓存，减少API调用和成本。</p>
+
+                <h3>为什么需要缓存？</h3>
+
+                <pre><code>缓存的好处：
+✅ 降低成本：减少API调用费用
+✅ 提升性能：缓存响应快于API调用
+✅ 减少延迟：避免网络请求时间
+✅ 减轻负载：保护API服务
+✅ 提高可用性：API故障时仍可响应</code></pre>
+
+                <h3>缓存策略类型</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>策略类型</th>
+                            <th>适用场景</th>
+                            <th>实现复杂度</th>
+                            <th>效果</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>精确匹配</td>
+                            <td>FAQ、固定问题</td>
+                            <td>低</td>
+                            <td>高</td>
+                        </tr>
+                        <tr>
+                            <td>语义相似</td>
+                            <td>相似问题重述</td>
+                            <td>高</td>
+                            <td>中高</td>
+                        </tr>
+                        <tr>
+                            <td>局部缓存</td>
+                            <td>会话上下文</td>
+                            <td>中</td>
+                            <td>中</td>
+                        </tr>
+                        <tr>
+                            <td>分层缓存</td>
+                            <td>高并发场景</td>
+                            <td>高</td>
+                            <td>高</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>实现方案</h3>
+
+                <h4>1) 精确匹配缓存</h4>
+                <pre><code>@Service
+public class ExactCacheService {
+
+    private final Cache&lt;String, String&gt; cache;
+
+    public ExactCacheService() {
+        this.cache = Caffeine.newBuilder()
+            .maximumSize(10_000)
+            .expireAfterWrite(1, TimeUnit.HOURS)
+            .build();
+    }
+
+    public String getOrCompute(String question, Function&lt;String, String&gt; compute) {
+        return cache.get(question, compute);
+    }
+
+    // 使用示例
+    public String askAI(String question) {
+        return getOrCompute(question, q -> {
+            // 调用AI API
+            return aiService.chat(q);
+        });
+    }
+}</code></pre>
+
+                <h4>2) 语义相似缓存</h4>
+                <pre><code>@Service
+public class SemanticCacheService {
+
+    @Autowired
+    private EmbeddingModel embeddingModel;
+
+    @Autowired
+    private VectorStore vectorStore;
+
+    private static final double SIMILARITY_THRESHOLD = 0.95;
+
+    public String getCachedAnswer(String question) {
+        // 1. 生成问题向量
+        Embedding queryEmbedding = embeddingModel.embed(question).content();
+
+        // 2. 搜索相似缓存
+        List&lt;EmbeddingMatch&gt; matches = vectorStore.findRelevant(
+            queryEmbedding,
+            5
+        );
+
+        // 3. 检查是否足够相似
+        for (EmbeddingMatch match : matches) {
+            if (match.score() >= SIMILARITY_THRESHOLD) {
+                CachedAnswer cached = (CachedAnswer) match.embedded();
+                return cached.getAnswer();
+            }
+        }
+
+        return null; // 未找到合适缓存
+    }
+
+    public void cacheAnswer(String question, String answer) {
+        // 生成向量并存储
+        Embedding embedding = embeddingModel.embed(question).content();
+        CachedAnswer cached = new CachedAnswer(question, answer);
+        vectorStore.add(embedding, cached);
+    }
+}</code></pre>
+
+                <h4>3) 分层缓存</h4>
+                <pre><code>@Service
+public class TieredCacheService {
+
+    private final Cache&lt;String, String&gt; localCache;
+    private final RedisTemplate&lt;String, String&gt; redisCache;
+
+    public TieredCacheService() {
+        this.localCache = Caffeine.newBuilder()
+            .maximumSize(1_000)
+            .expireAfterWrite(10, TimeUnit.MINUTES)
+            .build();
+    }
+
+    public String get(String key) {
+        // L1: 本地缓存
+        String value = localCache.getIfPresent(key);
+        if (value != null) {
+            return value;
+        }
+
+        // L2: Redis缓存
+        value = redisCache.opsForValue().get(key);
+        if (value != null) {
+            localCache.put(key, value);
+            return value;
+        }
+
+        return null;
+    }
+
+    public void put(String key, String value) {
+        // 写入L1和L2
+        localCache.put(key, value);
+        redisCache.opsForValue().set(key, value, 1, TimeUnit.HOURS);
+    }
+}</code></pre>
+
+                <h4>4) Spring Cache集成</h4>
+                <pre><code>@Configuration
+@EnableCaching
+public class CacheConfig {
+
+    @Bean
+    public CacheManager cacheManager() {
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager();
+        cacheManager.setCaffeine(Caffeine.newBuilder()
+            .maximumSize(10_000)
+            .expireAfterWrite(1, TimeUnit.HOURS)
+            .recordStats());
+        return cacheManager;
+    }
+}
+
+@Service
+public class AIService {
+
+    @Cacheable(value = "ai-responses", key = "#question")
+    public String askQuestion(String question) {
+        // 调用AI API
+        return aiChatModel.generate(question);
+    }
+
+    @CacheEvict(value = "ai-responses", key = "#question")
+    public void clearCache(String question) {
+        // 清除特定缓存
+    }
+
+    @CachePut(value = "ai-responses", key = "#question")
+    public String updateCache(String question, String answer) {
+        // 更新缓存
+        return answer;
+    }
+}</code></pre>
+
+                <h4>5) 缓存预热</h4>
+                <pre><code>@Component
+public class CacheWarmer {
+
+    @Autowired
+    private AIService aiService;
+
+    @Autowired
+    private CacheManager cacheManager;
+
+    @PostConstruct
+    public void warmUpCache() {
+        List&lt;String&gt; frequentQuestions = getFrequentQuestions();
+
+        frequentQuestions.parallelStream().forEach(question -> {
+            try {
+                aiService.askQuestion(question);
+            } catch (Exception e) {
+                log.error("Failed to warm cache for: " + question, e);
+            }
+        });
+
+        log.info("Cache warm-up completed");
+    }
+
+    private List&lt;String&gt; getFrequentQuestions() {
+        // 从数据库或日志中获取高频问题
+        return List.of(
+            "什么是AI？",
+            "如何学习Java？",
+            "Spring Boot是什么？"
+        );
+    }
+}</code></pre>
+
+                <div class="info-box">
+                    <h4>💡 缓存失效策略</h4>
+                    <ul>
+                        <li><strong>时间失效：</strong>设置TTL（Time To Live）</li>
+                        <li><strong>LRU：</strong>最少使用项优先淘汰</li>
+                        <li><strong>LFU：</strong>最不常使用项优先淘汰</li>
+                        <li><strong>手动清除：</strong>提供主动清除接口</li>
+                        <li><strong>智能失效：</strong>根据AI模型更新调整</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ 最佳实践</h4>
+                    <ol>
+                        <li><strong>合理设置TTL：</strong>平衡新鲜度和性能</li>
+                        <li><strong>监控缓存命中率：</strong>优化缓存策略</li>
+                        <li><strong>处理缓存穿透：</strong>对空结果也缓存</li>
+                        <li><strong>防止缓存雪崩：</strong>设置随机TTL</li>
+                        <li><strong>注意一致性：</strong>数据更新时清除缓存</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section id="5-streaming-response流式响应" class="content-card">
+                <h2>5. Streaming Response（流式响应）</h2>
+
+                <h3>🎯 掌握程度：必须掌握</h3>
+
+                <h3>什么是流式响应？</h3>
+
+                <p><strong>通俗解释：</strong><br>
+                就像实时字幕逐字显示，流式响应让AI的回答逐步呈现，而不是等待完整答案。</p>
+
+                <p><strong>技术定义：</strong><br>
+                服务器端生成响应后立即发送，客户端逐块接收和显示，实现实时交互体验。</p>
+
+                <h3>为什么使用流式响应？</h3>
+
+                <pre><code>流式响应的优势：
+✅ 用户体验：减少等待时间，即时反馈
+✅ 感知性能：10秒响应比10秒等待感觉更快
+✅ 中断能力：用户可以随时停止生成
+✅ 资源利用：边生成边处理，提高效率
+✅ 成本透明：实时看到Token消耗</code></pre>
+
+                <h3>实现方式</h3>
+
+                <h4>1) Server-Sent Events (SSE)</h4>
+                <pre><code>@RestController
+@RequestMapping("/api/chat")
+public class ChatController {
+
+    @Autowired
+    private ChatService chatService;
+
+    @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux&lt;String&gt; streamChat(@RequestParam String message) {
+        return chatService.streamResponse(message)
+            .map(chunk -> "data: " + chunk + "\n\n")
+            .doOnComplete(() -> log.info("Stream completed"))
+            .doOnError(error -> log.error("Stream error", error));
+    }
+}
+
+@Service
+public class ChatService {
+
+    @Autowired
+    private StreamingChatModel chatModel;
+
+    public Flux&lt;String&gt; streamResponse(String message) {
+        return chatModel.stream(message)
+            .map(response -> response.getResult().getOutput().getContent());
+    }
+}</code></pre>
+
+                <h4>2) WebSocket实现</h4>
+                <pre><code>@Configuration
+@EnableWebSocket
+public class WebSocketConfig implements WebSocketConfigurer {
+
+    @Override
+    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        registry.addHandler(chatWebSocketHandler(), "/ws/chat")
+                .setAllowedOrigins("*");
+    }
+
+    @Bean
+    public WebSocketHandler chatWebSocketHandler() {
+        return new ChatWebSocketHandler();
+    }
+}
+
+@Component
+public class ChatWebSocketHandler extends TextWebSocketHandler {
+
+    @Autowired
+    private StreamingChatModel chatModel;
+
+    @Override
+    protected void handleTextMessage(WebSocketSession session,
+                                   TextMessage message) throws Exception {
+        String userMessage = message.getPayload();
+
+        chatModel.stream(userMessage)
+            .doOnNext(response -> {
+                try {
+                    String chunk = response.getResult().getOutput().getContent();
+                    session.sendMessage(new TextMessage(chunk));
+                } catch (IOException e) {
+                    log.error("Failed to send message", e);
+                }
+            })
+            .doOnComplete(() -> {
+                try {
+                    session.sendMessage(new TextMessage("[DONE]"));
+                } catch (IOException e) {
+                    log.error("Failed to send completion", e);
+                }
+            })
+            .subscribe();
+    }
+}</code></pre>
+
+                <h4>3) 前端实现 (JavaScript)</h4>
+                <pre><code>// SSE方式
+async function streamChat(message) {
+    const response = await fetch(`/api/chat/stream?message=${encodeURIComponent(message)}`);
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+
+    const outputDiv = document.getElementById('output');
+    outputDiv.innerHTML = '';
+
+    while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value);
+        const text = chunk.replace(/^data: /, '').trim();
+        if (text) {
+            outputDiv.innerHTML += text;
+        }
+    }
+}
+
+// WebSocket方式
+const ws = new WebSocket('ws://localhost:8080/ws/chat');
+
+ws.onopen = () => {
+    console.log('WebSocket connected');
+};
+
+ws.onmessage = (event) => {
+    const data = event.data;
+    if (data === '[DONE]') {
+        console.log('Stream completed');
+        return;
+    }
+
+    const outputDiv = document.getElementById('output');
+    outputDiv.innerHTML += data;
+};
+
+function sendMessage(message) {
+    ws.send(message);
+}</code></pre>
+
+                <h4>4) 流式数据处理</h4>
+                <pre><code>@Service
+public class StreamProcessor {
+
+    public Flux&lt;String&gt; processStream(Flux&lt;String&gt; stream) {
+        return stream
+            // 过滤空消息
+            .filter(chunk -> !chunk.isEmpty())
+
+            // 处理特殊标记
+            .map(chunk -> chunk.replace("[DONE]", ""))
+
+            // 限流：控制输出速度
+            .delayElements(Duration.ofMillis(50))
+
+            // 错误处理
+            .onErrorResume(error -> {
+                log.error("Stream error", error);
+                return Flux.just("Error: " + error.getMessage());
+            })
+
+            // 超时处理
+            .timeout(Duration.ofSeconds(30), Flux.just("Timeout"))
+
+            // 完成通知
+            .doOnComplete(() -> log.info("Stream processing completed"))
+
+            // 错误日志
+            .doOnError(error -> log.error("Stream processing failed", error));
+    }
+}</code></pre>
+
+                <h4>5) Token计数</h4>
+                <pre><code>@Service
+public class TokenCounter {
+
+    private static final Pattern TOKEN_PATTERN =
+        Pattern.compile("\\S+"); // 简单Token估算
+
+    public int countTokens(String text) {
+        if (text == null || text.isEmpty()) {
+            return 0;
+        }
+
+        Matcher matcher = TOKEN_PATTERN.matcher(text);
+        int count = 0;
+        while (matcher.find()) {
+            count++;
+        }
+        return count;
+    }
+
+    public Flux&lt;TokenStats&gt; countStreaming(Flux&lt;String&gt; stream) {
+        AtomicInteger totalTokens = new AtomicInteger(0);
+        AtomicReference&lt;String&gt; fullText = new AtomicReference&lt;&gt;("");
+
+        return stream
+            .doOnNext(chunk -> {
+                fullText.set(fullText.get() + chunk);
+                int tokens = countTokens(chunk);
+                totalTokens.addAndGet(tokens);
+            })
+            .map(chunk -> new TokenStats(
+                chunk,
+                countTokens(chunk),
+                totalTokens.get()
+            ));
+    }
+}
+
+@Data
+@AllArgsConstructor
+class TokenStats {
+    private String chunk;
+    private int chunkTokens;
+    private int totalTokens;
+}</code></pre>
+
+                <div class="highlight-box">
+                    <h4>💡 用户体验优化</h4>
+                    <ul>
+                        <li><strong>打字机效果：</strong>逐步显示文本</li>
+                        <li><strong>进度指示：</strong>显示生成进度</li>
+                        <li><strong>停止按钮：</strong>允许中断生成</li>
+                        <li><strong>Token计数：</strong>实时显示消耗</li>
+                        <li><strong>错误处理：</strong>友好的错误提示</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h4>⚠️ 注意事项</h4>
+                    <ul>
+                        <li><strong>资源管理：</strong>及时关闭流，防止泄露</li>
+                        <li><strong>超时处理：</strong>设置合理的超时时间</li>
+                        <li><strong>并发控制：</strong>限制同时连接数</li>
+                        <li><strong>错误恢复：</strong>实现重连机制</li>
+                        <li><strong>监控指标：</strong>跟踪流式请求的成败率</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="6-orchestration编排" class="content-card">
+                <h2>6. Orchestration（编排）</h2>
+
+                <h3>🎯 掌握程度：必须掌握</h3>
+
+                <h3>什么是编排？</h3>
+
+                <p><strong>通俗解释：</strong><br>
+                就像指挥家协调乐队演奏，AI编排协调多个AI组件协同工作，完成复杂任务。</p>
+
+                <p><strong>技术定义：</strong><br>
+                协调和控制多个AI服务、工具和流程的组合，实现复杂的AI应用逻辑。</p>
+
+                <h3>编排模式</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>模式类型</th>
+                            <th>描述</th>
+                            <th>适用场景</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>顺序编排</td>
+                            <td>按顺序执行步骤</td>
+                            <td>多阶段处理流程</td>
+                        </tr>
+                        <tr>
+                            <td>并行编排</td>
+                            <td>同时执行多个任务</td>
+                            <td>独立任务处理</td>
+                        </tr>
+                        <tr>
+                            <td>条件编排</td>
+                            <td>根据条件选择路径</td>
+                            <td>动态决策流程</td>
+                        </tr>
+                        <tr>
+                            <td>循环编排</td>
+                            <td>重复执行直到满足条件</td>
+                            <td>迭代优化</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>实现方式</h3>
+
+                <h4>1) 顺序编排</h4>
+                <pre><code>@Service
+public class SequentialOrchestrator {
+
+    @Autowired
+    private EmbeddingModel embeddingModel;
+
+    @Autowired
+    private VectorStore vectorStore;
+
+    @Autowired
+    private ChatModel chatModel;
+
+    public String processQuery(String query) {
+        // 步骤1: 向量化查询
+        Embedding queryEmbedding = embeddingModel.embed(query).content();
+
+        // 步骤2: 检索相关文档
+        List&lt;Document&gt; docs = vectorStore.findRelevant(queryEmbedding, 5);
+
+        // 步骤3: 构建上下文
+        String context = docs.stream()
+            .map(Document::getContent)
+            .collect(Collectors.joining("\n\n"));
+
+        // 步骤4: 生成回答
+        String prompt = String.format("""
+            基于以下上下文回答问题：
+
+            上下文：
+            %s
+
+            问题：%s
+            """, context, query);
+
+        return chatModel.generate(prompt);
+    }
+}</code></pre>
+
+                <h4>2) 并行编排</h4>
+                <pre><code>@Service
+public class ParallelOrchestrator {
+
+    @Autowired
+    private ChatModel chatModel;
+
+    @Autowired
+    private EmbeddingModel embeddingModel;
+
+    @Autowired
+    private SentimentAnalyzer sentimentAnalyzer;
+
+    public Map&lt;String, Object&gt; analyzeContent(String content) {
+        // 并行执行多个分析任务
+        CompletableFuture&lt;String&gt; summaryTask = CompletableFuture.supplyAsync(
+            () -> summarize(content)
+        );
+
+        CompletableFuture&lt;String&gt; sentimentTask = CompletableFuture.supplyAsync(
+            () -> analyzeSentiment(content)
+        );
+
+        CompletableFuture&lt;List&lt;String&gt;&gt; keywordsTask = CompletableFuture.supplyAsync(
+            () -> extractKeywords(content)
+        );
+
+        // 等待所有任务完成
+        CompletableFuture.allOf(summaryTask, sentimentTask, keywordsTask).join();
+
+        // 组合结果
+        Map&lt;String, Object&gt; result = new HashMap&lt;&gt;();
+        try {
+            result.put("summary", summaryTask.get());
+            result.put("sentiment", sentimentTask.get());
+            result.put("keywords", keywordsTask.get());
+        } catch (Exception e) {
+            throw new RuntimeException("Analysis failed", e);
+        }
+
+        return result;
+    }
+}</code></pre>
+
+                <h4>3) 条件编排</h4>
+                <pre><code>@Service
+public class ConditionalOrchestrator {
+
+    @Autowired
+    private IntentClassifier intentClassifier;
+
+    @Autowired
+    private ChatService chatService;
+
+    @Autowired
+    private SearchService searchService;
+
+    @Autowired
+    private TransactionService transactionService;
+
+    public String handleRequest(String request) {
+        // 步骤1: 分类意图
+        Intent intent = intentClassifier.classify(request);
+
+        // 步骤2: 根据意图路由
+        return switch (intent.getType()) {
+            case "CHAT" -&gt; handleChat(request);
+            case "SEARCH" -&gt; handleSearch(request);
+            case "TRANSACTION" -&gt; handleTransaction(request);
+            default -&gt; handleUnknown(request);
+        };
+    }
+
+    private String handleChat(String request) {
+        return chatService.chat(request);
+    }
+
+    private String handleSearch(String request) {
+        return searchService.search(request);
+    }
+
+    private String handleTransaction(String request) {
+        return transactionService.execute(request);
+    }
+
+    private String handleUnknown(String request) {
+        return "抱歉，我不理解您的请求。";
+    }
+}</code></pre>
+
+                <h4>4) 循环编排</h4>
+                <pre><code>@Service
+public class LoopOrchestrator {
+
+    @Autowired
+    private ChatModel chatModel;
+
+    @Autowired
+    private QualityEvaluator qualityEvaluator;
+
+    public String generateWithQualityCheck(String prompt) {
+        String answer = chatModel.generate(prompt);
+        int maxIterations = 3;
+        int iteration = 0;
+
+        while (iteration < maxIterations) {
+            // 评估质量
+            QualityScore score = qualityEvaluator.evaluate(prompt, answer);
+
+            if (score.isAcceptable()) {
+                return answer;
+            }
+
+            // 改进
+            String improvedPrompt = String.format("""
+                原始问题：%s
+
+                之前的回答：%s
+
+                评分：%d/100
+
+                请改进回答，特别是：%s
+                """, prompt, answer, score.getScore(), score.getFeedback());
+
+            answer = chatModel.generate(improvedPrompt);
+            iteration++;
+        }
+
+        return answer; // 返回最后一次结果
+    }
+}</code></pre>
+
+                <h4>5) 工作流编排</h4>
+                <pre><code>@Service
+public class WorkflowOrchestrator {
+
+    public String executeWorkflow(String input) {
+        Workflow workflow = Workflow.builder()
+            .step("validate", this::validate)
+            .step("enrich", this::enrich)
+            .step("process", this::process)
+            .step("format", this::format)
+            .build();
+
+        return workflow.execute(input);
+    }
+
+    private String validate(String input) {
+        if (input == null || input.trim().isEmpty()) {
+            throw new IllegalArgumentException("Input cannot be empty");
+        }
+        return input;
+    }
+
+    private String enrich(String input) {
+        // 添加上下文信息
+        return "Context: " + getSystemContext() + "\n" + input;
+    }
+
+    private String process(String input) {
+        // AI处理
+        return chatModel.generate(input);
+    }
+
+    private String format(String input) {
+        // 格式化输出
+        return formatOutput(input);
+    }
+}
+
+class Workflow {
+    private final List&lt;Step&gt; steps;
+
+    public String execute(String input) {
+        String current = input;
+        for (Step step : steps) {
+            current = step.execute(current);
+        }
+        return current;
+    }
+}</code></pre>
+
+                <h4>6) Agent编排</h4>
+                <pre><code>@Service
+public class AgentOrchestrator {
+
+    private final Map&lt;String, Agent&gt; agents;
+
+    public AgentOrchestrator() {
+        this.agents = Map.of(
+            "RESEARCHER", new ResearchAgent(),
+            "WRITER", new WriterAgent(),
+            "REVIEWER", new ReviewerAgent()
+        );
+    }
+
+    public String executeWithAgents(String task) {
+        // 步骤1: 研究Agent收集信息
+        Agent researcher = agents.get("RESEARCHER");
+        String researchResult = researcher.execute(task);
+
+        // 步骤2: 写作Agent创建内容
+        Agent writer = agents.get("WRITER");
+        String draft = writer.execute(
+            "基于以下研究撰写文章：\n" + researchResult
+        );
+
+        // 步骤3: 审核Agent评审
+        Agent reviewer = agents.get("REVIEWER");
+        String review = reviewer.execute(
+            "评审以下文章：\n" + draft
+        );
+
+        // 步骤4: 根据评审修改
+        if (review.contains("需要修改")) {
+            draft = writer.execute(
+                "根据评审修改文章：\n" + draft + "\n\n评审：" + review
+            );
+        }
+
+        return draft;
+    }
+}</code></pre>
+
+                <div class="info-box">
+                    <h4>💡 编排最佳实践</h4>
+                    <ul>
+                        <li><strong>模块化设计：</strong>每个步骤独立可测试</li>
+                        <li><strong>错误处理：</strong>每个步骤有重试机制</li>
+                        <li><strong>状态管理：</strong>跟踪执行状态和中间结果</li>
+                        <li><strong>日志记录：</strong>详细记录每个步骤的执行</li>
+                        <li><strong>性能优化：</strong>合理使用并行和缓存</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ 设计模式</h4>
+                    <ol>
+                        <li><strong>责任链模式：</strong>请求经过多个处理器</li>
+                        <li><strong>策略模式：</strong>根据条件选择算法</li>
+                        <li><strong>观察者模式：</strong>事件驱动的流程</li>
+                        <li><strong>模板方法：</strong>定义流程骨架</li>
+                        <li><strong>状态模式：</strong>根据状态改变行为</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section id="7-observability可观测性" class="content-card">
+                <h2>7. Observability（可观测性）</h2>
+
+                <h3>🎯 掌握程度：必须掌握</h3>
+
+                <h3>什么是可观测性？</h3>
+
+                <p><strong>通俗解释：</strong><br>
+                就像汽车仪表盘显示速度、油量、温度，AI可观测性让你看到系统运行的所有关键指标。</p>
+
+                <p><strong>技术定义：</strong><br>
+                通过日志、指标和追踪数据，了解系统内部状态和性能的能力。</p>
+
+                <h3>三大支柱</h3>
+
+                <pre><code>可观测性三大支柱：
+📊 Metrics（指标）
+   - 计数器：请求数、Token数
+   - 仪表盘：响应时间、队列长度
+   - 直方图：延迟分布
+
+📝 Logs（日志）
+   - 结构化日志：JSON格式
+   - 日志级别：ERROR、WARN、INFO、DEBUG
+   - 上下文信息：请求ID、用户ID
+
+🔍 Traces（追踪）
+   - 请求链路：端到端追踪
+   - Span：单个操作的时间
+   - 跨服务调用：分布式追踪</code></pre>
+
+                <h3>Metrics实现</h3>
+
+                <h4>1) Micrometer集成</h4>
+                <pre><code>@Configuration
+public class MetricsConfig {
+
+    @Bean
+    public MeterRegistryCustomizer&lt;MeterRegistry&gt; metricsCommonTags() {
+        return registry -&gt; registry.config()
+            .commonTags("application", "ai-service");
+    }
+}
+
+@Service
+public class AIMetricsService {
+
+    private final Counter requestCounter;
+    private final Counter tokenCounter;
+    private final Timer responseTimer;
+
+    public AIMetricsService(MeterRegistry registry) {
+        this.requestCounter = Counter.builder("ai.requests")
+            .description("Total AI requests")
+            .tag("model", "gpt-4")
+            .register(registry);
+
+        this.tokenCounter = Counter.builder("ai.tokens")
+            .description("Total tokens consumed")
+            .register(registry);
+
+        this.responseTimer = Timer.builder("ai.response.time")
+            .description("AI response time")
+            .register(registry);
+    }
+
+    public String chat(String message) {
+        requestCounter.increment();
+
+        Timer.Sample sample = Timer.start();
+        try {
+            String response = aiModel.generate(message);
+
+            // 统计Token
+            int tokens = estimateTokens(response);
+            tokenCounter.increment(tokens);
+
+            return response;
+        } finally {
+            sample.stop(responseTimer);
+        }
+    }
+}</code></pre>
+
+                <h4>2) 自定义指标</h4>
+                <pre><code>@Service
+public class CustomMetrics {
+
+    @Autowired
+    private MeterRegistry registry;
+
+    // 成功率指标
+    public void recordSuccess(String operation) {
+        registry.counter("ai.operations",
+            "operation", operation,
+            "status", "success"
+        ).increment();
+    }
+
+    public void recordFailure(String operation, String error) {
+        registry.counter("ai.operations",
+            "operation", operation,
+            "status", "failure",
+            "error", error
+        ).increment();
+    }
+
+    // 成本指标
+    public void recordCost(double cost, String model) {
+        registry.gauge("ai.cost", cost,
+            Tags.of("model", model));
+    }
+
+    // 缓存命中率
+    public void recordCacheHit(String cacheType) {
+        registry.counter("ai.cache",
+            "type", cacheType,
+            "result", "hit"
+        ).increment();
+    }
+
+    public void recordCacheMiss(String cacheType) {
+        registry.counter("ai.cache",
+            "type", cacheType,
+            "result", "miss"
+        ).increment();
+    }
+}</code></pre>
+
+                <h3>Logging实现</h3>
+
+                <h4>1) 结构化日志</h4>
+                <pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;net.logstash.logback&lt;/groupId&gt;
+    &lt;artifactId&gt;logstash-logback-encoder&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+
+                <pre><code>@Service
+@Slf4j
+public class AIService {
+
+    public String processRequest(String requestId, String message) {
+        // 使用MDC添加上下文
+        MDC.put("requestId", requestId);
+        MDC.put("userId", getCurrentUserId());
+
+        try {
+            log.info("Processing AI request: message={}", message);
+
+            String response = aiModel.generate(message);
+
+            log.info("AI response generated: tokens={}, length={}",
+                estimateTokens(response),
+                response.length()
+            );
+
+            return response;
+        } catch (Exception e) {
+            log.error("AI request failed: error={}", e.getMessage(), e);
+            throw e;
+        } finally {
+            MDC.clear();
+        }
+    }
+}</code></pre>
+
+                <h4>2) AI特定日志</h4>
+                <pre><code>@Aspect
+@Component
+public class AIMetricsAspect {
+
+    @Around("@annotation(MonitoredAI)")
+    public Object monitorAI(ProceedingJoinPoint joinPoint) throws Throwable {
+        String method = joinPoint.getSignature().getName();
+        long startTime = System.currentTimeMillis();
+
+        log.info("AI operation started: method={}", method);
+
+        try {
+            Object result = joinPoint.proceed();
+
+            long duration = System.currentTimeMillis() - startTime;
+            log.info("AI operation completed: method={}, duration={}ms",
+                method, duration);
+
+            return result;
+        } catch (Exception e) {
+            long duration = System.currentTimeMillis() - startTime;
+            log.error("AI operation failed: method={}, duration={}ms, error={}",
+                method, duration, e.getMessage());
+            throw e;
+        }
+    }
+}</code></pre>
+
+                <h3>Tracing实现</h3>
+
+                <h4>1) OpenTelemetry集成</h4>
+                <pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;io.opentelemetry&lt;/groupId&gt;
+    &lt;artifactId&gt;opentelemetry-api&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+
+                <pre><code>@Service
+public class TracedAIService {
+
+    private final Tracer tracer;
+
+    public TracedAIService(Tracer tracer) {
+        this.tracer = tracer;
+    }
+
+    public String chat(String message) {
+        Span span = tracer.spanBuilder("ai.chat")
+            .setAttribute("message.length", message.length())
+            .startSpan();
+
+        try (Scope scope = span.makeCurrent()) {
+            // 嵌套Span：向量化
+            Span embeddingSpan = tracer.spanBuilder("ai.embedding")
+                .setParent(span)
+                .startSpan();
+            try {
+                // 向量化逻辑
+            } finally {
+                embeddingSpan.end();
+            }
+
+            // 嵌套Span：LLM调用
+            Span llmSpan = tracer.spanBuilder("ai.llm")
+                .setParent(span)
+                .setAttribute("model", "gpt-4")
+                .startSpan();
+            try {
+                String response = aiModel.generate(message);
+                llmSpan.setAttribute("response.length", response.length());
+                return response;
+            } finally {
+                llmSpan.end();
+            }
+        } catch (Exception e) {
+            span.recordException(e);
+            throw e;
+        } finally {
+            span.end();
+        }
+    }
+}</code></pre>
+
+                <h4>2) 分布式追踪</h4>
+                <pre><code>@Configuration
+public class TracingConfig {
+
+    @Bean
+    public OpenTelemetry openTelemetry() {
+        Resource resource = Resource.getDefault()
+            .merge(Resource.create(Attributes.of(
+                ServiceName.KEY, "ai-service"
+            )));
+
+        SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+            .addSpanProcessor(BatchSpanProcessor.builder(
+                OtlpGrpcSpanExporter.builder()
+                    .setEndpoint("http://jaeger:4317")
+                    .build()
+            ).build())
+            .setResource(resource)
+            .build();
+
+        return OpenTelemetrySdk.builder()
+            .setTracerProvider(tracerProvider)
+            .buildAndRegisterGlobal();
+    }
+}</code></pre>
+
+                <h3>监控仪表盘</h3>
+
+                <h4>1) Grafana仪表盘</h4>
+                <pre><code>// 关键指标查询
+// 1. 请求速率
+rate(ai_requests_total[5m])
+
+// 2. 错误率
+rate(ai_requests_total{status="failure"}[5m]) / rate(ai_requests_total[5m])
+
+// 3. 响应时间
+histogram_quantile(0.95, rate(ai_response_time_seconds_bucket[5m]))
+
+// 4. Token消耗
+rate(ai_tokens_total[1h])
+
+// 5. 成本趋势
+increase(ai_cost_total[1d])</code></pre>
+
+                <h4>2) 告警规则</h4>
+                <pre><code>groups:
+  - name: ai_alerts
+    rules:
+      # 高错误率告警
+      - alert: HighErrorRate
+        expr: rate(ai_requests_total{status="failure"}[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "AI服务错误率过高"
+          description: "错误率: {{ $value }}"
+
+      # 响应时间告警
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, rate(ai_response_time_seconds_bucket[5m])) > 10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "AI响应时间过长"
+          description: "P95延迟: {{ $value }}s"
+
+      # 成本告警
+      - alert: HighCost
+        expr: increase(ai_cost_total[1d]) > 100
+        labels:
+          severity: warning
+        annotations:
+          summary: "AI成本过高"
+          description: "日成本: ${{ $value }}"</code></pre>
+
+                <div class="highlight-box">
+                    <h4>💡 最佳实践</h4>
+                    <ul>
+                        <li><strong>采样策略：</strong>高频端点使用采样</li>
+                        <li><strong>关联ID：</strong>贯穿整个请求链路</li>
+                        <li><strong>敏感数据：</strong>日志中避免记录敏感信息</li>
+                        <li><strong>性能影响：</strong>异步写入日志</li>
+                        <li><strong>日志保留：</strong>合理设置保留策略</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ 监控清单</h4>
+                    <ol>
+                        <li><strong>业务指标：</strong>请求量、成功率、响应时间</li>
+                        <li><strong>资源指标：</strong>CPU、内存、网络</li>
+                        <li><strong>成本指标：</strong>Token消耗、API费用</li>
+                        <li><strong>用户体验：</strong>满意度、反馈</li>
+                        <li><strong>系统健康：</strong>可用性、容量</li>
+                    </ol>
+                </div>
+
+                <hr>
+
+                <div class="info-box">
+                    <h4>📚 总结</h4>
+                    <p>工程架构层是AI应用成功的关键：</p>
+                    <ul>
+                        <li><strong>LangChain4j/Spring AI：</strong>选择合适的框架</li>
+                        <li><strong>速率限制：</strong>保护服务，控制成本</li>
+                        <li><strong>缓存策略：</strong>提升性能，降低费用</li>
+                        <li><strong>流式响应：</strong>优化用户体验</li>
+                        <li><strong>编排能力：</strong>实现复杂业务逻辑</li>
+                        <li><strong>可观测性：</strong>确保系统稳定运行</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <button class="back-to-top" id="backToTop">↑</button>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Back to top button
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Active navigation link
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const scrollPosition = window.pageYOffset + 100;
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${sectionId}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

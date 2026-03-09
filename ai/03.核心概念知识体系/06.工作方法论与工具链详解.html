@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工作方法论与工具链详解</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.8;
+            color: #4b5563;
+            background: #f5f7fa;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            height: calc(100vh - 40px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #2563eb;
+            border-radius: 3px;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .nav-link:hover {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .nav-link.active {
+            background: #2563eb;
+            color: white;
+            font-weight: 500;
+        }
+
+        .nav-link.sub-link {
+            padding-left: 30px;
+            font-size: 13px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 25px;
+            font-size: 14px;
+        }
+
+        .hero-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-meta-label {
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        /* Content Card */
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            padding: 35px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        /* Headings */
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 40px 0 25px 0;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2563eb;
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 30px 0 20px 0;
+        }
+
+        h4 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #374151;
+            margin: 25px 0 15px 0;
+        }
+
+        /* Paragraphs */
+        p {
+            margin-bottom: 16px;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        ul li {
+            list-style-type: none;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        ul li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        /* Code Blocks */
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.6;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        code {
+            background: #f3f4f6;
+            color: #dc2626;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        }
+
+        pre code {
+            background: transparent;
+            color: #f3f4f6;
+            padding: 0;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 15px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        /* Content Boxes */
+        .info-box {
+            background: #e0e7ff;
+            border-left: 4px solid #6366f1;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box h4,
+        .warning-box h4,
+        .success-box h4,
+        .highlight-box h4 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        /* Links */
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2563eb;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s;
+            border: none;
+            font-size: 24px;
+            z-index: 1000;
+        }
+
+        .back-to-top:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+                max-height: 400px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            h2 {
+                font-size: 26px;
+            }
+
+            h3 {
+                font-size: 20px;
+            }
+
+            .content-card {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero {
+                padding: 40px 25px;
+            }
+
+            .hero h1 {
+                font-size: 26px;
+            }
+
+            .content-card {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 22px;
+            }
+
+            h3 {
+                font-size: 18px;
+            }
+
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .sidebar {
+                display: none;
+            }
+
+            .back-to-top {
+                display: none;
+            }
+
+            .content-card {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+
+            .hero {
+                page-break-after: avoid;
+            }
+
+            pre {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Section IDs for smooth scrolling */
+        section[id] {
+            scroll-margin-top: 20px;
+        }
+
+        /* Strong text */
+        strong {
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        /* Horizontal rule */
+        hr {
+            border: none;
+            border-top: 2px solid #e5e7eb;
+            margin: 30px 0;
+        }
+
+        /* Badge styles */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .badge-info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-title">目录导航</div>
+            <ul class="nav-links">
+                <li><a href="#section-1" class="nav-link">第一部分：AI编程方法论</a></li>
+                <li><a href="#section-1-1" class="nav-link sub-link">1. VibeCoding（氛围编程）</a></li>
+                <li><a href="#section-1-2" class="nav-link sub-link">2. SpecCoding（规范驱动开发）</a></li>
+                <li><a href="#section-1-3" class="nav-link sub-link">3. Prompt-First Development</a></li>
+                <li><a href="#section-2" class="nav-link">第二部分：AI Agent能力体系</a></li>
+                <li><a href="#section-2-1" class="nav-link sub-link">1. Tool Calling（工具调用）</a></li>
+                <li><a href="#section-2-2" class="nav-link sub-link">2. Planning（任务规划）</a></li>
+                <li><a href="#section-2-3" class="nav-link sub-link">3. Memory Management（记忆管理）</a></li>
+                <li><a href="#section-2-4" class="nav-link sub-link">4. RAG Skills（检索增强技能）</a></li>
+                <li><a href="#section-3" class="nav-link">第三部分：推荐工具与资源</a></li>
+                <li><a href="#section-3-1" class="nav-link sub-link">1. AI代码编辑器</a></li>
+                <li><a href="#section-3-2" class="nav-link sub-link">2. LLM API</a></li>
+                <li><a href="#section-3-3" class="nav-link sub-link">3. AI框架</a></li>
+                <li><a href="#section-3-4" class="nav-link sub-link">4. 向量数据库</a></li>
+                <li><a href="#section-3-5" class="nav-link sub-link">5. 监控工具</a></li>
+                <li><a href="#section-4" class="nav-link">学习路径</a></li>
+                <li><a href="#section-5" class="nav-link">学习检查清单</a></li>
+                <li><a href="#section-6" class="nav-link">常见问题</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Hero Section -->
+            <div class="hero">
+                <h1>工作方法论与工具链详解</h1>
+                <div class="hero-meta">
+                    <div class="hero-meta-item">
+                        <span class="hero-meta-label">文档定位：</span>
+                        <span>AI时代开发者工作方式和工具的升级指南</span>
+                    </div>
+                    <div class="hero-meta-item">
+                        <span class="hero-meta-label">学习目标：</span>
+                        <span>掌握AI协作的工作方法论和工具链</span>
+                    </div>
+                    <div class="hero-meta-item">
+                        <span class="hero-meta-label">适合人群：</span>
+                        <span>所有需要转型AI开发的Java开发者</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- First Part: AI Programming Methodology -->
+            <section id="section-1" class="content-card">
+                <h2>第一部分：AI编程方法论</h2>
+
+                <h3 id="section-1-1">1. VibeCoding（氛围编程）</h3>
+                <div class="highlight-box">
+                    <h4>📖 掌握程度：需要了解</h4>
+                </div>
+
+                <h4>什么是VibeCoding？</h4>
+                <p><strong>通俗解释：</strong><br>VibeCoding是2025年新兴的编程范式。就像"和朋友聊天"一样，你用自然语言描述需求，AI生成代码。你的工作从"写代码"变成了"描述需求"。</p>
+
+                <p><strong>核心理念：</strong></p>
+                <ul>
+                    <li>完全用自然语言描述需求</li>
+                    <li>AI生成所有代码</li>
+                    <li>人类负责审查和决策</li>
+                    <li>代码质量取决于描述质量</li>
+                </ul>
+
+                <h4>VibeCoding示例</h4>
+                <pre><code>传统开发方式：
+1. 需求：用户登录功能
+2. 设计：设计数据库表、API接口
+3. 编码：写Controller、Service、Repository
+4. 测试：写单元测试
+5. 调试：排查bug
+（全部自己动手）
+
+VibeCoding方式：
+1. 需求描述（自然语言）
+   "我要一个用户登录功能：
+   - 邮箱+密码登录
+   - JWT认证
+   - Token有效期7天
+   - Spring Boot实现"
+
+2. AI生成：完整的代码框架
+
+3. 人类审查：检查生成的代码
+
+4. 迭代优化：告诉AI哪里需要改进
+
+5. 测试运行</code></pre>
+
+                <h4>VibeCoding实践</h4>
+                <pre><code>// 不是让你写这个代码：
+
+public class LoginController {
+    // ...
+}
+
+// 而是让你这样描述：
+
+Prompt：
+"""
+我要实现一个用户登录功能，需求如下：
+
+【功能需求】
+1. 用户登录
+   - 邮箱+密码登录
+   - 返回JWT Token
+   - Token有效期7天
+
+【技术栈】
+- Spring Boot 2.7
+- Spring Security
+- MySQL数据库
+- JPA
+
+【接口要求】
+POST /api/auth/login
+Request: {"email": "xxx", "password": "xxx"}
+Response: {"token": "xxx", "expiresIn": 604800}
+
+【安全要求】
+- 密码使用BCrypt加密
+- 登录失败返回友好提示
+- 防止暴力破解（限流）
+
+【数据库设计】
+- 用户表：users (id, email, password, created_at)
+- email唯一索引
+- password非空
+
+请生成完整的代码：
+1. Entity类
+2. Repository接口
+3. Service类
+4. Controller类
+5. Security配置
+6. pom.xml依赖
+
+每个类都要有完整的注释。
+"""</code></pre>
+
+                <h4>VibeCoding的优缺点</h4>
+                <pre><code>优点：
+✅ 开发速度快
+✅ 不需要记住所有语法
+✅ 降低编程门槛
+✅ 专注于业务逻辑
+
+缺点：
+❌ 代码质量取决于AI能力
+❌ 需要良好的描述能力
+❌ 复杂项目可能需要多次迭代
+❌ 调试时需要理解AI生成的代码
+
+适用场景：
+✅ 快速原型开发
+✅ 简单CRUD应用
+✅ 学习新技术
+✅ 重复性任务
+
+不适用场景：
+❌ 高性能要求的系统
+❌ 复杂算法实现
+❌ 需要极致优化的场景</code></pre>
+
+                <h4>VibeCoding最佳实践</h4>
+                <pre><code>// ✅ 好的VibeCoding描述
+
+Prompt：
+"""
+请为我创建一个用户管理功能，具体需求：
+
+【背景】
+这是一个内部管理系统，有500个用户，需要管理用户信息。
+
+【核心功能】
+1. 用户列表（分页、搜索）
+2. 创建用户
+3. 编辑用户
+4. 删除用户（软删除）
+5. 导出用户数据（Excel）
+
+【技术约束】
+- Spring Boot 2.7
+- MySQL数据库
+- 前端：Vue3 + Element Plus
+- 接口RESTful风格
+
+【数据模型】
+User实体：
+- id: Long (主键)
+- username: String (用户名，唯一)
+- email: String (邮箱)
+- department: String (部门)
+- status: Integer (状态：0-禁用，1-启用)
+- createdAt: LocalDateTime
+- updatedAt: LocalDateTime
+- deleted: Boolean (软删除标记)
+
+【API接口】
+GET /api/users - 用户列表（分页、搜索）
+POST /api/users - 创建用户
+PUT /api/users/{id} - 更新用户
+DELETE /api/users/{id} - 删除用户
+GET /api/users/export - 导出Excel
+
+【非功能需求】
+- 响应时间 < 500ms
+- 支持并发100用户
+- 输入验证（邮箱格式、用户名长度）
+- 异常处理友好
+
+【代码规范】
+- 使用Lombok简化代码
+- Service层使用事务
+- Controller返回统一格式
+- 完整的异常处理
+
+请按照这个需求生成完整代码，包括：
+1. Entity类
+2. DTO类（Request/Response）
+3. Repository接口
+4. Service接口和实现
+5. Controller类
+6. 全局异常处理
+7. 统一返回格式
+8. pom.xml依赖
+
+每个类都要有详细的JavaDoc注释。
+"""
+
+// ❌ 差的VibeCoding描述
+
+Prompt：
+"写一个用户管理功能"
+// 太简单，AI生成的代码不符合需求</code></pre>
+
+                <hr>
+
+                <h3 id="section-1-2">2. SpecCoding（规范驱动开发）</h3>
+                <div class="highlight-box">
+                    <h4>📖 掌握程度：需要了解</h4>
+                </div>
+
+                <h4>什么是SpecCoding？</h4>
+                <p><strong>通俗解释：</strong><br>SpecCoding就是"先写详细规格说明书，再让AI按规范生成代码"。就像建筑设计图，先有详细设计，再让AI施工。</p>
+
+                <p><strong>技术定义：</strong><br>一种软件开发方法，先编写详细的技术规格说明（Specification），然后基于规格说明使用AI生成代码。</p>
+
+                <h4>SpecCoding工作流程</h4>
+                <pre><code>1. 需求分析
+   ↓
+2. 编写技术规格（Spec）
+   ├─ 数据模型设计
+   ├─ API接口设计
+   ├─ 业务逻辑设计
+   └─ 非功能需求
+   ↓
+3. AI生成代码
+   ├─ 按照规格生成
+   ├─ 符合设计要求
+   └─ 满足约束条件
+   ↓
+4. 代码审查
+   ├─ 检查符合规格
+   ├─ 验证功能完整性
+   └─ 测试运行
+   ↓
+5. 迭代优化</code></pre>
+
+                <h4>SpecCoding vs VibeCoding</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>维度</th>
+                            <th>VibeCoding</th>
+                            <th>SpecCoding</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>描述详细度</strong></td>
+                            <td>简单描述</td>
+                            <td>详细规格</td>
+                        </tr>
+                        <tr>
+                            <td><strong>前期投入</strong></td>
+                            <td>低</td>
+                            <td>高</td>
+                        </tr>
+                        <tr>
+                            <td><strong>代码质量</strong></td>
+                            <td>取决于AI</td>
+                            <td>高（符合规格）</td>
+                        </tr>
+                        <tr>
+                            <td><strong>可维护性</strong></td>
+                            <td>中等</td>
+                            <td>高</td>
+                        </tr>
+                        <tr>
+                            <td><strong>团队协作</strong></td>
+                            <td>个人工作</td>
+                            <td>团队协作</td>
+                        </tr>
+                        <tr>
+                            <td><strong>适用项目</strong></td>
+                            <td>小项目/原型</td>
+                            <td>中大型项目</td>
+                        </tr>
+                        <tr>
+                            <td><strong>学习曲线</strong></td>
+                            <td>低</td>
+                            <td>高</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <hr>
+
+                <h3 id="section-1-3">3. Prompt-First Development</h3>
+                <div class="highlight-box">
+                    <h4>🎯 掌握程度：必须掌握</h4>
+                </div>
+
+                <h4>什么是Prompt-First Development？</h4>
+                <p><strong>通俗解释：</strong><br>Prompt-First就是把"写好Prompt"作为开发的第一步。就像以前写代码前先设计，现在写Prompt前先思考怎么描述需求。</p>
+
+                <p><strong>核心理念：</strong></p>
+                <ul>
+                    <li>Prompt是AI时代的"代码"</li>
+                    <li>先写Prompt，再让AI生成代码</li>
+                    <li>迭代优化Prompt，而不是直接改代码</li>
+                    <li>Prompt质量决定代码质量</li>
+                </ul>
+
+                <h4>Prompt-First工作流程</h4>
+                <pre><code>1. 理解需求
+   ├─ 业务目标是什么？
+   ├─ 功能需求有哪些？
+   └─ 约束条件是什么？
+
+2. 编写Prompt
+   ├─ 背景说明
+   ├─ 功能描述
+   ├─ 技术约束
+   ├─ 代码规范
+   └─ 输出要求
+
+3. AI生成代码
+   ├─ 基于Prompt生成
+   └─ 返回初步结果
+
+4. 审查代码
+   ├─ 功能完整性
+   ├─ 代码质量
+   └─ 安全性检查
+
+5. 优化Prompt
+   ├─ 发现问题
+   ├─ 修改Prompt
+   └─ 让AI重新生成
+
+6. 迭代优化
+   ├─ 逐步完善
+   └─ 直到满意</code></pre>
+
+                <h4>Prompt优化技巧</h4>
+                <pre><code># 第1版Prompt（太简单）
+"写一个用户登录功能"
+
+# → AI生成的代码不符合需求
+
+# 第2版Prompt（添加技术栈）
+"用Spring Boot写一个用户登录功能，使用JWT"
+
+# → 好一些，但还不够
+
+# 第3版Prompt（结构化描述）
+"""
+我要实现一个用户登录功能：
+
+【功能】
+- 邮箱+密码登录
+- 返回JWT Token
+- Token有效期7天
+
+【技术栈】
+- Spring Boot 2.7
+- Spring Security
+- MySQL
+"""
+
+# → 更接近需求
+
+# 第4版Prompt（完整描述）
+"""
+【项目背景】
+这是一个内部管理系统，需要实现用户认证功能。
+
+【核心功能】
+1. 用户登录
+   - 邮箱+密码登录
+   - JWT认证
+   - Token有效期7天
+
+2. 安全要求
+   - 密码BCrypt加密
+   - 登录失败限流
+   - 防止暴力破解
+
+【技术栈】
+- Spring Boot 2.7
+- Spring Security
+- MySQL数据库
+- JPA
+
+【接口要求】
+POST /api/auth/login
+Request: {email, password}
+Response: {token, expiresIn, user}
+
+【数据库】
+User表：
+- id (BIGINT, PK)
+- email (VARCHAR, UNIQUE)
+- password (VARCHAR)
+- username (VARCHAR)
+- created_at (DATETIME)
+
+【代码规范】
+- 使用Lombok
+- Service层事务
+- 统一异常处理
+- 完整注释
+"""
+
+# → AI生成符合需求的代码 ✅</code></pre>
+            </section>
+
+            <!-- Second Part: AI Agent Capabilities -->
+            <section id="section-2" class="content-card">
+                <h2>第二部分：AI Agent能力体系</h2>
+
+                <h3 id="section-2-1">1. Tool Calling（工具调用）</h3>
+                <div class="highlight-box">
+                    <h4>🎯 掌握程度：必须掌握</h4>
+                </div>
+
+                <h4>什么是Tool Calling？</h4>
+                <p><strong>通俗解释：</strong><br>Tool Calling让AI能够"调用Java方法"。就像你告诉同事"帮我查数据库"，AI可以调用你的Java方法。</p>
+
+                <p><strong>技术定义：</strong><br>LLM理解用户意图后，生成结构化的函数调用请求，由业务代码执行具体函数并返回结果。</p>
+
+                <h4>Tool Calling实现</h4>
+                <pre><code>@Service
+public class ToolCallingAgent {
+
+    @Autowired
+    private ChatLanguageModel model;
+
+    // 定义工具
+    @Tool("查询数据库")
+    public String queryDatabase(@P("SQL查询语句") String sql) {
+
+        // 安全检查
+        if (!isSafeQuery(sql)) {
+            throw new IllegalArgumentException("不安全的SQL");
+        }
+
+        return databaseService.query(sql).toString();
+    }
+
+    @Tool("发送邮件")
+    public String sendEmail(
+        @P("收件人") String to,
+        @P("主题") String subject,
+        @P("内容") String body
+    ) {
+        emailService.send(to, subject, body);
+        return "邮件已发送";
+    }
+
+    @Tool("获取当前时间")
+    public String getCurrentTime() {
+        return LocalDateTime.now().toString();
+    }
+
+    // Agent主流程
+    public String execute(String userRequest) {
+
+        // LangChain4j自动处理Tool Calling
+        Agent agent = Agent.builder()
+            .chatLanguageModel(model)
+            .tools(
+                new QueryDatabaseTool(),
+                new SendEmailTool(),
+                new GetCurrentTimeTool()
+            )
+            .build();
+
+        return agent.execute(userRequest);
+    }
+}</code></pre>
+
+                <hr>
+
+                <h3 id="section-2-2">2. Planning（任务规划）</h3>
+                <div class="highlight-box">
+                    <h4>🎯 掌握程度：必须掌握</h4>
+                </div>
+
+                <h4>什么是Planning？</h4>
+                <p><strong>通俗解释：</strong><br>Planning就是AI能"制定计划"。面对复杂任务，AI能分解成多个步骤，逐步执行。</p>
+
+                <h4>技术实现：</h4>
+                <pre><code>@Service
+public class PlanningAgent {
+
+    public List&lt;Task&gt; plan(String goal) {
+
+        String prompt = String.format("""
+            你是一个任务规划专家。请为以下目标制定详细的执行计划：
+
+            【目标】%s
+
+            请生成执行步骤，每步包括：
+            - 步骤编号
+            - 动作（action）
+            - 所需工具
+            - 预期结果
+
+            请以JSON格式返回：
+            {
+              "steps": [
+                {
+                  "step": 1,
+                  "action": "工具名称",
+                  "description": "步骤描述",
+                  "parameters": {}
+                }
+              ],
+              "reasoning": "规划理由"
+            }
+            """, goal
+        );
+
+        String response = llmService.chat(prompt);
+        return parsePlan(response);
+    }
+
+    // 执行计划
+    public String executePlan(String goal) {
+
+        // 1. 生成计划
+        List&lt;Task&gt; plan = plan(goal);
+
+        // 2. 逐步执行
+        List&lt;String&gt; results = new ArrayList&lt;&gt;();
+
+        for (Task task : plan) {
+
+            log.info("执行步骤{}: {}", task.getStep(), task.getDescription());
+
+            try {
+                // 执行工具
+                String result = executeTool(task.getAction(),
+                                           task.getParameters());
+                results.add(result);
+
+            } catch (Exception e) {
+
+                // 执行失败，可能需要重新规划
+                log.error("步骤{}执行失败: {}", task.getStep(), e.getMessage());
+
+                // 重新规划
+                plan = replan(goal, plan, results);
+                continue;
+            }
+        }
+
+        // 3. 总结结果
+        return summarizeResults(results);
+    }
+}</code></pre>
+
+                <hr>
+
+                <h3 id="section-2-3">3. Memory Management（记忆管理）</h3>
+                <div class="highlight-box">
+                    <h4>🎯 掌握程度：必须掌握</h4>
+                </div>
+
+                <h4>Memory类型</h4>
+                <pre><code>@Service
+public class MemoryAgent {
+
+    // 1. 短期记忆（对话上下文）
+    private ChatMemory shortTermMemory =
+        MessageWindowChatMemory.withMaxMessages(10);
+
+    // 2. 长期记忆（向量数据库）
+    @Autowired
+    private VectorStore longTermMemory;
+
+    // 3. 混合记忆管理
+    public String chat(String sessionId, String message) {
+
+        // 从短期记忆获取上下文
+        List&lt;ChatMessage&gt; context = shortTermMemory.messages(sessionId);
+
+        // 从长期记忆检索相关信息
+        List&lt;Memory&gt; relevantMemories = longTermMemory
+            .search(message, 5);
+
+        // 生成回复
+        String response = llmService.chat(
+            buildPrompt(message, context, relevantMemories)
+        );
+
+        // 保存到短期记忆
+        shortTermMemory.add(sessionId, UserMessage.from(message));
+        shortTermMemory.add(sessionId, AiMessage.from(response));
+
+        // 重要信息保存到长期记忆
+        if (isImportant(message, response)) {
+            saveToLongTermMemory(sessionId, message, response);
+        }
+
+        return response;
+    }
+}</code></pre>
+
+                <hr>
+
+                <h3 id="section-2-4">4. RAG Skills（检索增强技能）</h3>
+                <div class="highlight-box">
+                    <h4>🎯 掌握程度：必须掌握</h4>
+                </div>
+
+                <pre><code>@Service
+public class RAGAgent {
+
+    @Autowired
+    private VectorStore knowledgeBase;
+
+    @Autowired
+    private ChatLanguageModel model;
+
+    public String answer(String question) {
+
+        // 1. 检索相关知识
+        List&lt;Document&gt; relevantDocs = knowledgeBase
+            .search(question, 5);
+
+        // 2. 构建增强Prompt
+        String prompt = buildRAGPrompt(question, relevantDocs);
+
+        // 3. 生成答案
+        return model.generate(prompt);
+    }
+
+    private String buildRAGPrompt(String question,
+                                  List&lt;Document&gt; docs) {
+
+        StringBuilder context = new StringBuilder();
+        context.append("基于以下文档回答问题：\n\n");
+
+        for (int i = 0; i &lt; docs.size(); i++) {
+            context.append(String.format(
+                "[文档%d] %s\n\n",
+                i + 1,
+                docs.get(i).getContent()
+            ));
+        }
+
+        context.append(String.format(
+            "问题：%s\n\n" +
+            "要求：基于文档回答，如果文档中没有答案，请说'文档中没有找到相关信息'",
+            question
+        ));
+
+        return context.toString();
+    }
+}</code></pre>
+            </section>
+
+            <!-- Third Part: Recommended Tools and Resources -->
+            <section id="section-3" class="content-card">
+                <h2>第三部分：推荐工具与资源</h2>
+
+                <h3 id="section-3-1">1. AI代码编辑器</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>工具</th>
+                            <th>推荐度</th>
+                            <th>特点</th>
+                            <th>价格</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Cursor</strong></td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                            <td>AI原生编辑器，AI协作体验最佳</td>
+                            <td>$20/月</td>
+                        </tr>
+                        <tr>
+                            <td><strong>GitHub Copilot</strong></td>
+                            <td>⭐⭐⭐⭐</td>
+                            <td>GitHub出品，VSCode集成</td>
+                            <td>$10/月</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Codeium</strong></td>
+                            <td>⭐⭐⭐⭐</td>
+                            <td>免费且强大</td>
+                            <td>免费</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Continue</strong></td>
+                            <td>⭐⭐⭐⭐</td>
+                            <td>开源，VSCode扩展</td>
+                            <td>免费</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 id="section-3-2">2. LLM API</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>提供商</th>
+                            <th>推荐度</th>
+                            <th>特点</th>
+                            <th>价格</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>OpenAI</strong></td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                            <td>GPT-4最强，生态完善</td>
+                            <td>按Token计费</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Anthropic</strong></td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                            <td>Claude，安全性好</td>
+                            <td>按Token计费</td>
+                        </tr>
+                        <tr>
+                            <td><strong>通义千问</strong></td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                            <td>中文优化，国内访问快</td>
+                            <td>按Token计费</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DeepSeek</strong></td>
+                            <td>⭐⭐⭐⭐</td>
+                            <td>性价比高</td>
+                            <td>按Token计费</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 id="section-3-3">3. AI框架</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>框架</th>
+                            <th>推荐度</th>
+                            <th>特点</th>
+                            <th>Java支持</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>LangChain4j</strong></td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                            <td>Java生态最佳</td>
+                            <td>原生Java</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Spring AI</strong></td>
+                            <td>⭐⭐⭐⭐</td>
+                            <td>Spring官方</td>
+                            <td>原生Spring</td>
+                        </tr>
+                        <tr>
+                            <td><strong>LlamaIndex</strong></td>
+                            <td>⭐⭐⭐⭐</td>
+                            <td>RAG专用</td>
+                            <td>Python为主</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 id="section-3-4">4. 向量数据库</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>数据库</th>
+                            <th>推荐度</th>
+                            <th>特点</th>
+                            <th>成本</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>PgVector</strong></td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                            <td>PostgreSQL插件，零额外成本</td>
+                            <td>免费</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Milvus</strong></td>
+                            <td>⭐⭐⭐⭐</td>
+                            <td>专业向量库，性能好</td>
+                            <td>开源/云服务</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Redis Stack</strong></td>
+                            <td>⭐⭐⭐⭐</td>
+                            <td>兼顾缓存和向量</td>
+                            <td>开源/云服务</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chroma</strong></td>
+                            <td>⭐⭐⭐</td>
+                            <td>易用</td>
+                            <td>开源</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 id="section-3-5">5. 监控工具</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>工具</th>
+                            <th>用途</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Prometheus + Grafana</strong></td>
+                            <td>指标监控</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ELK Stack</strong></td>
+                            <td>日志分析</td>
+                        </tr>
+                        <tr>
+                            <td><strong>LangSmith</strong></td>
+                            <td>LLM应用监控</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Weights & Biases</strong></td>
+                            <td>AI实验追踪</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Learning Path -->
+            <section id="section-4" class="content-card">
+                <h2>学习路径</h2>
+
+                <h4>Week 1-2：工具熟悉</h4>
+                <pre><code>□ 安装Cursor IDE
+□ 申请LLM API账号
+□ 学习基础Prompt编写
+□ 完成第一个AI辅助项目</code></pre>
+
+                <h4>Week 3-4：方法实践</h4>
+                <pre><code>□ 练习VibeCoding
+□ 学习SpecCoding
+□ 掌握Prompt-First
+□ 建立AI协作习惯</code></pre>
+
+                <h4>Week 5-8：Agent开发</h4>
+                <pre><code>□ 学习Tool Calling
+□ 实现简单Agent
+□ 掌握RAG技术
+□ 构建记忆系统</code></pre>
+            </section>
+
+            <!-- Learning Checklist -->
+            <section id="section-5" class="content-card">
+                <h2>学习检查清单</h2>
+                <pre><code>编程方法：
+□ 理解VibeCoding概念
+□ 掌握Prompt-First开发
+□ 了解SpecCoding方法
+□ 建立AI协作习惯
+
+Agent能力：
+□ 掌握Tool Calling
+□ 理解任务规划
+□ 掌握Memory管理
+□ 熟练使用RAG
+
+工具使用：
+□ 熟练使用Cursor
+□ 能调用LLM API
+□ 会使用LangChain4j
+□ 了解向量数据库</code></pre>
+            </section>
+
+            <!-- FAQ -->
+            <section id="section-6" class="content-card">
+                <h2>常见问题</h2>
+
+                <h4>Q1：VibeCoding会取代传统编程吗？</h4>
+                <p><strong>A：</strong> 不会完全取代，但会大幅改变编程方式。简单代码用VibeCoding，复杂逻辑仍需要人工设计。</p>
+
+                <h4>Q2：Prompt-First会增加开发时间吗？</h4>
+                <p><strong>A：</strong> 前期会增加，但后期节省大量时间。整体效率提升明显。</p>
+
+                <h4>Q3：如何选择AI框架？</h4>
+                <p><strong>A：</strong> Java项目首选LangChain4j或Spring AI，选择取决于你的技术栈。</p>
+
+                <h4>Q4：Agent开发难吗？</h4>
+                <p><strong>A：</strong> 入门不难，精通需要时间。建议从简单Agent开始，逐步增加复杂度。</p>
+
+                <hr>
+
+                <div class="info-box">
+                    <h4>💡 学习建议</h4>
+                    <ol>
+                        <li><strong>从简单开始</strong>：先用AI写简单功能，建立信心</li>
+                        <li><strong>持续练习</strong>：每天至少用AI辅助开发2小时</li>
+                        <li><strong>迭代优化</strong>：Prompt需要多次迭代才能完美</li>
+                        <li><strong>总结经验</strong>：记录好的Prompt模板和最佳实践</li>
+                    </ol>
+                </div>
+
+                <hr>
+
+                <p style="text-align: center; color: #6b7280; font-size: 14px;">
+                    文档版本：v1.0<br>
+                    更新时间：2026年3月<br>
+                    维护者：AI转型小组
+                </p>
+            </section>
+        </main>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" onclick="scrollToTop()">↑</button>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Back to top button
+        const backToTop = document.querySelector('.back-to-top');
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Show/hide back to top button
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        // Update active navigation link based on scroll position
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const scrollPosition = window.pageYOffset + 100;
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${sectionId}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
