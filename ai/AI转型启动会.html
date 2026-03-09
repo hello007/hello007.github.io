@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI转型启动会 - 宣贯材料</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f7fa;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .nav-link:hover {
+            background: #f3f4f6;
+            color: #2563eb;
+        }
+
+        .nav-link.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+        .meta-icon {
+            font-size: 20px;
+        }
+
+        h2 {
+            font-size: 32px;
+            color: #1f2937;
+            margin: 50px 0 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2563eb;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 24px;
+            color: #374151;
+            margin: 35px 0 20px;
+            font-weight: 600;
+        }
+
+        h4 {
+            font-size: 20px;
+            color: #4b5563;
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #4b5563;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        /* 代码块 */
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        code {
+            background: #f3f4f6;
+            color: #dc2626;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 15px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        /* 列表 */
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 强调框 */
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box {
+            background: #e0e7ff;
+            border-left: 4px solid #6366f1;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 时间标签 */
+        .time-tag {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* 问答框 */
+        .qa-box {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #2563eb;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .answer {
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 链接 */
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2563eb;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s;
+            font-size: 24px;
+        }
+
+        .back-to-top:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 968px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-card {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            h2 {
+                font-size: 26px;
+            }
+
+            .hero-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* 打印样式 */
+        @media print {
+            .sidebar {
+                display: none;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .content-card {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 侧边导航 -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">🎯</span>
+                <span>AI转型启动会</span>
+            </div>
+            <div class="subtitle">
+                宣贯材料 · 30-40分钟
+            </div>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#background" class="nav-link active">📋 转型背景与目标</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#mindset" class="nav-link">🧠 核心思维转变 ⭐</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#tech" class="nav-link">🛠️ 技术路径规划</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#timeline" class="nav-link">📅 三个月行动计划</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#notes" class="nav-link">⚠️ 关键注意事项</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#qa" class="nav-link">❓ Q&A</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#action" class="nav-link">🚀 行动号召</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 英雄区域 -->
+            <section class="hero-section">
+                <h1>🚀 AI转型启动会</h1>
+                <div class="hero-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon">⏱️</span>
+                        <span>宣讲时间：30-40分钟</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">👥</span>
+                        <span>宣讲对象：技术团队全体成员</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">🎯</span>
+                        <span>宣讲目标：统一认知、明确目标、激发行动</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 转型背景与目标 -->
+            <section id="background" class="content-card">
+                <h2>📋 第一部分：转型背景与目标</h2>
+
+                <span class="time-tag">⏱️ 5分钟</span>
+
+                <h3>为什么现在要转型？</h3>
+
+                <div class="info-box">
+                    <h4>📊 外部环境变化</h4>
+                    <ul>
+                        <li><strong>2024年：</strong>AI爆发元年</li>
+                        <li><strong>2025年：</strong>AI应用落地年</li>
+                        <li><strong>未来：</strong>AI将成为基础能力</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>💡 关键变化：</strong></p>
+                    <ul>
+                        <li>开发方式正在改变</li>
+                        <li>企业正在大量采用AI</li>
+                        <li>不转型就会被淘汰</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ 我们的现状与优势</h4>
+                    <p><strong>团队优势：</strong></p>
+                    <ul>
+                        <li>技术基础扎实（Java微服务）</li>
+                        <li>学习能力强</li>
+                        <li>团队规模小，灵活敏捷</li>
+                        <li>有完整的技术积累</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>🎯 转型方向：</strong></p>
+                    <ul>
+                        <li>不做AI底层研发</li>
+                        <li>专注AI应用落地</li>
+                        <li>结合业务场景</li>
+                        <li>发挥技术优势</li>
+                    </ul>
+                </div>
+
+                <h3>转型的核心目标</h3>
+
+                <div class="highlight-box">
+                    <h4>🎯 总体目标</h4>
+                    <p>从传统开发团队 → AI应用开发团队</p>
+
+                    <h4 style="margin-top: 25px;">📊 具体指标</h4>
+
+                    <p><strong>团队层面：</strong></p>
+                    <ul>
+                        <li>✅ 100%成员掌握AI基础概念</li>
+                        <li>✅ 80%成员能独立开发AI应用</li>
+                        <li>✅ 建立AI协作工作文化</li>
+                    </ul>
+
+                    <p><strong>技术层面：</strong></p>
+                    <ul>
+                        <li>✅ 完成3个实战项目</li>
+                        <li>✅ 掌握RAG、Agent核心技术</li>
+                        <li>✅ 建立可复用AI组件库</li>
+                    </ul>
+
+                    <p><strong>业务层面：</strong></p>
+                    <ul>
+                        <li>✅ 至少1个真实业务场景落地</li>
+                        <li>✅ 创造可量化的业务价值</li>
+                        <li>✅ 获得业务部门认可</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 为什么选择这个时机？</h4>
+                    <p><strong>✅ 技术成熟度：</strong></p>
+                    <ul>
+                        <li>AI工具已经足够好用</li>
+                        <li>开发成本大幅降低</li>
+                        <li>成功案例越来越多</li>
+                    </ul>
+
+                    <p><strong>✅ 团队准备度：</strong></p>
+                    <ul>
+                        <li>团队有一定AI认知</li>
+                        <li>学习意愿强烈</li>
+                        <li>技术栈匹配度高</li>
+                    </ul>
+
+                    <p><strong>✅ 业务需求：</strong></p>
+                    <ul>
+                        <li>有明确的业务场景</li>
+                        <li>有现成的技术基础</li>
+                        <li>可以快速见效</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 核心思维转变 -->
+            <section id="mindset" class="content-card">
+                <h2>🧠 第二部分：核心思维转变 ⭐⭐⭐</h2>
+
+                <span class="time-tag">⏱️ 10分钟（重点）</span>
+
+                <div class="warning-box">
+                    <h3>⚠️ 最重要的事：思维方式的革命</h3>
+                    <p>这不是一次技术学习，而是一次思维方式和工作模式的革命！</p>
+                </div>
+
+                <h3>传统开发 vs AI开发的根本差异</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>维度</th>
+                            <th>传统开发</th>
+                            <th>AI开发</th>
+                            <th>转变要点</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>工作重心</strong></td>
+                            <td>怎么实现（How）</td>
+                            <td>要实现什么（What）</td>
+                            <td>从编码转向需求设计</td>
+                        </tr>
+                        <tr>
+                            <td><strong>技能要求</strong></td>
+                            <td>代码能力</td>
+                            <td>表达能力+逻辑思维</td>
+                            <td>从语法转向语义</td>
+                        </tr>
+                        <tr>
+                            <td><strong>解决问题</strong></td>
+                            <td>亲自编写代码</td>
+                            <td>描述需求，AI实现</td>
+                            <td>从执行者转向指挥者</td>
+                        </tr>
+                        <tr>
+                            <td><strong>调试方式</strong></td>
+                            <td>逐行排查代码</td>
+                            <td>检查需求描述</td>
+                            <td>从代码调试转向Prompt调试</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>四个层面的思维转变</h3>
+
+                <div class="highlight-box">
+                    <h4>1️⃣ 意识层面（Week 1-2）</h4>
+                    <ul>
+                        <li>从"我要写代码" → "我要描述需求"</li>
+                        <li>从"我不会写" → "我能说清楚"</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>2️⃣ 能力层面（Week 3-6）</h4>
+                    <ul>
+                        <li>从"技术实现" → "需求拆解"</li>
+                        <li>从"细节编码" → "架构设计"</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>3️⃣ 工作流层面（Week 7-9）</h4>
+                    <ul>
+                        <li>从"独立开发" → "人机协作"</li>
+                        <li>从"一次到位" → "迭代优化"</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>4️⃣ 价值层面（Week 10-12）</h4>
+                    <ul>
+                        <li>从"完成功能" → "解决问题"</li>
+                        <li>从"技术思维" → "产品思维"</li>
+                    </ul>
+                </div>
+
+                <h3>AI协作的核心能力</h3>
+
+                <div class="success-box">
+                    <h4>能力一：需求描述能力（最重要）</h4>
+
+                    <p><strong>❌ 差的描述：</strong></p>
+                    <pre>"帮我写一个RAG系统"</pre>
+
+                    <p><strong>✅ 好的描述：</strong></p>
+                    <pre>"我需要构建一个RAG系统：
+
+背景：
+- 用于公司内部文档问答
+- 文档类型：PDF、Word
+- 预计文档量：1000份
+
+功能需求：
+- 用户输入问题，返回相关文档片段+答案
+- 支持中文
+- 答案要标注引用来源
+
+技术约束：
+- Java + Spring Boot
+- 向量数据库：PostgreSQL
+- 响应时间：<5秒"</pre>
+
+                    <p>→ AI能生成更好的代码</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>能力二：迭代优化能力</h4>
+
+                    <p><strong>传统开发心态：</strong></p>
+                    <ul>
+                        <li>❌ "我要一次写对"</li>
+                        <li>❌ "返工是失败"</li>
+                    </ul>
+
+                    <p><strong>AI协作心态：</strong></p>
+                    <ul>
+                        <li>✅ "先跑通，再优化"</li>
+                        <li>✅ "迭代是常态"</li>
+                    </ul>
+
+                    <p><strong>工作方式：</strong></p>
+                    <ul>
+                        <li>第1轮：描述需求 → AI生成</li>
+                        <li>第2轮：测试 → 发现问题</li>
+                        <li>第3轮：描述改进 → AI优化</li>
+                        <li>第4轮：验证 → 继续迭代</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>能力三：代码审查能力</h4>
+
+                    <p><strong>从"写代码"转向"审代码"：</strong></p>
+
+                    <p><strong>传统代码审查：</strong></p>
+                    <ul>
+                        <li>✓ 代码风格</li>
+                        <li>✓ 命名规范</li>
+                        <li>✓ 设计模式</li>
+                    </ul>
+
+                    <p><strong>AI时代代码审查：</strong></p>
+                    <ul>
+                        <li>✓ 功能是否满足需求</li>
+                        <li>✓ 边界情况是否处理</li>
+                        <li>✓ 安全性是否有问题</li>
+                        <li>✓ 可维护性如何</li>
+                    </ul>
+
+                    <p style="margin-top: 15px;"><strong>新的价值定位：</strong></p>
+                    <p>我们不写每一行代码，但我们保证每一行代码的质量！</p>
+                </div>
+
+                <h3>转型后的我们</h3>
+
+                <div class="highlight-box">
+                    <p><strong>传统开发者角色：</strong>代码编写者、技术实现者</p>
+                    <p><strong>AI时代角色：</strong>需求设计者、AI指挥者、质量把关者、价值创造者</p>
+
+                    <p style="margin-top: 15px;"><strong>新的核心竞争力：</strong></p>
+                    <ul>
+                        <li>✅ 需求分析能力</li>
+                        <li>✅ 系统设计能力</li>
+                        <li>✅ 业务理解能力</li>
+                        <li>✅ 决策判断能力</li>
+                        <li>✅ 沟通表达能力</li>
+                    </ul>
+
+                    <p style="margin-top: 15px;"><strong>💡 核心变化：</strong></p>
+                    <p>AI让我们的价值从"如何实现"转向"实现什么"和"为什么实现"</p>
+                </div>
+            </section>
+
+            <!-- 技术路径规划 -->
+            <section id="tech" class="content-card">
+                <h2>🛠️ 第三部分：技术路径规划</h2>
+
+                <span class="time-tag">⏱️ 8分钟</span>
+
+                <h3>技术栈选型：Java友好路线</h3>
+
+                <div class="info-box">
+                    <h4>我们的选择原则：</h4>
+                    <ul>
+                        <li>✅ 成熟稳定</li>
+                        <li>✅ 易于集成</li>
+                        <li>✅ 学习成本低</li>
+                        <li>✅ 符合团队现状</li>
+                    </ul>
+                </div>
+
+                <h3>核心技术栈</h3>
+
+                <div class="highlight-box">
+                    <h4>LLM调用：</h4>
+                    <ul>
+                        <li><strong>初期：</strong>直接HTTP API（最快上手）</li>
+                        <li><strong>中期：</strong>LangChain4j（灵活强大）</li>
+                        <li><strong>后期：</strong>Spring AI（深度集成）</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>向量存储：</h4>
+                    <ul>
+                        <li><strong>开发：</strong>内存向量（零配置）</li>
+                        <li><strong>生产：</strong>PostgreSQL + pgvector（复用现有）</li>
+                        <li><strong>优化：</strong>Milvus（专业方案）</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>框架选择：</h4>
+                    <p>LangChain4j + Spring Boot</p>
+                    <p>Java生态最成熟的AI框架</p>
+                </div>
+
+                <h3>核心技术概念（需要掌握）</h3>
+
+                <div class="info-box">
+                    <h4>📌 基础层（Week 1-2必须掌握）</h4>
+                    <ul>
+                        <li><strong>LLM：</strong>大语言模型，AI的基础</li>
+                        <li><strong>Prompt：</strong>给AI的指令</li>
+                        <li><strong>Token：</strong>AI计费单位</li>
+                        <li><strong>API调用：</strong>如何使用LLM</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>📌 应用层（Week 3-8重点学习）</h4>
+                    <ul>
+                        <li><strong>RAG：</strong>检索增强生成，让AI有知识</li>
+                        <li><strong>Agent：</strong>智能体，AI能主动做事</li>
+                        <li><strong>Embedding：</strong>向量化，理解文本</li>
+                        <li><strong>Function Calling：</strong>AI调用工具</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>📌 工程层（持续学习）</h4>
+                    <ul>
+                        <li>LangChain4j框架</li>
+                        <li>Spring AI集成</li>
+                        <li>向量数据库</li>
+                        <li>缓存优化</li>
+                    </ul>
+                </div>
+
+                <h3>学习优先级</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>阶段</th>
+                            <th>学习内容</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>🔥 第1-2周</strong></td>
+                            <td>LLM基础、Prompt工程、API调用</td>
+                        </tr>
+                        <tr>
+                            <td><strong>⭐ 第3-8周</strong></td>
+                            <td>RAG完整技术栈、Agent基础、向量数据库</td>
+                        </tr>
+                        <tr>
+                            <td><strong>🚀 第9-12周</strong></td>
+                            <td>多Agent系统、性能优化、监控告警</td>
+                        </tr>
+                        <tr>
+                            <td><strong>🔒 持续关注</strong></td>
+                            <td>数据安全、提示词注入、内容审核</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>三个实战项目</h3>
+
+                <div class="success-box">
+                    <h4>📌 项目一：智能问答助手（Week 1-2）</h4>
+                    <ul>
+                        <li><strong>目标：</strong>建立信心，跑通第一个AI应用</li>
+                        <li><strong>技术：</strong>LLM API + 简单对话</li>
+                        <li><strong>成果：</strong>可用的问答系统</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>📌 项目二：文档问答系统（Week 3-4）</h4>
+                    <ul>
+                        <li><strong>目标：</strong>掌握RAG核心技术</li>
+                        <li><strong>技术：</strong>向量检索 + RAG实现</li>
+                        <li><strong>成果：</strong>能解决真实业务问题</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>📌 项目三：研发助手Agent（Week 5-6）</h4>
+                    <ul>
+                        <li><strong>目标：</strong>掌握Agent技术</li>
+                        <li><strong>技术：</strong>工具调用 + 任务规划</li>
+                        <li><strong>成果：</strong>提升研发效率</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>📌 项目四：业务项目实战（Week 9-11）</h4>
+                    <ul>
+                        <li><strong>目标：</strong>创造实际价值</li>
+                        <li><strong>技术：</strong>综合应用</li>
+                        <li><strong>成果：</strong>生产级AI应用</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 三个月行动计划 -->
+            <section id="timeline" class="content-card">
+                <h2>📅 第四部分：三个月行动计划</h2>
+
+                <span class="time-tag">⏱️ 7分钟</span>
+
+                <h3>时间线总览</h3>
+
+                <div class="info-box">
+                    <h4>Week 1-2：基础夯实期</h4>
+                    <ul>
+                        <li><strong>目标：</strong>建立信心</li>
+                        <li><strong>内容：</strong>AI概念 + 第一个Demo</li>
+                        <li><strong>里程碑：</strong>智能问答助手上线</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>Week 3-8：能力建设期</h4>
+                    <ul>
+                        <li><strong>目标：</strong>掌握核心技术</li>
+                        <li><strong>内容：</strong>RAG + Agent + 组件库</li>
+                        <li><strong>里程碑：</strong>2个核心项目完成</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>Week 9-12：深化落地期</h4>
+                    <ul>
+                        <li><strong>目标：</strong>业务价值创造</li>
+                        <li><strong>内容：</strong>业务项目 + 能力沉淀</li>
+                        <li><strong>里程碑：</strong>生产级应用上线</li>
+                    </ul>
+                </div>
+
+                <h3>Week 1 详细计划</h3>
+
+                <div class="highlight-box">
+                    <h4>Day 1-2：启动与学习</h4>
+                    <ul>
+                        <li>团队启动会（今天）</li>
+                        <li>学习AI基础概念（2小时）- 课程：AI for Everyone</li>
+                        <li>申请LLM API账号</li>
+                        <li>准备开发环境</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>Day 3-5：实践与开发</h4>
+                    <ul>
+                        <li>调用第一个LLM API</li>
+                        <li>开发智能问答Demo</li>
+                        <li>学习Prompt优化</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>Day 6-7：演示与总结</h4>
+                    <ul>
+                        <li>完成第一个Demo</li>
+                        <li>团队内部演示</li>
+                        <li>Week 1复盘</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>Week 1结束标志：</h4>
+                    <ul>
+                        <li>✅ 所有人都调用过LLM API</li>
+                        <li>✅ 完成第一个AI应用</li>
+                        <li>✅ 建立信心</li>
+                    </ul>
+                </div>
+
+                <h3>关键里程碑</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>时间点</th>
+                            <th>交付内容</th>
+                            <th>价值</th>
+                            <th>展示方式</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Week 2结束</strong></td>
+                            <td>智能问答Demo</td>
+                            <td>建立信心</td>
+                            <td>团队内部演示</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Week 6结束</strong></td>
+                            <td>RAG系统 + Agent</td>
+                            <td>掌握核心技术</td>
+                            <td>部门技术分享</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Week 11结束</strong></td>
+                            <td>业务AI应用</td>
+                            <td>创造业务价值</td>
+                            <td>业务部门验收</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Week 12结束</strong></td>
+                            <td>转型总结报告</td>
+                            <td>完成转型</td>
+                            <td>管理层汇报</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>每周工作节奏</h3>
+
+                <div class="info-box">
+                    <h4>Weekly Sync（每周一 9:00-9:30）</h4>
+                    <ul>
+                        <li>上周进展同步（5分钟/人）</li>
+                        <li>遇到的问题和解决方案</li>
+                        <li>本周计划</li>
+                        <li>风险识别</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>Bi-weekly Deep Dive（双周五 15:00-16:00）</h4>
+                    <ul>
+                        <li>深度技术分享（30分钟）</li>
+                        <li>轮流主讲</li>
+                        <li>讨论和答疑</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>Monthly Review（每月最后一周）</h4>
+                    <ul>
+                        <li>项目成果展示</li>
+                        <li>能力评估</li>
+                        <li>下月规划</li>
+                    </ul>
+                </div>
+
+                <h3>学习资源支持</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>类别</th>
+                            <th>资源</th>
+                            <th>链接</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>📚 在线课程</strong></td>
+                            <td>AI for Everyone</td>
+                            <td><a href="https://www.coursera.org/learn/ai-for-everyone" target="_blank">Coursera</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>📖 技术文档</strong></td>
+                            <td>OpenAI Docs</td>
+                            <td><a href="https://platform.openai.com/docs" target="_blank">platform.openai.com</a></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>LangChain4j Docs</td>
+                            <td><a href="https://docs.langchain4j.dev/" target="_blank">docs.langchain4j.dev</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>💻 开源项目</strong></td>
+                            <td>LangChain4j Examples</td>
+                            <td><a href="https://github.com/langchain4j/langchain4j-examples" target="_blank">GitHub</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>🛠️ 开发工具</strong></td>
+                            <td>Cursor IDE</td>
+                            <td><a href="https://cursor.sh/" target="_blank">cursor.sh</a></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Postman</td>
+                            <td><a href="https://www.postman.com/" target="_blank">postman.com</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- 关键注意事项 -->
+            <section id="notes" class="content-card">
+                <h2>⚠️ 第五部分：关键注意事项</h2>
+
+                <span class="time-tag">⏱️ 5分钟</span>
+
+                <h3>1. 心态调整</h3>
+
+                <div class="success-box">
+                    <h4>✅ 鼓励的行为：</h4>
+                    <ul>
+                        <li>"我用AI解决了这个问题"</li>
+                        <li>"这个需求我这样描述..."</li>
+                        <li>"AI给出的方案很有意思"</li>
+                        <li>愿意尝试、不怕失败</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h4>❌ 避免的误区：</h4>
+                    <ul>
+                        <li>"用AI太简单，没技术含量"</li>
+                        <li>"AI写的不如我"</li>
+                        <li>"这个我来写比较快"</li>
+                        <li>"AI什么都能做"</li>
+                    </ul>
+                </div>
+
+                <h3>2. 学习方法</h3>
+
+                <div class="success-box">
+                    <h4>正确的学习方式：</h4>
+                    <ul>
+                        <li>✅ 边做边学，不要全部看完再实践</li>
+                        <li>✅ 先跑通，再完美</li>
+                        <li>✅ 遇到问题先查文档，再问团队</li>
+                        <li>✅ 记录笔记，分享经验</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h4>避免的学习方式：</h4>
+                    <ul>
+                        <li>❌ 试图一次性学完所有概念</li>
+                        <li>❌ 过度纠结原理细节</li>
+                        <li>❌ 不动手只看视频</li>
+                        <li>❌ 闭门造车，不交流</li>
+                    </ul>
+                </div>
+
+                <h3>3. 工作方式</h3>
+
+                <div class="info-box">
+                    <h4>AI协作原则：</h4>
+                    <ol>
+                        <li><strong>先描述，再编码</strong> - 花时间把需求说清楚</li>
+                        <li><strong>让AI先做，你来审查</strong> - 练习"指挥者"角色</li>
+                        <li><strong>快速迭代，持续优化</strong> - 不追求一次完美</li>
+                        <li><strong>质量把关，决策判断</strong> - 对结果负责</li>
+                    </ol>
+
+                    <p style="margin-top: 15px;"><strong>时间分配建议：</strong></p>
+                    <ul>
+                        <li>20%：理论学习</li>
+                        <li>50%：动手实践</li>
+                        <li>30%：复盘总结</li>
+                    </ul>
+                </div>
+
+                <h3>4. 风险管理</h3>
+
+                <div class="warning-box">
+                    <h4>常见风险与应对：</h4>
+                    <ul>
+                        <li><strong>⚠️ API不稳定</strong> → 准备多个服务商备用</li>
+                        <li><strong>⚠️ 成本超支</strong> → 设置预算上限，监控使用</li>
+                        <li><strong>⚠️ 质量不达标</strong> → 输出验证，人工抽检</li>
+                        <li><strong>⚠️ 学习困难</strong> → 结对学习，专人辅导</li>
+                        <li><strong>⚠️ 业务需求不清</strong> → 从小场景开始，快速验证</li>
+                    </ul>
+                </div>
+
+                <h3>5. 成功标准</h3>
+
+                <div class="success-box">
+                    <h4>个人层面：</h4>
+                    <ul>
+                        <li>✅ 能独立调用LLM API</li>
+                        <li>✅ 能描述清楚需求</li>
+                        <li>✅ 能审查AI生成的代码</li>
+                        <li>✅ 有AI协作意识</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>团队层面：</h4>
+                    <ul>
+                        <li>✅ 完成至少3个项目</li>
+                        <li>✅ 建立知识共享机制</li>
+                        <li>✅ 形成AI协作文化</li>
+                        <li>✅ 创造业务价值</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>业务层面：</h4>
+                    <ul>
+                        <li>✅ 至少1个项目实际使用</li>
+                        <li>✅ 用户满意度 > 80%</li>
+                        <li>✅ 投入产出比合理</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>💡 Top 3 成功因素：</h4>
+                    <ol>
+                        <li><strong>思维转变（最重要）</strong> - 从编码者变成需求设计者</li>
+                        <li><strong>项目驱动</strong> - 在实践中学习，快速见效</li>
+                        <li><strong>团队协作</strong> - 知识共享，互相支持</li>
+                    </ol>
+                    <p style="margin-top: 15px;"><strong>记住：</strong>技术可以学，但思维方式的转变需要刻意练习！</p>
+                </div>
+
+                <h3>6. 预算与资源</h3>
+
+                <div class="info-box">
+                    <h4>最小化方案（3个月）：</h4>
+                    <ul>
+                        <li>LLM API：公网资源协调、申请</li>
+                        <li>服务器：使用现有公司资源</li>
+                    </ul>
+
+                    <p style="margin-top: 15px;"><strong>人力投入：</strong></p>
+                    <ul>
+                        <li>全员参与学习</li>
+                        <li>项目开发占用正常工作时间</li>
+                    </ul>
+
+                    <p style="margin-top: 15px;"><strong>需要的支持：</strong></p>
+                    <ul>
+                        <li>✅ 管理层支持</li>
+                        <li>✅ 学习时间保障</li>
+                        <li>✅ 试错包容度</li>
+                        <li>✅ 必要的资源投入</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Q&A -->
+            <section id="qa" class="content-card">
+                <h2>❓ 第六部分：Q&A 预期问题</h2>
+
+                <span class="time-tag">⏱️ 5分钟</span>
+
+                <h3>常见疑问解答</h3>
+
+                <div class="qa-box">
+                    <div class="question">Q1：AI会不会取代我们？</div>
+                    <div class="answer">
+                        <p><strong>A：</strong>AI不会取代开发者，但"会使用AI的开发者"会取代"不会使用的"。</p>
+                        <p style="margin-top: 10px;">我们的角色在转变：</p>
+                        <ul>
+                            <li>❌ 从：代码编写者</li>
+                            <li>✅ 到：问题解决者、需求设计者、价值创造者</li>
+                        </ul>
+                        <p style="margin-top: 10px;">AI提升了我们的效率，让我们专注于更有价值的工作。</p>
+                    </div>
+                </div>
+
+                <div class="qa-box">
+                    <div class="question">Q2：我没有AI基础，能跟上吗？</div>
+                    <div class="answer">
+                        <p><strong>A：</strong>完全可以！我们的规划就是针对零基础设计的：</p>
+                        <p style="margin-top: 10px;"><strong>Week 1-2：从最基础的开始</strong></p>
+                        <ul>
+                            <li>只要会用HTTP就能调用API</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>边做边学，不要求一开始就懂所有原理</strong></p>
+                        <ul>
+                            <li>先会使用，再深入理解</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>团队支持：</strong></p>
+                        <ul>
+                            <li>结对学习、知识共享、专人辅导</li>
+                        </ul>
+                        <p style="margin-top: 10px;">相信自己，3个月后你会惊讶！</p>
+                    </div>
+                </div>
+
+                <div class="qa-box">
+                    <div class="question">Q3：这会不会影响正常工作？</div>
+                    <div class="answer">
+                        <p><strong>A：</strong>短期会有影响，长期是提升：</p>
+                        <p style="margin-top: 10px;"><strong>短期（1-2个月）：</strong></p>
+                        <ul>
+                            <li>学习占用部分时间</li>
+                            <li>项目开发需要适应</li>
+                            <li>可能会有效率波动</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>长期（3个月后）：</strong></p>
+                        <ul>
+                            <li>开发效率显著提升</li>
+                            <li>能解决更多复杂问题</li>
+                            <li>团队竞争力增强</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>投入产出比：</strong>短期投入，长期回报</p>
+                    </div>
+                </div>
+
+                <div class="qa-box">
+                    <div class="question">Q4：如果项目失败怎么办？</div>
+                    <div class="answer">
+                        <p><strong>A：</strong>失败是学习过程的一部分：</p>
+                        <p style="margin-top: 10px;"><strong>我们的风险控制：</strong></p>
+                        <ul>
+                            <li>✅ 小步快跑，快速迭代</li>
+                            <li>✅ 选择合适的场景</li>
+                            <li>✅ 准备降级方案</li>
+                            <li>✅ 不影响核心业务</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>即使失败也能收获：</strong></p>
+                        <ul>
+                            <li>✅ AI技术能力</li>
+                            <li>✅ 项目经验</li>
+                            <li>✅ 团队成长</li>
+                            <li>✅ 为后续项目打下基础</li>
+                        </ul>
+                        <p style="margin-top: 10px;">记住：试错成本不高，但错失机会的代价很大！</p>
+                    </div>
+                </div>
+
+                <div class="qa-box">
+                    <div class="question">Q5：学完之后能做什么？</div>
+                    <div class="answer">
+                        <p><strong>A：</strong>3个月后的你将能够：</p>
+                        <p style="margin-top: 10px;"><strong>技术能力：</strong></p>
+                        <ul>
+                            <li>✅ 独立开发AI应用</li>
+                            <li>✅ 实现RAG系统</li>
+                            <li>✅ 构建AI Agent</li>
+                            <li>✅ 优化AI应用性能</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>应用场景：</strong></p>
+                        <ul>
+                            <li>✅ 智能客服系统</li>
+                            <li>✅ 文档问答系统</li>
+                            <li>✅ 代码辅助工具</li>
+                            <li>✅ 数据分析助手</li>
+                            <li>✅ 更多创新应用...</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>职业发展：</strong></p>
+                        <ul>
+                            <li>✅ 成为团队的AI技术专家</li>
+                            <li>✅ 具备更强的竞争力</li>
+                            <li>✅ 更广阔的发展空间</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 行动号召 -->
+            <section id="action" class="content-card">
+                <h2>🚀 第七部分：行动号召</h2>
+
+                <div class="highlight-box">
+                    <h3>从今天开始</h3>
+
+                    <h4>Week 1 任务清单：</h4>
+
+                    <div class="info-box">
+                        <h4>Day 1（今天）：</h4>
+                        <ul>
+                            <li>☐ 理解转型规划</li>
+                            <li>☐ 调整心态，做好准备</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Day 2-3：</h4>
+                        <ul>
+                            <li>☐ 完成"AI for Everyone"课程</li>
+                            <li>☐ 阅读OpenAI文档</li>
+                            <li>☐ 调用第一个API</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Day 4-5：</h4>
+                        <ul>
+                            <li>☐ 参与第一个Demo项目</li>
+                            <li>☐ 练习描述需求</li>
+                            <li>☐ 体验AI协作</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Day 6-7：</h4>
+                        <ul>
+                            <li>☐ 完成第一个Demo</li>
+                            <li>☐ 团队演示</li>
+                            <li>☐ 复盘总结</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <p><strong>记住：</strong></p>
+                        <p>不要等完全准备好再开始，先动手，在实践中学！</p>
+                    </div>
+                </div>
+
+                <div class="success-box">
+                    <h3>我们的承诺</h3>
+
+                    <p><strong>作为组织，我们承诺：</strong></p>
+                    <ul>
+                        <li>✅ 提供必要的学习资源</li>
+                        <li>✅ 给予充足的试错空间</li>
+                        <li>✅ 建立支持机制</li>
+                        <li>✅ 认可每一份努力</li>
+                        <li>✅ 分享成功和失败的经验</li>
+                    </ul>
+
+                    <p style="margin-top: 15px;"><strong>我们期待：</strong></p>
+                    <ul>
+                        <li>✅ 开放的心态</li>
+                        <li>✅ 积极的参与</li>
+                        <li>✅ 主动的分享</li>
+                        <li>✅ 持续的学习</li>
+                        <li>✅ 共同的成长</li>
+                    </ul>
+
+                    <p style="margin-top: 15px;">这是一个团队转型的过程，需要每一个人都参与进来！</p>
+                </div>
+
+                <div class="info-box">
+                    <h3>愿景展望</h3>
+
+                    <h4>3个月后的团队：</h4>
+                    <ul>
+                        <li>✅ 具备AI应用开发能力</li>
+                        <li>✅ 有多个成功项目案例</li>
+                        <li>✅ 形成AI协作文化</li>
+                        <li>✅ 创造实际业务价值</li>
+                        <li>✅ 在公司内建立影响力</li>
+                    </ul>
+
+                    <h4>12个月后的团队：</h4>
+                    <ul>
+                        <li>✅ 成为AI应用标杆团队</li>
+                        <li>✅ 有完善的AI能力平台</li>
+                        <li>✅ 培养出AI技术专家</li>
+                        <li>✅ 持续创新和应用</li>
+                        <li>✅ 行业内有技术影响力</li>
+                    </ul>
+
+                    <p style="margin-top: 20px; font-size: 20px; font-weight: 600; text-align: center;">
+                        未来已来，让我们一起创造！🚀
+                    </p>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>📝 快速参考</h3>
+
+                    <h4>🔑 核心概念速查</h4>
+                    <ul>
+                        <li><strong>LLM：</strong>大语言模型</li>
+                        <li><strong>Prompt：</strong>给AI的指令</li>
+                        <li><strong>RAG：</strong>检索增强生成</li>
+                        <li><strong>Agent：</strong>智能体</li>
+                        <li><strong>Token：</strong>计费单位</li>
+                    </ul>
+
+                    <h4>🛠️ 常用工具</h4>
+                    <ul>
+                        <li><strong>Cursor：</strong>AI代码编辑器</li>
+                        <li><strong>Postman：</strong>API测试</li>
+                        <li><strong>通义千问：</strong>LLM API</li>
+                    </ul>
+
+                    <h4>📚 学习资源</h4>
+                    <ul>
+                        <li><strong>OpenAI Docs</strong></li>
+                        <li><strong>LangChain4j Docs</strong></li>
+                        <li><strong>Deeplearning.AI</strong></li>
+                    </ul>
+
+                    <h4>🆘 获取帮助</h4>
+                    <ul>
+                        <li>先查文档</li>
+                        <li>再问团队</li>
+                        <li>最后搜索社区</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h3>🎯 结语</h3>
+                    <p>各位同事：</p>
+                    <p>AI转型不是一次技术升级，而是一次思维方式和协作模式的革命。</p>
+                    <p style="margin-top: 15px;">未来3个月，我们将：</p>
+                    <ul>
+                        <li>💪 从"写代码"到"设计解决方案"</li>
+                        <li>🤝 从"单打独斗"到"人机协作"</li>
+                        <li>🚀 从"技术实现"到"价值创造"</li>
+                    </ul>
+                    <p style="margin-top: 15px;">这个过程会有挑战，但更多的是机遇和成长。</p>
+                    <p style="margin-top: 15px;">让我们一起：</p>
+                    <ul>
+                        <li>✨ 保持开放心态</li>
+                        <li>✨ 互相支持帮助</li>
+                        <li>✨ 共同创造价值</li>
+                    </ul>
+                    <p style="margin-top: 20px; font-size: 22px; font-weight: 600; text-align: center;">
+                        未来已来，让我们一起出发！🚀
+                    </p>
+                    <p style="margin-top: 15px; text-align: center;">谢谢大家！</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top" id="backToTop">↑</div>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+
+                    // 更新活动链接
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // 返回顶部按钮
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // 滚动时更新活动导航链接
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const scrollPosition = window.pageYOffset + 100;
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${sectionId}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
