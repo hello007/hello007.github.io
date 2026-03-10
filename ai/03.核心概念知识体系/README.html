@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>核心概念知识体系 - 总览</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
     <style>
+        
         * {
             margin: 0;
             padding: 0;
@@ -15,42 +17,19 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
             line-height: 1.8;
-            color: #4b5563;
+            color: #333;
             background: #f5f7fa;
         }
 
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 80px 20px;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .hero h1 {
-            font-size: 42px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .hero-meta {
-            font-size: 16px;
-            opacity: 0.95;
-            margin-top: 20px;
-        }
-
-        .hero-meta p {
-            margin: 8px 0;
-        }
-
         .container {
+            display: flex;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
+            padding: 20px;
             gap: 30px;
         }
 
+        /* 侧边导航 */
         .sidebar {
             width: 280px;
             flex-shrink: 0;
@@ -62,31 +41,54 @@
             background: white;
             border-radius: 12px;
             padding: 25px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
         }
 
-        .sidebar h3 {
-            font-size: 18px;
-            margin-bottom: 20px;
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
             color: #2563eb;
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .nav-links {
+        .logo-icon {
+            font-size: 32px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .nav-menu {
             list-style: none;
         }
 
-        .nav-links li {
-            margin-bottom: 12px;
+        .nav-item {
+            margin-bottom: 8px;
         }
 
         .nav-link {
             display: block;
+            padding: 10px 15px;
             color: #4b5563;
             text-decoration: none;
-            padding: 8px 12px;
-            border-radius: 6px;
+            border-radius: 8px;
             transition: all 0.3s;
             font-size: 14px;
         }
@@ -101,6 +103,7 @@
             color: white;
         }
 
+        /* 主内容区 */
         .main-content {
             flex: 1;
             min-width: 0;
@@ -111,71 +114,82 @@
             border-radius: 12px;
             padding: 40px;
             margin-bottom: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+        .meta-icon {
+            font-size: 20px;
         }
 
         h2 {
             font-size: 32px;
             color: #1f2937;
-            margin: 40px 0 25px 0;
+            margin: 50px 0 25px;
             padding-bottom: 15px;
             border-bottom: 3px solid #2563eb;
+            font-weight: 700;
         }
 
         h3 {
             font-size: 24px;
-            color: #1f2937;
-            margin: 30px 0 20px 0;
-            font-weight: 500;
+            color: #374151;
+            margin: 35px 0 20px;
+            font-weight: 600;
         }
 
         h4 {
             font-size: 20px;
-            color: #374151;
-            margin: 25px 0 15px 0;
-            font-weight: 500;
-        }
-
-        p {
-            margin-bottom: 16px;
-            font-size: 16px;
-        }
-
-        a {
-            color: #2563eb;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        a:hover {
-            color: #1d4ed8;
-            text-decoration: underline;
-        }
-
-        strong, b {
-            color: #1f2937;
+            color: #4b5563;
+            margin: 30px 0 15px;
             font-weight: 600;
         }
 
-        ul, ol {
-            margin-bottom: 20px;
-            padding-left: 25px;
-        }
-
-        li {
-            margin-bottom: 12px;
+        p {
+            margin-bottom: 15px;
+            color: #4b5563;
+            line-height: 1.8;
             font-size: 16px;
         }
 
+        /* 代码块 */
         pre {
             background: #1f2937;
             color: #f3f4f6;
             padding: 20px;
             border-radius: 8px;
             overflow-x: auto;
+            margin: 20px 0;
             font-size: 14px;
             line-height: 1.6;
-            margin: 25px 0;
         }
 
         code {
@@ -184,16 +198,15 @@
             padding: 2px 8px;
             border-radius: 4px;
             font-size: 13px;
-            font-family: 'Consolas', 'Monaco', monospace;
         }
 
         pre code {
             background: transparent;
             color: inherit;
             padding: 0;
-            border-radius: 0;
         }
 
+        /* 表格 */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -210,32 +223,42 @@
             padding: 16px;
             text-align: left;
             font-weight: 600;
+            font-size: 15px;
         }
 
         td {
             padding: 16px;
             border-bottom: 1px solid #e5e7eb;
-        }
-
-        tr:hover {
-            background: #f9fafb;
+            font-size: 15px;
         }
 
         tr:last-child td {
             border-bottom: none;
         }
 
-        .info-box {
-            background: #e0e7ff;
-            border-left: 4px solid #6366f1;
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        /* 列表 */
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 强调框 */
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
             padding: 25px;
             margin: 30px 0;
             border-radius: 0 8px 8px 0;
-        }
-
-        .info-box h4 {
-            color: #4338ca;
-            margin-top: 0;
         }
 
         .warning-box {
@@ -246,11 +269,6 @@
             border-radius: 0 8px 8px 0;
         }
 
-        .warning-box h4 {
-            color: #b45309;
-            margin-top: 0;
-        }
-
         .success-box {
             background: #d1fae5;
             border-left: 4px solid #10b981;
@@ -259,30 +277,60 @@
             border-radius: 0 8px 8px 0;
         }
 
-        .success-box h4 {
-            color: #047857;
-            margin-top: 0;
-        }
-
-        .highlight-box {
-            background: #eff6ff;
-            border-left: 4px solid #2563eb;
+        .info-box {
+            background: #e0e7ff;
+            border-left: 4px solid #6366f1;
             padding: 25px;
             margin: 30px 0;
             border-radius: 0 8px 8px 0;
         }
 
-        .highlight-box h4 {
+        /* 时间标签 */
+        .time-tag {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* 问答框 */
+        .qa-box {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #2563eb;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .answer {
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 链接 */
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
             color: #1d4ed8;
-            margin-top: 0;
+            text-decoration: underline;
         }
 
-        hr {
-            border: none;
-            border-top: 2px solid #e5e7eb;
-            margin: 40px 0;
-        }
-
+        /* 返回顶部按钮 */
         .back-to-top {
             position: fixed;
             bottom: 30px;
@@ -298,21 +346,19 @@
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
             transition: all 0.3s;
-            border: none;
             font-size: 24px;
-            z-index: 1000;
         }
 
         .back-to-top:hover {
             background: #1d4ed8;
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
         }
 
         .back-to-top.show {
             display: flex;
         }
 
+        /* 响应式设计 */
         @media (max-width: 968px) {
             .container {
                 flex-direction: column;
@@ -322,10 +368,15 @@
                 width: 100%;
                 position: static;
                 max-height: none;
-                margin-bottom: 30px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-card {
+                padding: 25px;
             }
 
-            .hero h1 {
+            h1 {
                 font-size: 32px;
             }
 
@@ -333,111 +384,110 @@
                 font-size: 26px;
             }
 
-            h3 {
-                font-size: 22px;
-            }
-
-            .content-card {
-                padding: 25px;
+            .hero-meta {
+                flex-direction: column;
+                gap: 10px;
             }
         }
 
-        @media (max-width: 640px) {
-            .hero {
-                padding: 50px 20px;
-            }
-
-            .hero h1 {
-                font-size: 26px;
-            }
-
-            .content-card {
-                padding: 20px;
-            }
-
-            h2 {
-                font-size: 22px;
-            }
-
-            h3 {
-                font-size: 20px;
-            }
-
-            .back-to-top {
-                bottom: 20px;
-                right: 20px;
-                width: 45px;
-                height: 45px;
-            }
-        }
-
+        /* 打印样式 */
         @media print {
             .sidebar {
                 display: none;
             }
 
-            .back-to-top {
-                display: none;
+            .container {
+                max-width: 100%;
             }
 
             .content-card {
                 box-shadow: none;
                 page-break-inside: avoid;
             }
-
-            .hero {
-                background: white;
-                color: #1f2937;
-                padding: 40px 20px;
-            }
         }
+    
     </style>
 </head>
 <body>
-    <div class="hero">
-        <h1>核心概念知识体系 - 总览</h1>
-        <div class="hero-meta">
-            <p><strong>文档定位：</strong>AI转型核心概念完整知识体系</p>
-            <p><strong>制作时间：</strong>2026年3月</p>
-            <p><strong>适用团队：</strong>3-10人Java技术团队</p>
-            <p><strong>学习周期：</strong>3个月核心期</p>
-        </div>
-    </div>
-
     <div class="container">
+        <!-- 侧边导航 -->
         <aside class="sidebar">
-            <h3>📚 目录导航</h3>
-            <ul class="nav-links">
-                <li><a href="#文档导航" class="nav-link">文档导航</a></li>
-                <li><a href="#学习路径建议" class="nav-link">学习路径建议</a></li>
-                <li><a href="#模块列表" class="nav-link">模块列表</a></li>
-                <li><a href="#ai基础层概念详解" class="nav-link">1. AI基础层概念详解</a></li>
-                <li><a href="#ai应用层核心技术详解" class="nav-link">2. AI应用层核心技术详解</a></li>
-                <li><a href="#工程架构层概念详解" class="nav-link">3. 工程架构层概念详解</a></li>
-                <li><a href="#数据与知识层概念详解" class="nav-link">4. 数据与知识层概念详解</a></li>
-                <li><a href="#安全与合规层概念详解" class="nav-link">5. 安全与合规层概念详解</a></li>
-                <li><a href="#工作方法论与工具链详解" class="nav-link">6. 工作方法论与工具链详解</a></li>
-                <li><a href="#前沿ai概念详解" class="nav-link">7. 前沿AI概念详解</a></li>
-                <li><a href="#掌握程度说明" class="nav-link">掌握程度说明</a></li>
-                <li><a href="#学习建议" class="nav-link">学习建议</a></li>
-                <li><a href="#学习检查清单" class="nav-link">学习检查清单</a></li>
-                <li><a href="#相关资源" class="nav-link">相关资源</a></li>
-                <li><a href="#常见问题" class="nav-link">常见问题</a></li>
-                <li><a href="#使用说明" class="nav-link">使用说明</a></li>
-                <li><a href="#结语" class="nav-link">结语</a></li>
-            </ul>
+            <div class="logo">
+                <span class="logo-icon">📚</span>
+                <span>AI核心概念</span>
+            </div>
+            <div class="subtitle">
+                AI转型核心概念完整知识体系
+            </div>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#intro" class="nav-link active">📖 概述</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#文档导航" class="nav-link">📚 📚 文档导航</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#模块列表" class="nav-link">📚 📖 模块列表</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#掌握程度说明" class="nav-link">🎯 🎯 掌握程度说明</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#学习建议" class="nav-link">📚 💡 学习建议</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#学习检查清单" class="nav-link">📚 📊 学习检查清单</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#相关资源" class="nav-link">📚 🔗 相关资源</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#常见问题" class="nav-link">📚 ❓ 常见问题</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#使用说明" class="nav-link">📚 📝 使用说明</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#结语" class="nav-link">📚 🎓 结语</a>
+                    </li>
+                </ul>
+            </nav>
         </aside>
 
+        <!-- 主内容区 -->
         <main class="main-content">
-            <div class="content-card">
-                <section id="文档导航">
-                    <h2>📚 文档导航</h2>
-                    <p>本知识体系包含6个核心模块，从基础到应用，从理论到实践，全面覆盖AI应用开发所需的核心概念。</p>
-                </section>
+            <!-- 英雄区域 -->
+            <section class="hero-section">
+                <h1>核心概念知识体系 - 总览</h1>
+                <div class="hero-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon">🎯</span>
+                        <span>学习目标：建立对AI基础概念的清晰认知</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">👥</span>
+                        <span>适合人群：AI初学者</span>
+                    </div>
+                </div>
+            </section>
 
-                <section id="学习路径建议">
-                    <h2>🎯 学习路径建议</h2>
-                    <pre><code>第1个月：基础夯实
+            <!-- 内容区域 -->
+            <section id="intro" class="content-card">
+                <strong>制作时间：</strong> 2026年3月
+<strong>适用团队：</strong> 3-10人Java技术团队
+<strong>学习周期：</strong> 3个月核心期
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="文档导航">📚 文档导航</h2>
+<p>
+本知识体系包含6个核心模块，从基础到应用，从理论到实践，全面覆盖AI应用开发所需的核心概念。
+</p>
+<h3>🎯 学习路径建议</h3>
+<pre><code>第1个月：基础夯实
 ├─ Week 1-2：AI基础层概念
 │   ├─ 理解LLM、Prompt、Token等基础
 │   ├─ 掌握API调用
@@ -464,193 +514,156 @@
 ├─ Week 9-10：安全与合规
 ├─ Week 11：工作方法论
 └─ Week 12：综合项目实战</code></pre>
-                </section>
-
-                <section id="模块列表">
-                    <h2>📖 模块列表</h2>
-                </section>
-
-                <section id="ai基础层概念详解">
-                    <h3>1. AI基础层概念详解</h3>
-                    <p><strong>学习目标：</strong>建立对AI基础概念的清晰认知</p>
-                    <p><strong>核心内容：</strong></p>
-                    <ul>
-                        <li>LLM（大语言模型）</li>
-                        <li>Prompt Engineering（提示词工程）</li>
-                        <li>Token（词元）</li>
-                        <li>Temperature（温度参数）</li>
-                        <li>Context Window（上下文窗口）</li>
-                        <li>Embedding（向量化）</li>
-                        <li>模型推理 vs 训练</li>
-                        <li>Transformer架构</li>
-                    </ul>
-                    <p><strong>适合人群：</strong>AI初学者</p>
-                    <p><strong>学习周期：</strong>Week 1-2</p>
-                    <p><strong>掌握程度：</strong>🎯 必须掌握 / 📖 需要了解</p>
-                    <hr>
-                </section>
-
-                <section id="ai应用层核心技术详解">
-                    <h3>2. AI应用层核心技术详解</h3>
-                    <p><strong>学习目标：</strong>掌握AI应用开发的核心技术</p>
-                    <p><strong>核心内容：</strong></p>
-                    <ul>
-                        <li>RAG（检索增强生成）⭐ 核心</li>
-                        <li>Vector Database（向量数据库）⭐ 核心</li>
-                        <li>Agent（智能体）⭐ 核心</li>
-                        <li>Function Calling（函数调用）</li>
-                        <li>Chain of Thought（思维链）</li>
-                        <li>Multimodal（多模态）</li>
-                        <li>Knowledge Graph（知识图谱）</li>
-                    </ul>
-                    <p><strong>适合人群：</strong>需要开发AI应用的Java开发者</p>
-                    <p><strong>学习周期：</strong>Week 3-6</p>
-                    <p><strong>掌握程度：</strong>🎯 必须掌握 / 📖 需要了解 / 🚀 进阶学习</p>
-                    <hr>
-                </section>
-
-                <section id="工程架构层概念详解">
-                    <h3>3. 工程架构层概念详解</h3>
-                    <p><strong>学习目标：</strong>掌握AI应用工程化开发的架构和工具</p>
-                    <p><strong>核心内容：</strong></p>
-                    <ul>
-                        <li>LangChain4j（Java AI框架）⭐ 推荐</li>
-                        <li>Spring AI（Spring官方）</li>
-                        <li>API Rate Limiting（速率限制）</li>
-                        <li>Caching Strategy（缓存策略）</li>
-                        <li>Streaming Response（流式响应）</li>
-                        <li>Orchestration（编排）</li>
-                        <li>Observability（可观测性）</li>
-                    </ul>
-                    <p><strong>适合人群：</strong>需要构建生产级AI应用的Java开发者</p>
-                    <p><strong>学习周期：</strong>Week 5-8</p>
-                    <p><strong>掌握程度：</strong>🎯 必须掌握 / 📖 需要了解</p>
-                    <hr>
-                </section>
-
-                <section id="数据与知识层概念详解">
-                    <h3>4. 数据与知识层概念详解</h3>
-                    <p><strong>学习目标：</strong>掌握构建高质量知识库的核心技术</p>
-                    <p><strong>核心内容：</strong></p>
-                    <ul>
-                        <li>Chunking（分块策略）⭐ 核心</li>
-                        <li>Data Cleaning（数据清洗）</li>
-                        <li>Metadata Management（元数据管理）</li>
-                        <li>Re-ranking（重排序）</li>
-                        <li>Hybrid Search（混合检索）</li>
-                        <li>Knowledge Base Construction（知识库构建）</li>
-                    </ul>
-                    <p><strong>适合人群：</strong>需要搭建RAG系统和知识库的Java开发者</p>
-                    <p><strong>学习周期：</strong>Week 5-8</p>
-                    <p><strong>掌握程度：</strong>🎯 必须掌握 / 📖 需要了解 / 🚀 进阶学习</p>
-                    <hr>
-                </section>
-
-                <section id="安全与合规层概念详解">
-                    <h3>5. 安全与合规层概念详解</h3>
-                    <p><strong>学习目标：</strong>掌握AI应用的基本安全和合规要求</p>
-                    <p><strong>核心内容：</strong></p>
-                    <ul>
-                        <li>Prompt Injection（提示词注入）⭐ 重要</li>
-                        <li>Data Privacy（数据隐私）</li>
-                        <li>PII Redaction（敏感信息脱敏）</li>
-                        <li>Content Moderation（内容审核）</li>
-                        <li>Audit Logging（审计日志）</li>
-                    </ul>
-                    <p><strong>适合人群：</strong>需要构建生产级AI应用的Java开发者</p>
-                    <p><strong>学习周期：</strong>Week 9-10（前期了解，后期深入）</p>
-                    <p><strong>掌握程度：</strong>🎯 必须掌握 / 📖 需要了解</p>
-
-                    <div class="warning-box">
-                        <h4>⚠️ 重要说明</h4>
-                        <ul>
-                            <li>第1-3个月：了解基本风险和简单防护</li>
-                            <li>第4-6个月：引入工程化安全实践</li>
-                            <li>第7-12个月：建立金融级合规体系</li>
-                        </ul>
-                    </div>
-                    <hr>
-                </section>
-
-                <section id="工作方法论与工具链详解">
-                    <h3>6. 工作方法论与工具链详解</h3>
-                    <p><strong>学习目标：</strong>掌握AI协作的工作方式和工具</p>
-                    <p><strong>核心内容：</strong></p>
-
-                    <h4>AI编程方法论：</h4>
-                    <ul>
-                        <li>VibeCoding（氛围编程）</li>
-                        <li>SpecCoding（规范驱动开发）</li>
-                        <li>Prompt-First Development（以提示词为核心）</li>
-                    </ul>
-
-                    <h4>AI Agent能力体系：</h4>
-                    <ul>
-                        <li>Tool Calling（工具调用）</li>
-                        <li>Planning（任务规划）</li>
-                        <li>Memory Management（记忆管理）</li>
-                        <li>RAG Skills（检索增强技能）</li>
-                    </ul>
-
-                    <h4>推荐工具：</h4>
-                    <ul>
-                        <li>AI代码编辑器：Cursor、GitHub Copilot</li>
-                        <li>LLM API：OpenAI、Anthropic、通义千问</li>
-                        <li>AI框架：LangChain4j、Spring AI</li>
-                        <li>向量数据库：PgVector、Milvus</li>
-                    </ul>
-
-                    <p><strong>适合人群：</strong>所有需要转型AI开发的Java开发者</p>
-                    <p><strong>学习周期：</strong>贯穿整个转型期</p>
-                    <p><strong>掌握程度：</strong>🎯 必须掌握 / 📖 需要了解</p>
-                    <hr>
-                </section>
-
-                <section id="前沿ai概念详解">
-                    <h3>7. 前沿AI概念详解</h3>
-                    <p><strong>学习目标：</strong>掌握2025-2026年最新AI工程方法论</p>
-                    <p><strong>核心内容：</strong></p>
-
-                    <h4>Engineering方法论：</h4>
-                    <ul>
-                        <li>Prompt Engineering（提示词工程）</li>
-                        <li>Context Engineering（上下文工程）</li>
-                        <li>Agentic Engineering（智能体工程）</li>
-                        <li>Harness Engineering（驾驭工程）</li>
-                    </ul>
-
-                    <h4>Agent协作模式：</h4>
-                    <ul>
-                        <li>A2A（Agent to Agent）协作</li>
-                        <li>A2UI（Agent to User Interface）交互</li>
-                        <li>Skills（技能）系统</li>
-                    </ul>
-
-                    <h4>通信协议标准：</h4>
-                    <ul>
-                        <li>MCP（Model Context Protocol）</li>
-                    </ul>
-
-                    <p><strong>适合人群：</strong>需要深入理解AI架构的高级开发者</p>
-                    <p><strong>学习周期：</strong>Week 5-12</p>
-                    <p><strong>掌握程度：</strong>🎯 必须掌握 / 📖 需要了解 / 🚀 进阶学习</p>
-                    <hr>
-                </section>
-
-                <section id="掌握程度说明">
-                    <h2>🎯 掌握程度说明</h2>
-                    <ul>
-                        <li><strong>🎯 必须掌握</strong>：核心工作必备，需要深度理解和实践</li>
-                        <li><strong>📖 需要了解</strong>：拓展视野，理解概念即可</li>
-                        <li><strong>🚀 进阶学习</strong>：3个月后根据需要深入学习</li>
-                    </ul>
-                </section>
-
-                <section id="学习建议">
-                    <h2>💡 学习建议</h2>
-
-                    <h3>1. 循序渐进</h3>
-                    <pre><code>第1步：建立认知（Week 1-2）
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="模块列表">📖 模块列表</h2>
+<h3>1. <a href="./01.AI基础层概念详解.md">AI基础层概念详解</a></h3>
+<strong>核心内容：</strong>
+<ul>
+<li>LLM（大语言模型）</li>
+<li>Prompt Engineering（提示词工程）</li>
+<li>Token（词元）</li>
+<li>Temperature（温度参数）</li>
+<li>Context Window（上下文窗口）</li>
+<li>Embedding（向量化）</li>
+<li>模型推理 vs 训练</li>
+<li>Transformer架构</li>
+</ul>
+<strong>学习周期：</strong> Week 1-2
+<strong>掌握程度：</strong> 🎯 必须掌握 / 📖 需要了解
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>2. <a href="./02.AI应用层核心技术详解.md">AI应用层核心技术详解</a></h3>
+<strong>核心内容：</strong>
+<ul>
+<li>RAG（检索增强生成）⭐ 核心</li>
+<li>Vector Database（向量数据库）⭐ 核心</li>
+<li>Agent（智能体）⭐ 核心</li>
+<li>Function Calling（函数调用）</li>
+<li>Chain of Thought（思维链）</li>
+<li>Multimodal（多模态）</li>
+<li>Knowledge Graph（知识图谱）</li>
+</ul>
+<strong>学习周期：</strong> Week 3-6
+<strong>掌握程度：</strong> 🎯 必须掌握 / 📖 需要了解 / 🚀 进阶学习
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>3. <a href="./03.工程架构层概念详解.md">工程架构层概念详解</a></h3>
+<strong>核心内容：</strong>
+<ul>
+<li>LangChain4j（Java AI框架）⭐ 推荐</li>
+<li>Spring AI（Spring官方）</li>
+<li>API Rate Limiting（速率限制）</li>
+<li>Caching Strategy（缓存策略）</li>
+<li>Streaming Response（流式响应）</li>
+<li>Orchestration（编排）</li>
+<li>Observability（可观测性）</li>
+</ul>
+<strong>学习周期：</strong> Week 5-8
+<strong>掌握程度：</strong> 🎯 必须掌握 / 📖 需要了解
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>4. <a href="./04.数据与知识层概念详解.md">数据与知识层概念详解</a></h3>
+<strong>核心内容：</strong>
+<ul>
+<li>Chunking（分块策略）⭐ 核心</li>
+<li>Data Cleaning（数据清洗）</li>
+<li>Metadata Management（元数据管理）</li>
+<li>Re-ranking（重排序）</li>
+<li>Hybrid Search（混合检索）</li>
+<li>Knowledge Base Construction（知识库构建）</li>
+</ul>
+<strong>学习周期：</strong> Week 5-8
+<strong>掌握程度：</strong> 🎯 必须掌握 / 📖 需要了解 / 🚀 进阶学习
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>5. <a href="./05.安全与合规层概念详解.md">安全与合规层概念详解</a></h3>
+<strong>核心内容：</strong>
+<ul>
+<li>Prompt Injection（提示词注入）⭐ 重要</li>
+<li>Data Privacy（数据隐私）</li>
+<li>PII Redaction（敏感信息脱敏）</li>
+<li>Content Moderation（内容审核）</li>
+<li>Audit Logging（审计日志）</li>
+</ul>
+<strong>学习周期：</strong> Week 9-10（前期了解，后期深入）
+<strong>掌握程度：</strong> 🎯 必须掌握 / 📖 需要了解
+<ul>
+<li>第1-3个月：了解基本风险和简单防护</li>
+<li>第4-6个月：引入工程化安全实践</li>
+<li>第7-12个月：建立金融级合规体系</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>6. <a href="./06.工作方法论与工具链详解.md">工作方法论与工具链详解</a></h3>
+<strong>核心内容：</strong>
+<strong>AI编程方法论：</strong>
+<ul>
+<li>VibeCoding（氛围编程）</li>
+<li>SpecCoding（规范驱动开发）</li>
+<li>Prompt-First Development（以提示词为核心）</li>
+</ul>
+<strong>AI Agent能力体系：</strong>
+<ul>
+<li>Tool Calling（工具调用）</li>
+<li>Planning（任务规划）</li>
+<li>Memory Management（记忆管理）</li>
+<li>RAG Skills（检索增强技能）</li>
+</ul>
+<strong>推荐工具：</strong>
+<ul>
+<li>AI代码编辑器：Cursor、GitHub Copilot</li>
+<li>LLM API：OpenAI、Anthropic、通义千问</li>
+<li>AI框架：LangChain4j、Spring AI</li>
+<li>向量数据库：PgVector、Milvus</li>
+</ul>
+<strong>学习周期：</strong> 贯穿整个转型期
+<strong>掌握程度：</strong> 🎯 必须掌握 / 📖 需要了解
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>7. <a href="./07.前沿AI概念详解.md">前沿AI概念详解</a></h3>
+<strong>核心内容：</strong>
+<strong>Engineering方法论：</strong>
+<ul>
+<li>Prompt Engineering（提示词工程）</li>
+<li>Context Engineering（上下文工程）</li>
+<li>Agentic Engineering（智能体工程）</li>
+<li>Harness Engineering（驾驭工程）</li>
+</ul>
+<strong>Agent协作模式：</strong>
+<ul>
+<li>A2A（Agent to Agent）协作</li>
+<li>A2UI（Agent to User Interface）交互</li>
+<li>Skills（技能）系统</li>
+</ul>
+<strong>通信协议标准：</strong>
+<ul>
+<li>MCP（Model Context Protocol）</li>
+</ul>
+<strong>学习周期：</strong> Week 5-12
+<strong>掌握程度：</strong> 🎯 必须掌握 / 📖 需要了解 / 🚀 进阶学习
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="掌握程度说明">🎯 掌握程度说明</h2>
+<ul>
+<li><strong>🎯 必须掌握</strong>：核心工作必备，需要深度理解和实践</li>
+<li><strong>📖 需要了解</strong>：拓展视野，理解概念即可</li>
+<li><strong>🚀 进阶学习</strong>：3个月后根据需要深入学习</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="学习建议">💡 学习建议</h2>
+<h3>1. 循序渐进</h3>
+<pre><code>第1步：建立认知（Week 1-2）
 ├─ 阅读：AI基础层概念详解
 ├─ 实践：调用第一个LLM API
 └─ 目标：理解AI是什么，能做什么
@@ -669,9 +682,8 @@
 ├─ 阅读：数据与知识层、安全与合规
 ├─ 实践：综合项目实战
 └─ 目标：达到生产可用水平</code></pre>
-
-                    <h3>2. 理论结合实践</h3>
-                    <pre><code>20% 理论学习
+<h3>2. 理论结合实践</h3>
+<pre><code>20% 理论学习
 ├─ 阅读文档
 ├─ 理解概念
 └─ 掌握原理
@@ -685,9 +697,8 @@
 ├─ 总结经验教训
 ├─ 记录最佳实践
 └─ 分享给团队</code></pre>
-
-                    <h3>3. 建立知识体系</h3>
-                    <pre><code>概念层：理解核心概念
+<h3>3. 建立知识体系</h3>
+<pre><code>概念层：理解核心概念
 ├─ LLM是什么
 ├─ RAG如何工作
 └─ Agent能做什么
@@ -701,135 +712,121 @@
 ├─ 智能问答系统
 ├─ 文档问答系统
 └─ 研发助手Agent</code></pre>
-                </section>
-
-                <section id="学习检查清单">
-                    <h2>📊 学习检查清单</h2>
-
-                    <h3>基础认知（Week 1-2）</h3>
-                    <ul>
-                        <li>☐ 理解LLM是什么，能做什么</li>
-                        <li>☐ 掌握Prompt Engineering基础</li>
-                        <li>☐ 理解Token、Temperature、Context Window</li>
-                        <li>☐ 能独立调用LLM API</li>
-                        <li>☐ 完成第一个AI Demo</li>
-                    </ul>
-
-                    <h3>核心技术（Week 3-6）</h3>
-                    <ul>
-                        <li>☐ 理解RAG原理，能实现基础RAG</li>
-                        <li>☐ 掌握向量数据库使用</li>
-                        <li>☐ 理解Agent概念，能开发简单Agent</li>
-                        <li>☐ 掌握Function Calling</li>
-                        <li>☐ 理解Chain of Thought</li>
-                    </ul>
-
-                    <h3>工程能力（Week 7-8）</h3>
-                    <ul>
-                        <li>☐ 熟练使用LangChain4j或Spring AI</li>
-                        <li>☐ 实现Rate Limiting</li>
-                        <li>☐ 实现多级缓存</li>
-                        <li>☐ 实现流式响应</li>
-                        <li>☐ 掌握编排技术</li>
-                    </ul>
-
-                    <h3>数据处理（Week 7-8）</h3>
-                    <ul>
-                        <li>☐ 掌握文档分块策略</li>
-                        <li>☐ 实现数据清洗Pipeline</li>
-                        <li>☐ 掌握元数据管理</li>
-                        <li>☐ 能构建完整知识库</li>
-                    </ul>
-
-                    <h3>安全合规（Week 9-10）</h3>
-                    <ul>
-                        <li>☐ 理解Prompt Injection风险</li>
-                        <li>☐ 实现输入验证和过滤</li>
-                        <li>☐ 理解数据隐私要求</li>
-                        <li>☐ 了解审计日志</li>
-                    </ul>
-
-                    <h3>工作方法（贯穿始终）</h3>
-                    <ul>
-                        <li>☐ 掌握Prompt-First开发</li>
-                        <li>☐ 理解VibeCoding概念</li>
-                        <li>☐ 熟练使用Cursor等AI工具</li>
-                        <li>☐ 建立AI协作习惯</li>
-                    </ul>
-                </section>
-
-                <section id="相关资源">
-                    <h2>🔗 相关资源</h2>
-
-                    <h3>内部文档</h3>
-                    <ul>
-                        <li><a href="../10.AI转型规划-团队向AI方向转型实操指南.md">AI转型规划总指南</a></li>
-                        <li><a href="../01.团队宣贯材料-AI转型启动会.md">团队宣贯材料</a></li>
-                    </ul>
-
-                    <h3>外部资源</h3>
-
-                    <h4>官方文档：</h4>
-                    <ul>
-                        <li><a href="https://platform.openai.com/docs" target="_blank">OpenAI API文档</a></li>
-                        <li><a href="https://docs.langchain4j.dev/" target="_blank">LangChain4j文档</a></li>
-                        <li><a href="https://spring.io/projects/spring-ai" target="_blank">Spring AI文档</a></li>
-                    </ul>
-
-                    <h4>学习课程：</h4>
-                    <ul>
-                        <li><a href="https://www.deeplearning.ai/short-courses/" target="_blank">DeepLearning.AI - Prompt Engineering</a></li>
-                        <li><a href="https://www.coursera.org/learn/ai-for-everyone" target="_blank">吴恩达 - AI for Everyone</a></li>
-                    </ul>
-
-                    <h4>工具网站：</h4>
-                    <ul>
-                        <li><a href="https://cursor.sh/" target="_blank">Cursor IDE</a></li>
-                        <li><a href="https://platform.openai.com/playground" target="_blank">OpenAI Playground</a></li>
-                        <li><a href="https://huggingface.co/" target="_blank">Hugging Face</a></li>
-                    </ul>
-                </section>
-
-                <section id="常见问题">
-                    <h2>❓ 常见问题</h2>
-
-                    <h4>Q1：我需要按顺序学习所有模块吗？</h4>
-                    <p><strong>A：</strong>不需要。建议按学习路径：基础层 → 应用层 → 工程层 → 数据层 → 安全层 → 方法论。但可以根据实际情况调整。</p>
-
-                    <h4>Q2：每个概念需要学到什么程度？</h4>
-                    <p><strong>A：</strong>注意标注的掌握程度：</p>
-                    <ul>
-                        <li>🎯 必须掌握：深度理解，能独立实现</li>
-                        <li>📖 需要了解：理解概念，知道何时使用</li>
-                        <li>🚀 进阶学习：3个月后根据需要深入学习</li>
-                    </ul>
-
-                    <h4>Q3：学习时间不够怎么办？</h4>
-                    <p><strong>A：</strong>优先学习：</p>
-                    <ol>
-                        <li>AI基础层（建立认知）</li>
-                        <li>RAG技术（核心应用）</li>
-                        <li>LangChain4j（开发框架）</li>
-                        <li>Prompt-First（工作方法）</li>
-                    </ol>
-                    <p>其他内容可以在实践中逐步学习。</p>
-
-                    <h4>Q4：遇到问题怎么办？</h4>
-                    <p><strong>A：</strong></p>
-                    <ol>
-                        <li>先查文档</li>
-                        <li>再搜索相关资料</li>
-                        <li>团队内讨论</li>
-                        <li>向AI求助（用Prompt描述问题）</li>
-                    </ol>
-                </section>
-
-                <section id="使用说明">
-                    <h2>📝 使用说明</h2>
-
-                    <h3>如何使用这份知识体系？</h3>
-                    <pre><code>1. 学习前
-   ├─ 阅读"总览"了解全貌
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="学习检查清单">📊 学习检查清单</h2>
+<h3>基础认知（Week 1-2）</h3>
+<ul>
+<li>[ ] 理解LLM是什么，能做什么</li>
+<li>[ ] 掌握Prompt Engineering基础</li>
+<li>[ ] 理解Token、Temperature、Context Window</li>
+<li>[ ] 能独立调用LLM API</li>
+<li>[ ] 完成第一个AI Demo</li>
+</ul>
+<h3>核心技术（Week 3-6）</h3>
+<ul>
+<li>[ ] 理解RAG原理，能实现基础RAG</li>
+<li>[ ] 掌握向量数据库使用</li>
+<li>[ ] 理解Agent概念，能开发简单Agent</li>
+<li>[ ] 掌握Function Calling</li>
+<li>[ ] 理解Chain of Thought</li>
+</ul>
+<h3>工程能力（Week 7-8）</h3>
+<ul>
+<li>[ ] 熟练使用LangChain4j或Spring AI</li>
+<li>[ ] 实现Rate Limiting</li>
+<li>[ ] 实现多级缓存</li>
+<li>[ ] 实现流式响应</li>
+<li>[ ] 掌握编排技术</li>
+</ul>
+<h3>数据处理（Week 7-8）</h3>
+<ul>
+<li>[ ] 掌握文档分块策略</li>
+<li>[ ] 实现数据清洗Pipeline</li>
+<li>[ ] 掌握元数据管理</li>
+<li>[ ] 能构建完整知识库</li>
+</ul>
+<h3>安全合规（Week 9-10）</h3>
+<ul>
+<li>[ ] 理解Prompt Injection风险</li>
+<li>[ ] 实现输入验证和过滤</li>
+<li>[ ] 理解数据隐私要求</li>
+<li>[ ] 了解审计日志</li>
+</ul>
+<h3>工作方法（贯穿始终）</h3>
+<ul>
+<li>[ ] 掌握Prompt-First开发</li>
+<li>[ ] 理解VibeCoding概念</li>
+<li>[ ] 熟练使用Cursor等AI工具</li>
+<li>[ ] 建立AI协作习惯</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="相关资源">🔗 相关资源</h2>
+<h3>内部文档</h3>
+<ul>
+<li><a href="../10.AI转型规划-团队向AI方向转型实操指南.md">AI转型规划总指南</a></li>
+<li><a href="../01.团队宣贯材料-AI转型启动会.md">团队宣贯材料</a></li>
+</ul>
+<h3>外部资源</h3>
+<strong>官方文档：</strong>
+<ul>
+<li><a href="https://platform.openai.com/docs">OpenAI API文档</a></li>
+<li><a href="https://docs.langchain4j.dev/">LangChain4j文档</a></li>
+<li><a href="https://spring.io/projects/spring-ai">Spring AI文档</a></li>
+</ul>
+<strong>学习课程：</strong>
+<ul>
+<li><a href="https://www.deeplearning.ai/short-courses/">DeepLearning.AI - Prompt Engineering</a></li>
+<li><a href="https://www.coursera.org/learn/ai-for-everyone">吴恩达 - AI for Everyone</a></li>
+</ul>
+<strong>工具网站：</strong>
+<ul>
+<li><a href="https://cursor.sh/">Cursor IDE</a></li>
+<li><a href="https://platform.openai.com/playground">OpenAI Playground</a></li>
+<li><a href="https://huggingface.co/">Hugging Face</a></li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="常见问题">❓ 常见问题</h2>
+<h3>Q1：我需要按顺序学习所有模块吗？</h3>
+<strong>A：</strong> 不需要。建议按学习路径：基础层 → 应用层 → 工程层 → 数据层 → 安全层 → 方法论。但可以根据实际情况调整。
+<h3>Q2：每个概念需要学到什么程度？</h3>
+<strong>A：</strong> 注意标注的掌握程度：
+<ul>
+<li>🎯 必须掌握：深度理解，能独立实现</li>
+<li>📖 需要了解：理解概念，知道何时使用</li>
+<li>🚀 进阶学习：3个月后根据需要深入学习</li>
+</ul>
+<h3>Q3：学习时间不够怎么办？</h3>
+<strong>A：</strong> 优先学习：
+<ol>
+<li>AI基础层（建立认知）</li>
+<li>RAG技术（核心应用）</li>
+<li>LangChain4j（开发框架）</li>
+<li>Prompt-First（工作方法）</li>
+</ol>
+<p>
+其他内容可以在实践中逐步学习。
+</p>
+<h3>Q4：遇到问题怎么办？</h3>
+<strong>A：</strong>
+<ol>
+<li>先查文档</li>
+<li>再搜索相关资料</li>
+<li>团队内讨论</li>
+<li>向AI求助（用Prompt描述问题）</li>
+</ol>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="使用说明">📝 使用说明</h2>
+<h3>如何使用这份知识体系？</h3>
+<pre><code>1. 学习前
+   ├─ 阅读&quot;总览&quot;了解全貌
    ├─ 确定当前学习阶段
    └─ 制定学习计划
 
@@ -844,52 +841,49 @@
    ├─ 整理笔记
    ├─ 分享给团队
    └─ 应用到实际项目</code></pre>
-
-                    <h3>文档更新说明</h3>
-                    <ul>
-                        <li><strong>当前版本：</strong>v1.0</li>
-                        <li><strong>更新时间：</strong>2026年3月</li>
-                        <li><strong>维护团队：</strong>AI转型小组</li>
-                        <li><strong>反馈渠道：</strong>团队内部讨论</li>
-                    </ul>
-                </section>
-
-                <section id="结语">
-                    <h2>🎓 结语</h2>
-                    <p>这份核心概念知识体系涵盖了从AI基础到工程实践、从数据处理到安全合规的完整内容。</p>
-
-                    <div class="highlight-box">
-                        <h4>💡 记住三个关键点：</h4>
-                        <ol>
-                            <li><strong>循序渐进</strong>：不要一次性学完所有内容，按阶段逐步深入</li>
-                            <li><strong>实践为主</strong>：理论结合实践，动手做才是最快的学习方式</li>
-                            <li><strong>持续迭代</strong>：AI技术发展迅速，保持学习，持续优化</li>
-                        </ol>
-                    </div>
-
-                    <p style="text-align: center; font-size: 20px; margin: 40px 0;">祝学习顺利！🚀</p>
-
-                    <hr>
-
-                    <p style="text-align: center; margin-top: 40px;"><strong>下一步行动：</strong></p>
-                    <p style="text-align: center; font-size: 18px;">
-                        <a href="./01.AI基础层概念详解.md" style="color: #2563eb; font-weight: 600;">开始学习 → 01.AI基础层概念详解</a>
-                    </p>
-
-                    <p style="text-align: center; margin-top: 40px; font-size: 14px; color: #9ca3af;">
-                        文档版本：v1.0<br>
-                        制作时间：2026年3月<br>
-                        维护者：AI转型小组
-                    </p>
-                </section>
-            </div>
+<h3>文档更新说明</h3>
+<ul>
+<li><strong>当前版本：</strong> v1.0</li>
+<li><strong>更新时间：</strong> 2026年3月</li>
+<li><strong>维护团队：</strong> AI转型小组</li>
+<li><strong>反馈渠道：</strong> 团队内部讨论</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="结语">🎓 结语</h2>
+<p>
+这份核心概念知识体系涵盖了从AI基础到工程实践、从数据处理到安全合规的完整内容。
+</p>
+<strong>记住三个关键点：</strong>
+<ol>
+<li><strong>循序渐进</strong>：不要一次性学完所有内容，按阶段逐步深入</li>
+<li><strong>实践为主</strong>：理论结合实践，动手做才是最快的学习方式</li>
+<li><strong>持续迭代</strong>：AI技术发展迅速，保持学习，持续优化</li>
+</ol>
+<strong>祝学习顺利！🚀</strong>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<strong>下一步行动：</strong>
+<p>
+开始学习 → <a href="./01.AI基础层概念详解.md">01.AI基础层概念详解</a>
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<em>文档版本：v1.0</em>
+<em>制作时间：2026年3月</em>
+<em>维护者：AI转型小组</em>
+            </section>
         </main>
     </div>
 
-    <button class="back-to-top" onclick="scrollToTop()">↑</button>
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top" onclick="scrollToTop()">↑</div>
 
     <script>
-        // Smooth scrolling for anchor links
+        // 平滑滚动
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -903,9 +897,7 @@
             });
         });
 
-        // Back to top button functionality
-        const backToTop = document.querySelector('.back-to-top');
-
+        // 返回顶部
         function scrollToTop() {
             window.scrollTo({
                 top: 0,
@@ -913,6 +905,8 @@
             });
         }
 
+        // 返回顶部按钮显示/隐藏
+        const backToTop = document.querySelector('.back-to-top');
         window.addEventListener('scroll', () => {
             if (window.pageYOffset > 300) {
                 backToTop.classList.add('show');
@@ -921,10 +915,10 @@
             }
         });
 
-        // Active navigation link highlighting
+        // 活动导航链接
         window.addEventListener('scroll', () => {
             const sections = document.querySelectorAll('section[id]');
-            const scrollPosition = window.pageYOffset + 150;
+            const scrollPosition = window.pageYOffset + 100;
 
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;

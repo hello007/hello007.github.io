@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>前沿AI概念详解</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
     <style>
+        
         * {
             margin: 0;
             padding: 0;
@@ -15,44 +17,19 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
             line-height: 1.8;
-            color: #4b5563;
+            color: #333;
             background: #f5f7fa;
         }
 
         .container {
+            display: flex;
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
-            display: flex;
             gap: 30px;
         }
 
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 60px 40px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .hero-meta {
-            font-size: 16px;
-            opacity: 0.9;
-            margin-top: 15px;
-        }
-
-        .hero-meta p {
-            margin: 5px 0;
-        }
-
+        /* 侧边导航 */
         .sidebar {
             width: 280px;
             flex-shrink: 0;
@@ -62,30 +39,56 @@
             max-height: calc(100vh - 40px);
             overflow-y: auto;
             background: white;
-            padding: 25px;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
         }
 
-        .sidebar h3 {
-            font-size: 18px;
-            margin-bottom: 20px;
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
             color: #2563eb;
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .nav-links {
+        .logo-icon {
+            font-size: 32px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .nav-menu {
             list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
         }
 
         .nav-link {
             display: block;
             padding: 10px 15px;
-            margin: 5px 0;
             color: #4b5563;
             text-decoration: none;
-            border-radius: 6px;
+            border-radius: 8px;
             transition: all 0.3s;
             font-size: 14px;
         }
@@ -100,6 +103,7 @@
             color: white;
         }
 
+        /* 主内容区 */
         .main-content {
             flex: 1;
             min-width: 0;
@@ -107,49 +111,85 @@
 
         .content-card {
             background: white;
-            padding: 35px;
-            margin-bottom: 25px;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+        .meta-icon {
+            font-size: 20px;
         }
 
         h2 {
             font-size: 32px;
-            font-weight: 600;
-            margin: 40px 0 25px 0;
+            color: #1f2937;
+            margin: 50px 0 25px;
             padding-bottom: 15px;
             border-bottom: 3px solid #2563eb;
-            color: #1f2937;
+            font-weight: 700;
         }
 
         h3 {
             font-size: 24px;
-            font-weight: 500;
-            margin: 30px 0 15px 0;
             color: #374151;
+            margin: 35px 0 20px;
+            font-weight: 600;
         }
 
         h4 {
             font-size: 20px;
-            font-weight: 500;
-            margin: 20px 0 10px 0;
             color: #4b5563;
+            margin: 30px 0 15px;
+            font-weight: 600;
         }
 
         p {
             margin-bottom: 15px;
+            color: #4b5563;
+            line-height: 1.8;
             font-size: 16px;
         }
 
+        /* 代码块 */
         pre {
             background: #1f2937;
             color: #f3f4f6;
             padding: 20px;
             border-radius: 8px;
             overflow-x: auto;
+            margin: 20px 0;
             font-size: 14px;
             line-height: 1.6;
-            margin: 20px 0;
         }
 
         code {
@@ -162,10 +202,123 @@
 
         pre code {
             background: transparent;
-            color: #f3f4f6;
+            color: inherit;
             padding: 0;
         }
 
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 15px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        /* 列表 */
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 强调框 */
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box {
+            background: #e0e7ff;
+            border-left: 4px solid #6366f1;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 时间标签 */
+        .time-tag {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* 问答框 */
+        .qa-box {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #2563eb;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .answer {
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 链接 */
         a {
             color: #2563eb;
             text-decoration: none;
@@ -177,67 +330,7 @@
             text-decoration: underline;
         }
 
-        ul, ol {
-            margin-left: 25px;
-            margin-bottom: 15px;
-        }
-
-        li {
-            margin-bottom: 8px;
-        }
-
-        .info-box {
-            background: #e0e7ff;
-            border-left: 4px solid #6366f1;
-            padding: 25px;
-            margin: 30px 0;
-            border-radius: 0 8px 8px 0;
-        }
-
-        .info-box h4 {
-            color: #4f46e5;
-            margin-bottom: 10px;
-        }
-
-        .warning-box {
-            background: #fef3c7;
-            border-left: 4px solid #f59e0b;
-            padding: 25px;
-            margin: 30px 0;
-            border-radius: 0 8px 8px 0;
-        }
-
-        .warning-box h4 {
-            color: #d97706;
-            margin-bottom: 10px;
-        }
-
-        .success-box {
-            background: #d1fae5;
-            border-left: 4px solid #10b981;
-            padding: 25px;
-            margin: 30px 0;
-            border-radius: 0 8px 8px 0;
-        }
-
-        .success-box h4 {
-            color: #059669;
-            margin-bottom: 10px;
-        }
-
-        .highlight-box {
-            background: #eff6ff;
-            border-left: 4px solid #2563eb;
-            padding: 25px;
-            margin: 30px 0;
-            border-radius: 0 8px 8px 0;
-        }
-
-        .highlight-box h4 {
-            color: #2563eb;
-            margin-bottom: 10px;
-        }
-
+        /* 返回顶部按钮 */
         .back-to-top {
             position: fixed;
             bottom: 30px;
@@ -254,8 +347,6 @@
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
             transition: all 0.3s;
             font-size: 24px;
-            border: none;
-            z-index: 1000;
         }
 
         .back-to-top:hover {
@@ -267,6 +358,7 @@
             display: flex;
         }
 
+        /* 响应式设计 */
         @media (max-width: 968px) {
             .container {
                 flex-direction: column;
@@ -280,30 +372,32 @@
         }
 
         @media (max-width: 640px) {
-            .hero h1 {
-                font-size: 28px;
+            .content-card {
+                padding: 25px;
             }
 
-            .content-card {
-                padding: 20px;
+            h1 {
+                font-size: 32px;
             }
 
             h2 {
-                font-size: 24px;
+                font-size: 26px;
             }
 
-            h3 {
-                font-size: 20px;
+            .hero-meta {
+                flex-direction: column;
+                gap: 10px;
             }
         }
 
+        /* 打印样式 */
         @media print {
             .sidebar {
                 display: none;
             }
 
-            .back-to-top {
-                display: none;
+            .container {
+                max-width: 100%;
             }
 
             .content-card {
@@ -311,40 +405,89 @@
                 page-break-inside: avoid;
             }
         }
+    
     </style>
 </head>
 <body>
-    <div class="hero">
-        <h1>前沿AI概念详解</h1>
-        <div class="hero-meta">
-            <p><strong>文档定位：</strong>2025-2026年最新AI应用开发概念</p>
-            <p><strong>学习目标：</strong>掌握AI应用开发的最新工程方法论和架构模式</p>
-            <p><strong>适合人群：</strong>已完成基础学习的Java开发者</p>
-        </div>
-    </div>
-
     <div class="container">
-        <nav class="sidebar">
-            <h3>📚 目录</h3>
-            <ul class="nav-links">
-                <li><a href="#engineering方法论体系" class="nav-link">Engineering方法论体系</a></li>
-                <li><a href="#agent协作模式" class="nav-link">Agent协作模式</a></li>
-                <li><a href="#通信协议标准" class="nav-link">通信协议标准</a></li>
-                <li><a href="#学习路径" class="nav-link">学习路径</a></li>
-            </ul>
-        </nav>
+        <!-- 侧边导航 -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">📚</span>
+                <span>AI核心概念</span>
+            </div>
+            <div class="subtitle">
+                2025-2026年最新AI应用开发概念
+            </div>
 
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#intro" class="nav-link active">📖 概述</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#目录" class="nav-link">📚 目录</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#第一部分-engineering方法论体系" class="nav-link">📚 第一部分：Engineering方法论体系</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#第二部分-agent协作模式" class="nav-link">📚 第二部分：Agent协作模式</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#第三部分-通信协议标准" class="nav-link">📚 第三部分：通信协议标准</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#学习路径" class="nav-link">📚 学习路径</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#学习检查清单" class="nav-link">📚 学习检查清单</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
         <main class="main-content">
-            <div class="content-card">
-                <h2 id="engineering方法论体系">第一部分：Engineering方法论体系</h2>
+            <!-- 英雄区域 -->
+            <section class="hero-section">
+                <h1>前沿AI概念详解</h1>
+                <div class="hero-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon">🎯</span>
+                        <span>学习目标：掌握AI应用开发的最新工程方法论和架构模式</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">👥</span>
+                        <span>适合人群：已完成基础学习的Java开发者</span>
+                    </div>
+                </div>
+            </section>
 
-                <h3 id="prompt-engineering-vs-context-engineering">1. Prompt Engineering（提示词工程） vs Context Engineering（上下文工程）</h3>
-
-                <h4>Prompt Engineering</h4>
-                <p><strong>通俗解释：</strong><br>Prompt Engineering就是"学会和AI说话的艺术"。就像你指导新人一样，你说得越清楚，AI做得越好。</p>
-
-                <p><strong>核心要点：</strong></p>
-                <pre><code>Prompt = 指令 + 上下文 + 约束 + 示例
+            <!-- 内容区域 -->
+            <section id="intro" class="content-card">
+                <p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="目录">目录</h2>
+<ul>
+<li><a href="#第一部分engineering方法论体系">第一部分：Engineering方法论体系</a></li>
+<li><a href="#第二部分agent协作模式">第二部分：Agent协作模式</a></li>
+<li><a href="#第三部分通信协议标准">第三部分：通信协议标准</a></li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="第一部分-engineering方法论体系">第一部分：Engineering方法论体系</h2>
+<h3>1. Prompt Engineering（提示词工程） vs Context Engineering（上下文工程）</h3>
+<h4>Prompt Engineering</h4>
+<strong>通俗解释：</strong>
+<p>
+Prompt Engineering就是"学会和AI说话的艺术"。就像你指导新人一样，你说得越清楚，AI做得越好。
+</p>
+<strong>核心要点：</strong>
+<pre><code>Prompt = 指令 + 上下文 + 约束 + 示例
 
 好的Prompt特征：
 ✅ 明确的目标
@@ -357,14 +500,12 @@
 ├─ A/B测试：对比效果
 ├─ 模板化：复用优秀Prompt
 └─ 工具化：使用Prompt管理工具</code></pre>
-
-                <div class="info-box">
-                    <h4>💡 实际示例</h4>
-                    <pre><code>// ❌ 差的Prompt
-String badPrompt = "写一个用户登录功能";
+<strong>实际示例：</strong>
+<pre><code class="language-java">// ❌ 差的Prompt
+String badPrompt = &quot;写一个用户登录功能&quot;;
 
 // ✅ 好的Prompt
-String goodPrompt = """
+String goodPrompt = &quot;&quot;&quot;
     【背景】
     这是一个内部管理系统，需要实现用户认证功能。
     目标用户：公司内部员工（约500人）
@@ -392,16 +533,17 @@ String goodPrompt = """
     Response: {token, expiresIn, user}
 
     请生成完整的代码实现。
-    """;</code></pre>
-                </div>
-
-                <hr style="margin: 30px 0; border: none; border-top: 1px solid #e5e7eb;">
-
-                <h4>Context Engineering</h4>
-                <p><strong>通俗解释：</strong><br>Context Engineering就是"管理AI记忆的艺术"。就像你开会时需要提供背景资料，AI也需要合适的上下文才能做出好的决策。</p>
-
-                <p><strong>核心挑战：</strong></p>
-                <pre><code>Context Window限制问题：
+    &quot;&quot;&quot;;</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h4>Context Engineering</h4>
+<strong>通俗解释：</strong>
+<p>
+Context Engineering就是"管理AI记忆的艺术"。就像你开会时需要提供背景资料，AI也需要合适的上下文才能做出好的决策。
+</p>
+<strong>核心挑战：</strong>
+<pre><code>Context Window限制问题：
 ├─ 上下文有限（如4K、8K、32K Tokens）
 ├─ 超出限制会被截断
 └─ 需要智能管理上下文信息
@@ -411,14 +553,169 @@ Context Engineering解决：
 ├─ 上下文压缩：总结历史对话
 ├─ 上下文分层：短期+长期记忆
 └─ 上下文优化：去除冗余信息</code></pre>
+<strong>技术实现：</strong>
+<pre><code class="language-java">@Service
+public class ContextEngineeringService {
 
-                <h3 id="agentic-engineering">2. Agentic Engineering（智能体工程）</h3>
+    // 1. 上下文选择策略
+    public List&lt;Message&gt; selectRelevantContext(
+        String sessionId,
+        String currentQuery,
+        int maxTokens
+    ) {
+        // 获取所有历史消息
+        List&lt;Message&gt; allHistory = getHistory(sessionId);
 
-                <h4>什么是Agentic Engineering？</h4>
-                <p><strong>通俗解释：</strong><br>Agentic Engineering就是"设计和构建AI智能体的工程方法"。就像软件工程指导软件开发，Agentic Engineering指导Agent系统的构建。</p>
+        // 计算相关性
+        List&lt;Message&gt; relevantMessages = allHistory.stream()
+            .filter(msg -&gt; isRelevant(msg, currentQuery))
+            .collect(Collectors.toList());
 
-                <p><strong>核心要素：</strong></p>
-                <pre><code>Agentic Engineering = 需求分析 + 能力设计 + 工具集成 + 行为编排
+        // 限制Token数量
+        return limitTokens(relevantMessages, maxTokens);
+    }
+
+    // 2. 上下文压缩
+    public String compressContext(List&lt;Message&gt; history) {
+
+        // 使用LLM总结历史对话
+        String summaryPrompt = String.format(&quot;&quot;&quot;
+            请总结以下对话的关键信息：
+
+            %s
+
+            总结要点：
+            1. 用户的核心需求是什么？
+            2. 讨论了哪些关键问题？
+            3. 得出了什么结论？
+
+            请以简洁的方式总结。
+            &quot;&quot;&quot;, history.toString()
+        );
+
+        return llmService.chat(summaryPrompt);
+    }
+
+    // 3. 分层上下文管理
+    public Context buildHierarchicalContext(
+        String sessionId,
+        String query
+    ) {
+        Context context = new Context();
+
+        // 短期上下文：最近5条消息
+        context.addShortTerm(getRecentMessages(sessionId, 5));
+
+        // 中期上下文：当前会话摘要
+        context.addMediumTerm(getSessionSummary(sessionId));
+
+        // 长期上下文：用户偏好、历史信息
+        context.addLongTerm(getUserProfile(sessionId));
+
+        // 动态上下文：根据查询检索相关信息
+        context.addDynamic(getRelevantInfo(query));
+
+        return context;
+    }
+
+    // 4. 上下文优化
+    public List&lt;Message&gt; optimizeContext(List&lt;Message&gt; context) {
+
+        // 去除冗余信息
+        List&lt;Message&gt; deduplicated = removeDuplicates(context);
+
+        // 合并相似内容
+        List&lt;Message&gt; merged = mergeSimilar(deduplicated);
+
+        // 按重要性排序
+        List&lt;Message&gt; ranked = rankByImportance(merged);
+
+        return ranked;
+    }
+
+    // Token预算管理
+    public class TokenBudget {
+
+        private final int maxTokens;
+        private int usedTokens = 0;
+
+        public TokenBudget(int maxTokens) {
+            this.maxTokens = maxTokens;
+        }
+
+        public boolean canAdd(String text) {
+            int tokens = estimateTokens(text);
+            return (usedTokens + tokens) &lt;= maxTokens;
+        }
+
+        public void add(String text) {
+            if (canAdd(text)) {
+                usedTokens += estimateTokens(text);
+            }
+        }
+
+        public int getRemaining() {
+            return maxTokens - usedTokens;
+        }
+    }
+}</code></pre>
+<strong>最佳实践：</strong>
+<pre><code class="language-java">// 使用TokenBudget管理上下文
+public class SmartContextManager {
+
+    public List&lt;Message&gt; buildOptimalContext(
+        String sessionId,
+        String query,
+        int budget
+    ) {
+        TokenBudget tokenBudget = new TokenBudget(budget);
+        List&lt;Message&gt; context = new ArrayList&lt;&gt;();
+
+        // 1. 系统Prompt（必须，约200 tokens）
+        String systemPrompt = getSystemPrompt();
+        if (tokenBudget.canAdd(systemPrompt)) {
+            context.add(new Message(MessageType.SYSTEM, systemPrompt));
+            tokenBudget.add(systemPrompt);
+        }
+
+        // 2. 相关历史（按相关性排序，选择性添加）
+        List&lt;Message&gt; history = getHistory(sessionId);
+        List&lt;ScoredMessage&gt; scoredHistory = scoreRelevance(history, query);
+
+        for (ScoredMessage item : scoredHistory) {
+            if (tokenBudget.canAdd(item.message.getContent())) {
+                context.add(item.message);
+                tokenBudget.add(item.message.getContent());
+            } else {
+                break; // 预算用完
+            }
+        }
+
+        // 3. 检索的上下文（RAG）
+        if (tokenBudget.getRemaining() &gt; 1000) {
+            List&lt;Document&gt; docs = ragService.search(query, 5);
+            String ragContext = formatRAGContext(docs);
+
+            if (tokenBudget.canAdd(ragContext)) {
+                context.add(new Message(MessageType.SYSTEM, ragContext));
+                tokenBudget.add(ragContext);
+            }
+        }
+
+        return context;
+    }
+}</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>2. Agentic Engineering（智能体工程）</h3>
+<h4>什么是Agentic Engineering？</h4>
+<strong>通俗解释：</strong>
+<p>
+Agentic Engineering就是"设计和构建AI智能体的工程方法"。就像软件工程指导软件开发，Agentic Engineering指导Agent系统的构建。
+</p>
+<strong>核心要素：</strong>
+<pre><code>Agentic Engineering = 需求分析 + 能力设计 + 工具集成 + 行为编排
 
 与传统开发的区别：
 传统开发：固定流程，明确分支
@@ -433,23 +730,235 @@ Agentic开发：自主决策，动态规划
 │   └─ 调用工具完成任务
 └─ 记忆能力（Memory）
     └─ 保存和检索信息</code></pre>
+<h4>Agentic系统架构</h4>
+<pre><code class="language-java">// Agent架构设计
+public interface Agent {
 
-                <div class="highlight-box">
-                    <h4>💡 Agentic Design Patterns</h4>
-                    <p><strong>Pattern 1: ReAct模式（Reasoning + Acting）</strong></p>
-                    <p>思考→行动→观察→循环，直到完成任务</p>
+    // 核心能力
+    PerceptionResult perceive(String input);
+    PlanResult plan(String goal);
+    ActionResult execute(Action action);
+    void remember(Memory memory);
 
-                    <p><strong>Pattern 2: Reflexion模式（带反思的Agent）</strong></p>
-                    <p>执行→反思→修正→重试，最多3次尝试</p>
-                </div>
+    // 高级能力
+    boolean shouldAskForHelp(String task);
+    List&lt;Tool&gt; selectTools(String goal);
+    String reflectOnResult(ActionResult result);
+}
 
-                <h3 id="harness-engineering">3. Harness Engineering（驾驭工程）</h3>
+// Agentic系统实现
+@Service
+public class AgenticSystem implements Agent {
 
-                <h4>什么是Harness Engineering？</h4>
-                <p><strong>通俗解释：</strong><br>Harness Engineering就是"驾驭AI系统的工程艺术"。就像驯马师驯服野马，Harness Engineering让强大的AI模型可控、可靠、安全地工作。</p>
+    @Autowired
+    private ToolRegistry toolRegistry;
 
-                <p><strong>核心理念：</strong></p>
-                <pre><code>Harness = Control + Reliability + Safety
+    @Autowired
+    private MemoryManager memoryManager;
+
+    @Autowired
+    private LLMService llmService;
+
+    @Override
+    public PerceptionResult perceive(String input) {
+
+        // 使用LLM理解用户意图
+        String prompt = String.format(&quot;&quot;&quot;
+            分析以下用户输入的意图：
+
+            输入：%s
+
+            请识别：
+            1. 用户想要什么？（goal）
+            2. 需要什么信息？（context）
+            3. 有什么约束？（constraints）
+
+            返回JSON格式。
+            &quot;&quot;&quot;, input
+        );
+
+        String response = llmService.chat(prompt);
+        return parsePerception(response);
+    }
+
+    @Override
+    public PlanResult plan(String goal) {
+
+        // 生成执行计划
+        String prompt = String.format(&quot;&quot;&quot;
+            为以下目标制定执行计划：
+
+            目标：%s
+
+            可用工具：
+            %s
+
+            请生成：
+            1. 执行步骤（step by step）
+            2. 每步需要的工具
+            3. 预期结果
+
+            返回JSON格式的计划。
+            &quot;&quot;&quot;, goal, listAvailableTools()
+        );
+
+        String response = llmService.chat(prompt);
+        return parsePlan(response);
+    }
+
+    @Override
+    public ActionResult execute(Action action) {
+
+        // 执行具体的Action
+        Tool tool = toolRegistry.getTool(action.getToolName());
+
+        try {
+            Object result = tool.execute(action.getParameters());
+            return ActionResult.success(result);
+
+        } catch (Exception e) {
+            // 执行失败，需要重新规划
+            return ActionResult.failure(e.getMessage());
+        }
+    }
+
+    @Override
+    public void remember(Memory memory) {
+
+        // 保存到短期记忆
+        memoryManager.saveToShortTerm(memory);
+
+        // 如果是重要信息，保存到长期记忆
+        if (memory.isImportant()) {
+            memoryManager.saveToLongTerm(memory);
+        }
+    }
+
+    // Agent主循环
+    public String run(String userRequest) {
+
+        // 1. 感知
+        PerceptionResult perception = perceive(userRequest);
+
+        // 2. 规划
+        PlanResult plan = plan(perception.getGoal());
+
+        // 3. 执行（循环执行每个步骤）
+        List&lt;ActionResult&gt; results = new ArrayList&lt;&gt;();
+
+        for (Step step : plan.getSteps()) {
+
+            log.info(&quot;执行步骤：{}&quot;, step.getDescription());
+
+            ActionResult result = execute(step.getAction());
+
+            if (result.isSuccess()) {
+                results.add(result);
+            } else {
+                // 执行失败，重新规划
+                log.warn(&quot;步骤执行失败：{}&quot;, result.getError());
+                plan = replan(perception.getGoal(), results);
+                continue;
+            }
+        }
+
+        // 4. 生成最终回复
+        return generateResponse(userRequest, results);
+    }
+}</code></pre>
+<h4>Agentic Design Patterns</h4>
+<pre><code class="language-java">// Pattern 1: ReAct模式（Reasoning + Acting）
+@Service
+public class ReActAgent {
+
+    public String process(String query) {
+
+        StringBuilder thoughtProcess = new StringBuilder();
+        String current = query;
+
+        for (int i = 0; i &lt; 5; i++) { // 最多5轮思考
+
+            // Thought: 思考当前状态
+            String thought = llmService.think(current);
+            thoughtProcess.append(&quot;Thought &quot;).append(i + 1).append(&quot;: &quot;).append(thought).append(&quot;\n&quot;);
+
+            // Action: 决定下一步行动
+            String action = llmService.decideAction(thought);
+
+            if (action.equals(&quot;finish&quot;)) {
+                // 完成任务
+                return llmService.generateAnswer(thoughtProcess.toString());
+            }
+
+            // Observation: 执行行动并观察结果
+            String observation = executeAction(action);
+            thoughtProcess.append(&quot;Observation: &quot;).append(observation).append(&quot;\n&quot;);
+
+            // 更新当前状态
+            current = observation;
+        }
+
+        return llmService.generateAnswer(thoughtProcess.toString());
+    }
+}
+
+// Pattern 2: Reflexion模式（带反思的Agent）
+@Service
+public class ReflexionAgent {
+
+    public String executeWithReflexion(String goal) {
+
+        int maxAttempts = 3;
+
+        for (int attempt = 1; attempt &lt;= maxAttempts; attempt++) {
+
+            // 执行任务
+            ActionResult result = executeGoal(goal);
+
+            if (result.isSuccess()) {
+                return result.getOutput();
+            }
+
+            // 反思：分析失败原因
+            String reflection = reflect(goal, result);
+
+            // 修正：根据反思调整策略
+            adjustStrategy(reflection);
+        }
+
+        return &quot;抱歉，无法完成任务&quot;;
+    }
+
+    private String reflect(String goal, ActionResult result) {
+
+        String prompt = String.format(&quot;&quot;&quot;
+            任务：%s
+            结果：%s
+            错误：%s
+
+            请分析：
+            1. 为什么失败？
+            2. 应该如何改进？
+            3. 下次应该注意什么？
+
+            请提供反思和改进建议。
+            &quot;&quot;&quot;, goal, result.getOutput(), result.getError()
+        );
+
+        return llmService.chat(prompt);
+    }
+}</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>3. Harness Engineering（驾驭工程）</h3>
+<h4>什么是Harness Engineering？</h4>
+<strong>通俗解释：</strong>
+<p>
+Harness Engineering就是"驾驭AI系统的工程艺术"。就像驯马师驯服野马，Harness Engineering让强大的AI模型可控、可靠、安全地工作。
+</p>
+<strong>核心理念：</strong>
+<pre><code>Harness = Control + Reliability + Safety
 
 Control（控制）：
 ├─ 输入控制：验证和过滤
@@ -465,18 +974,107 @@ Safety（安全性）：
 ├─ 安全边界：限制操作范围
 ├─ 人工审核：高风险操作
 └─ 紧急停止：快速中断</code></pre>
-            </div>
+<h4>Harness架构设计</h4>
+<pre><code class="language-java">@Service
+public class AIHarness {
 
-            <div class="content-card">
-                <h2 id="agent协作模式">第二部分：Agent协作模式</h2>
+    @Autowired
+    private LLMAIService llmService;
 
-                <h3 id="a2a-agent-to-agent">1. A2A（Agent to Agent）</h3>
+    @Autowired
+    private InputValidator inputValidator;
 
-                <h4>什么是A2A？</h4>
-                <p><strong>通俗解释：</strong><br>A2A就是"Agent之间如何协作"。就像团队中不同成员分工合作，多个Agent也需要相互配合完成复杂任务。</p>
+    @Autowired
+    private OutputFilter outputFilter;
 
-                <p><strong>协作模式：</strong></p>
-                <pre><code>1. 层级协作（Hierarchical）
+    @Autowired
+    private SafetyMonitor safetyMonitor;
+
+    // 被控制的AI调用
+    public HarnessResult callLLM(String userInput) {
+
+        // Stage 1: 输入控制
+        ValidationResult validation = inputValidator.validate(userInput);
+        if (!validation.isValid()) {
+            return HarnessResult.rejected(validation.getReason());
+        }
+
+        // Stage 2: 安全检查
+        SafetyCheck safetyCheck = safetyMonitor.check(userInput);
+        if (safetyCheck.isUnsafe()) {
+            return HarnessResult.blocked(safetyCheck.getReason());
+        }
+
+        // Stage 3: 执行（带重试）
+        String rawOutput = executeWithRetry(userInput, 3);
+
+        // Stage 4: 输出过滤
+        String filteredOutput = outputFilter.filter(rawOutput);
+
+        // Stage 5: 最终审核
+        if (outputFilter.needsHumanReview(filteredOutput)) {
+            return HarnessResult.needsReview(filteredOutput);
+        }
+
+        return HarnessResult.success(filteredOutput);
+    }
+
+    private String executeWithRetry(String input, int maxRetries) {
+
+        for (int i = 0; i &lt; maxRetries; i++) {
+
+            try {
+                return llmService.chat(input);
+
+            } catch (RateLimitException e) {
+                // 限流：等待后重试
+                sleep(extractWaitTime(e));
+
+            } catch (TimeoutException e) {
+                // 超时：重试
+                if (i == maxRetries - 1) {
+                    throw e;
+                }
+
+            } catch (LLMException e) {
+                // 其他错误：可能需要降级
+                return fallbackStrategy(input);
+            }
+        }
+
+        throw new RuntimeException(&quot;Max retries exceeded&quot;);
+    }
+
+    // 降级策略
+    private String fallbackStrategy(String input) {
+
+        log.warn(&quot;Primary LLM failed, using fallback&quot;);
+
+        // 降级到备用模型
+        if (fallbackLLM != null) {
+            try {
+                return fallbackLLM.chat(input);
+            } catch (Exception e) {
+                log.error(&quot;Fallback LLM also failed&quot;, e);
+            }
+        }
+
+        // 最终降级：返回安全响应
+        return &quot;抱歉，服务暂时不可用，请稍后重试。&quot;;
+    }
+}</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="第二部分-agent协作模式">第二部分：Agent协作模式</h2>
+<h3>1. A2A（Agent to Agent）</h3>
+<h4>什么是A2A？</h4>
+<strong>通俗解释：</strong>
+<p>
+A2A就是"Agent之间如何协作"。就像团队中不同成员分工合作，多个Agent也需要相互配合完成复杂任务。
+</p>
+<strong>协作模式：</strong>
+<pre><code>1. 层级协作（Hierarchical）
    Manager Agent
    ├── Worker Agent 1
    ├── Worker Agent 2
@@ -496,32 +1094,94 @@ Safety（安全性）：
    Agent A 提出方案
    Agent B 提出质疑
    Agent C 综合意见</code></pre>
+<h4>A2A实现</h4>
+<pre><code class="language-java">@Service
+public class A2AOrchestrator {
 
-                <div class="success-box">
-                    <h4>✅ A2A实现示例</h4>
-                    <pre><code>// 层级协作
-Manager Agent 规划任务
-  ↓
-分配给 Worker Agents
-  ↓
-Manager 根据结果调整后续任务
-  ↓
-Manager 汇总结果
+    // 层级协作
+    public String hierarchicalExecution(String goal) {
 
-// 专业化协作
-1. Research Agent：收集信息
-2. Writing Agent：生成内容
-3. Review Agent：审核质量
-4. 迭代改进</code></pre>
-                </div>
+        // Manager Agent规划任务
+        Agent manager = new ManagerAgent();
+        Plan plan = manager.plan(goal);
 
-                <h3 id="a2ui-agent-to-user-interface">2. A2UI（Agent to User Interface）</h3>
+        // 分配给Worker Agents
+        List&lt;WorkerAgent&gt; workers = getWorkers();
+        List&lt;TaskResult&gt; results = new ArrayList&lt;&gt;();
 
-                <h4>什么是A2UI？</h4>
-                <p><strong>通俗解释：</strong><br>A2UI就是"Agent如何与用户交互"。传统UI是图形界面，A2UI是对话式、智能的交互方式。</p>
+        for (Task task : plan.getTasks()) {
 
-                <p><strong>交互模式：</strong></p>
-                <pre><code>1. 对话式交互（Conversational）
+            // 选择合适的Worker
+            WorkerAgent worker = selectBestWorker(workers, task);
+
+            // 执行任务
+            TaskResult result = worker.execute(task);
+            results.add(result);
+
+            // Manager根据结果调整后续任务
+            if (!result.isSuccess()) {
+                manager.rebalancePlan(plan, results);
+            }
+        }
+
+        // Manager汇总结果
+        return manager.synthesize(results);
+    }
+
+    // 平等协作
+    public String flatCollaboration(String problem) {
+
+        List&lt;Agent&gt; agents = List.of(
+            new ResearchAgent(),
+            new WritingAgent(),
+            new CodingAgent()
+        );
+
+        // 并行生成解决方案
+        List&lt;Solution&gt; solutions = agents.parallelStream()
+            .map(agent -&gt; agent.solve(problem))
+            .collect(Collectors.toList());
+
+        // 投票选择最佳方案
+        Solution bestSolution = voteOnBest(solutions);
+
+        return bestSolution.getContent();
+    }
+
+    // 专业化协作
+    public String specializedCollaboration(String request) {
+
+        // 1. Research Agent：收集信息
+        ResearchAgent researcher = new ResearchAgent();
+        ResearchResult info = researcher.gatherInfo(request);
+
+        // 2. Writing Agent：生成内容
+        WritingAgent writer = new WritingAgent();
+        String draft = writer.generateContent(request, info);
+
+        // 3. Review Agent：审核质量
+        ReviewAgent reviewer = new ReviewAgent();
+        ReviewResult review = reviewer.review(draft);
+
+        if (review.needsRevision()) {
+            // 迭代改进
+            draft = writer.revise(draft, review.getFeedback());
+        }
+
+        return draft;
+    }
+}</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>2. A2UI（Agent to User Interface）</h3>
+<h4>什么是A2UI？</h4>
+<strong>通俗解释：</strong>
+<p>
+A2UI就是"Agent如何与用户交互"。传统UI是图形界面，A2UI是对话式、智能的交互方式。
+</p>
+<strong>交互模式：</strong>
+<pre><code>1. 对话式交互（Conversational）
    用户：用自然语言表达需求
    Agent：理解并执行任务
 
@@ -537,21 +1197,163 @@ Manager 汇总结果
 4. 渐进式交互（Progressive）
    Agent：逐步展示工作过程
    用户：随时干预和调整</code></pre>
-            </div>
+<h4>A2UI实现</h4>
+<pre><code class="language-java">@Service
+public class A2UIService {
 
-            <div class="content-card">
-                <h2 id="通信协议标准">第三部分：通信协议标准</h2>
+    // 对话式交互
+    public ChatResponse chat(String userMessage, String sessionId) {
 
-                <h3 id="mcp-model-context-protocol">1. MCP（Model Context Protocol）</h3>
+        // 1. 理解用户意图
+        Intent intent = intentAnalyzer.analyze(userMessage);
 
-                <h4>什么是MCP？</h4>
-                <p><strong>通俗解释：</strong><br>MCP就是"AI应用之间通信的标准语言"。就像API让Web服务通信，MCP让AI应用能够互相连接和协作。</p>
+        // 2. 如果需要更多信息
+        if (intent.isMissingInformation()) {
 
-                <p><strong>技术定义：</strong><br>Model Context Protocol是一个开放标准，定义了AI应用之间如何共享上下文、交换信息和调用工具。</p>
+            // Agent主动提问
+            String question = generateClarifyingQuestion(intent);
 
-                <div class="highlight-box">
-                    <h4>🔗 MCP核心价值</h4>
-                    <pre><code>标准化之前：
+            return ChatResponse.question(
+                &quot;为了更好地帮助你，我需要了解：&quot;,
+                question
+            );
+        }
+
+        // 3. 执行任务
+        ActionResult result = executeTask(intent);
+
+        // 4. 返回结果（带进度展示）
+        return ChatResponse.result(result);
+    }
+
+    // 主动式交互
+    public void proactiveEngagement(String userId) {
+
+        // Agent主动发现可帮助的场景
+        UserProfile profile = getUserProfile(userId);
+
+        // 基于用户上下文提供建议
+        if (profile.isWorkingOnTask()) {
+
+            Task currentTask = profile.getCurrentTask();
+
+            // Agent分析可能的帮助
+            List&lt;Suggestion&gt; suggestions = analyzeAndSuggest(currentTask);
+
+            if (!suggestions.isEmpty()) {
+
+                // 主动提供建议（但不打扰）
+                sendProactiveSuggestion(userId, suggestions);
+            }
+        }
+    }
+
+    // 协作式交互
+    public InteractiveResponse collaborate(String goal) {
+
+        // 1. Agent分析任务
+        TaskAnalysis analysis = agent.analyze(goal);
+
+        // 2. 生成多个选项
+        List&lt;Option&gt; options = agent.generateOptions(analysis);
+
+        // 3. 展示给用户选择
+        return InteractiveResponse.options(
+            &quot;我分析了你的需求，有几个方案：&quot;,
+            options
+        );
+    }
+
+    // 渐进式交互
+    public Flux&lt;ProgressUpdate&gt; executeWithProgress(String goal) {
+
+        return Flux.create(sink -&gt; {
+
+            // Agent制定计划
+            Plan plan = agent.plan(goal);
+
+            // 逐步执行，实时汇报
+            for (Step step : plan.getSteps()) {
+
+                sink.next(ProgressUpdate.start(step));
+
+                ActionResult result = agent.execute(step);
+
+                if (result.isSuccess()) {
+                    sink.next(ProgressUpdate.complete(step, result));
+                } else {
+                    sink.next(ProgressUpdate.fail(step, result.getError()));
+                }
+            }
+
+            sink.complete();
+        });
+    }
+}</code></pre>
+<h4>A2UI最佳实践</h4>
+<pre><code class="language-java">// 前端集成示例（JavaScript）
+class AgentUI {
+
+    async chat(agent, userMessage) {
+
+        // 1. 发送消息
+        const response = await agent.chat(userMessage);
+
+        // 2. 处理不同类型的响应
+        switch (response.type) {
+
+            case &#39;question&#39;:
+                // Agent需要更多信息
+                this.showClarificationQuestion(response.question);
+                break;
+
+            case &#39;options&#39;:
+                // Agent提供多个选项
+                this.showOptions(response.options);
+                break;
+
+            case &#39;progress&#39;:
+                // Agent逐步执行任务
+                this.streamProgress(response.progress);
+                break;
+
+            case &#39;result&#39;:
+                // Agent返回最终结果
+                this.showResult(response.result);
+                break;
+        }
+    }
+
+    // 渐进式展示Agent工作过程
+    streamProgress(progressStream) {
+
+        progressStream.onUpdate((update) =&gt; {
+
+            this.updateProgress(update);
+
+            // 允许用户随时中断
+            if (this.userCancelled) {
+                progressStream.cancel();
+            }
+        });
+    }
+}</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="第三部分-通信协议标准">第三部分：通信协议标准</h2>
+<h3>1. MCP（Model Context Protocol）</h3>
+<h4>什么是MCP？</h4>
+<strong>通俗解释：</strong>
+<p>
+MCP就是"AI应用之间通信的标准语言"。就像API让Web服务通信，MCP让AI应用能够互相连接和协作。
+</p>
+<strong>技术定义：</strong>
+<p>
+Model Context Protocol是一个开放标准，定义了AI应用之间如何共享上下文、交换信息和调用工具。
+</p>
+<strong>核心价值：</strong>
+<pre><code>标准化之前：
 ├─ 每个AI应用各自为政
 ├─ 集成困难，成本高
 └─ 无法互通互操作
@@ -563,10 +1365,8 @@ Manager 汇总结果
 
 就像USB统一了外设接口，
 MCP统一了AI应用的连接方式</code></pre>
-                </div>
-
-                <h4>MCP架构</h4>
-                <pre><code>┌─────────────────────────────────────┐
+<h4>MCP架构</h4>
+<pre><code>┌─────────────────────────────────────┐
 │         MCP Client                  │
 │     (如：IDE、编辑器、应用)          │
 └──────────┬──────────────────────────┘
@@ -578,16 +1378,194 @@ MCP统一了AI应用的连接方式</code></pre>
 │         MCP Server                  │
 │     (如：AI服务、Agent系统)         │
 └─────────────────────────────────────┘</code></pre>
+<h4>MCP实现示例</h4>
+<pre><code class="language-java">// MCP Client实现
+@Service
+public class MCPClient {
 
-                <h3 id="skills-技能系统">2. Skills（技能）系统</h3>
+    private final MCPTransport transport;
 
-                <h4>什么是Skills？</h4>
-                <p><strong>通俗解释：</strong><br>Skills就是"Agent的能力模块"。就像人类有不同的技能（编程、写作、设计），Agent也可以有各种可组合的技能。</p>
+    // 连接到MCP Server
+    public void connect(String serverUrl) {
 
-                <p><strong>技术定义：</strong><br>Skill是Agent能力的封装单元，可以被多个Agent复用和组合。</p>
+        // 握手
+        HandshakeRequest handshake = HandshakeRequest.builder()
+            .protocolVersion(&quot;1.0&quot;)
+            .clientName(&quot;MyIDE&quot;)
+            .capabilities(List.of(
+                &quot;context&quot;,
+                &quot;tools&quot;,
+                &quot;resources&quot;
+            ))
+            .build();
 
-                <p><strong>技能类型：</strong></p>
-                <pre><code>1. 基础技能（Basic Skills）
+        HandshakeResponse response = transport.handshake(serverUrl, handshake);
+
+        if (!response.isSuccess()) {
+            throw new MCPConnectionException(&quot;握手失败&quot;);
+        }
+    }
+
+    // 共享上下文到MCP Server
+    public void shareContext(String contextId, Map&lt;String, Object&gt; context) {
+
+        ContextMessage message = ContextMessage.builder()
+            .contextId(contextId)
+            .metadata(context)
+            .timestamp(Instant.now())
+            .build();
+
+        transport.send(message);
+    }
+
+    // 调用MCP Server的工具
+    public ToolResult invokeTool(String toolName, Map&lt;String, Object&gt; params) {
+
+        ToolInvocationMessage message = ToolInvocationMessage.builder()
+            .toolName(toolName)
+            .parameters(params)
+            .requestId(UUID.randomUUID().toString())
+            .build();
+
+        transport.send(message);
+
+        // 等待响应
+        return transport.waitForResponse(message.getRequestId());
+    }
+
+    // 访问MCP Server的资源
+    public Resource accessResource(String resourceUri) {
+
+        ResourceRequestMessage message = ResourceRequestMessage.builder()
+            .uri(resourceUri)
+            .method(&quot;GET&quot;)
+            .build();
+
+        transport.send(message);
+
+        ResourceResponse response = transport.waitForResponse(
+            message.getRequestId()
+        );
+
+        return response.getResource();
+    }
+}
+
+// MCP Server实现
+@Service
+public class MCPServer {
+
+    private final MCPTransport transport;
+
+    // 处理MCP Client连接
+    @EventListener
+    public void onClientConnect(ConnectionEvent event) {
+
+        log.info(&quot;MCP Client connected: {}&quot;, event.getClientId());
+
+        // 发送欢迎消息和Server能力
+        ServerAnnouncement announcement = ServerAnnouncement.builder()
+            .serverName(&quot;AI Assistant&quot;)
+            .version(&quot;1.0&quot;)
+            .capabilities(List.of(
+                &quot;code-generation&quot;,
+                &quot;code-analysis&quot;,
+                &quot;refactoring&quot;
+            ))
+            .availableTools(getAvailableTools())
+            .build();
+
+        transport.send(event.getClientId(), announcement);
+    }
+
+    // 处理上下文共享
+    @EventListener
+    public void onContextMessage(ContextMessage message) {
+
+        // 存储上下文
+        contextStore.store(message.getContextId(), message.getMetadata());
+
+        log.debug(&quot;Context stored: {}&quot;, message.getContextId());
+    }
+
+    // 处理工具调用
+    @EventListener
+    public void onToolInvocation(ToolInvocationMessage message) {
+
+        String toolName = message.getToolName();
+        Map&lt;String, Object&gt; params = message.getParameters();
+
+        try {
+            // 查找并执行工具
+            Tool tool = toolRegistry.getTool(toolName);
+            Object result = tool.execute(params);
+
+            // 返回结果
+            ToolResponse response = ToolResponse.builder()
+                .requestId(message.getRequestId())
+                .success(true)
+                .result(result)
+                .build();
+
+            transport.send(message.getClientId(), response);
+
+        } catch (Exception e) {
+
+            // 返回错误
+            ToolResponse errorResponse = ToolResponse.builder()
+                .requestId(message.getRequestId())
+                .success(false)
+                .error(e.getMessage())
+                .build();
+
+            transport.send(message.getClientId(), errorResponse);
+        }
+    }
+
+    // 处理资源访问
+    @EventListener
+    public void onResourceRequest(ResourceRequestMessage message) {
+
+        String uri = message.getUri();
+
+        try {
+            Resource resource = resourceStore.get(uri);
+
+            ResourceResponse response = ResourceResponse.builder()
+                .requestId(message.getRequestId())
+                .success(true)
+                .resource(resource)
+                .build();
+
+            transport.send(message.getClientId(), response);
+
+        } catch (ResourceNotFoundException e) {
+
+            ResourceResponse errorResponse = ResourceResponse.builder()
+                .requestId(message.getRequestId())
+                .success(false)
+                .error(&quot;Resource not found: &quot; + uri)
+                .build();
+
+            transport.send(message.getClientId(), errorResponse);
+        }
+    }
+}</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>2. Skills（技能）系统</h3>
+<h4>什么是Skills？</h4>
+<strong>通俗解释：</strong>
+<p>
+Skills就是"Agent的能力模块"。就像人类有不同的技能（编程、写作、设计），Agent也可以有各种可组合的技能。
+</p>
+<strong>技术定义：</strong>
+<p>
+Skill是Agent能力的封装单元，可以被多个Agent复用和组合。
+</p>
+<strong>技能类型：</strong>
+<pre><code>1. 基础技能（Basic Skills）
    ├── 读写文件
    ├── 调用API
    └── 执行命令
@@ -602,101 +1580,204 @@ MCP统一了AI应用的连接方式</code></pre>
    ├── RAG技能（检索+生成）
    ├── 研发技能（代码+文档）
    └── 分析技能（数据+报告）</code></pre>
-
-                <div class="info-box">
-                    <h4>💡 Skills最佳实践</h4>
-                    <pre><code>// Skill Registry
+<h4>Skills实现</h4>
+<pre><code class="language-java">// Skill接口
 public interface Skill {
+
     String getName();
     String getDescription();
     boolean canExecute(String task);
     SkillResult execute(String task, Map&lt;String, Object&gt; params);
 }
 
+// 具体Skill实现
+@Component
+public class CodeGenerationSkill implements Skill {
+
+    @Autowired
+    private LLMAIService llmService;
+
+    @Override
+    public String getName() {
+        return &quot;code-generation&quot;;
+    }
+
+    @Override
+    public String getDescription() {
+        return &quot;根据需求生成代码&quot;;
+    }
+
+    @Override
+    public boolean canExecute(String task) {
+
+        // 判断任务是否需要代码生成
+        return task.toLowerCase().contains(&quot;生成&quot;) ||
+               task.toLowerCase().contains(&quot;写&quot;) ||
+               task.toLowerCase().contains(&quot;实现&quot;);
+    }
+
+    @Override
+    public SkillResult execute(String task, Map&lt;String, Object&gt; params) {
+
+        String prompt = buildPrompt(task, params);
+        String code = llmService.chat(prompt);
+
+        // 代码后处理
+        code = postProcess(code);
+
+        return SkillResult.success(code);
+    }
+}
+
+// Skill Registry
+@Service
+public class SkillRegistry {
+
+    private final Map&lt;String, Skill&gt; skills = new ConcurrentHashMap&lt;&gt;();
+
+    @PostConstruct
+    public void init() {
+
+        // 注册所有Skill
+        register(new CodeGenerationSkill());
+        register(new DocumentationSkill());
+        register(new DataAnalysisSkill());
+        register(new DebuggingSkill());
+    }
+
+    public void register(Skill skill) {
+        skills.put(skill.getName(), skill);
+    }
+
+    public Skill findBestSkill(String task) {
+
+        return skills.values().stream()
+            .filter(skill -&gt; skill.canExecute(task))
+            .findFirst()
+            .orElse(null);
+    }
+
+    public List&lt;Skill&gt; findRelevantSkills(String task) {
+
+        return skills.values().stream()
+            .filter(skill -&gt; skill.canExecute(task))
+            .collect(Collectors.toList());
+    }
+}
+
 // Agent使用Skills
-1. 查找合适的Skill
-2. 提取参数
-3. 执行Skill
-4. 返回结果</code></pre>
-                </div>
-            </div>
+@Service
+public class SkillfulAgent {
 
-            <div class="content-card">
-                <h2 id="学习路径">学习路径</h2>
+    @Autowired
+    private SkillRegistry skillRegistry;
 
-                <h3>Week 1-2：Engineering基础</h3>
-                <ul>
-                    <li>☐ 深入学习Prompt Engineering</li>
-                    <li>☐ 理解Context Engineering</li>
-                    <li>☐ 实践上下文管理</li>
-                </ul>
+    public String executeTask(String task) {
 
-                <h3>Week 3-4：Agentic Development</h3>
-                <ul>
-                    <li>☐ 学习Agentic Engineering</li>
-                    <li>☐ 实现简单Agent</li>
-                    <li>☐ 掌握Agent设计模式</li>
-                </ul>
+        // 1. 查找合适的Skill
+        Skill skill = skillRegistry.findBestSkill(task);
 
-                <h3>Week 5-6：协作模式</h3>
-                <ul>
-                    <li>☐ 理解A2A协作</li>
-                    <li>☐ 学习A2UI交互</li>
-                    <li>☐ 实现多Agent系统</li>
-                </ul>
+        if (skill == null) {
+            return &quot;抱歉，我没有相关的技能来完成这个任务&quot;;
+        }
 
-                <h3>Week 7-8：Harness工程</h3>
-                <ul>
-                    <li>☐ 学习Harness Engineering</li>
-                    <li>☐ 实现AI控制系统</li>
-                    <li>☐ 掌握安全监控</li>
-                </ul>
+        // 2. 提取参数
+        Map&lt;String, Object&gt; params = extractParameters(task);
 
-                <h3>Week 9-10：协议和标准</h3>
-                <ul>
-                    <li>☐ 理解MCP协议</li>
-                    <li>☐ 学习Skills系统</li>
-                    <li>☐ 实现互操作AI应用</li>
-                </ul>
+        // 3. 执行Skill
+        SkillResult result = skill.execute(task, params);
 
-                <hr style="margin: 30px 0; border: none; border-top: 1px solid #e5e7eb;">
+        // 4. 返回结果
+        return result.getOutput();
+    }
 
-                <h3>学习检查清单</h3>
-                <pre><code>Engineering方法：
-☐ 掌握Prompt Engineering
-☐ 理解Context Engineering
-☐ 了解Agentic Engineering
-☐ 了解Harness Engineering
+    // 复合Skill：组合多个Skill
+    public String executeCompositeTask(String task) {
+
+        List&lt;Skill&gt; skills = skillRegistry.findRelevantSkills(task);
+
+        // 按顺序执行多个Skill
+        List&lt;SkillResult&gt; results = new ArrayList&lt;&gt;();
+
+        for (Skill skill : skills) {
+
+            SkillResult result = skill.execute(task, Map.of());
+            results.add(result);
+
+            // 根据前一个Skill的结果调整参数
+            task = refineTask(task, result);
+        }
+
+        // 综合结果
+        return synthesizeResults(results);
+    }
+}</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="学习路径">学习路径</h2>
+<h3>Week 1-2：Engineering基础</h3>
+<pre><code>□ 深入学习Prompt Engineering
+□ 理解Context Engineering
+□ 实践上下文管理</code></pre>
+<h3>Week 3-4：Agentic Development</h3>
+<pre><code>□ 学习Agentic Engineering
+□ 实现简单Agent
+□ 掌握Agent设计模式</code></pre>
+<h3>Week 5-6：协作模式</h3>
+<pre><code>□ 理解A2A协作
+□ 学习A2UI交互
+□ 实现多Agent系统</code></pre>
+<h3>Week 7-8：Harness工程</h3>
+<pre><code>□ 学习Harness Engineering
+□ 实现AI控制系统
+□ 掌握安全监控</code></pre>
+<h3>Week 9-10：协议和标准</h3>
+<pre><code>□ 理解MCP协议
+□ 学习Skills系统
+□ 实现互操作AI应用</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="学习检查清单">学习检查清单</h2>
+<pre><code>Engineering方法：
+□ 掌握Prompt Engineering
+□ 理解Context Engineering
+□ 了解Agentic Engineering
+□ 了解Harness Engineering
 
 Agent协作：
-☐ 理解A2A模式
-☐ 理解A2UI交互
-☐ 能实现多Agent系统
-☐ 能设计Agent交互
+□ 理解A2A模式
+□ 理解A2UI交互
+□ 能实现多Agent系统
+□ 能设计Agent交互
 
 协议标准：
-☐ 理解MCP协议价值
-☐ 了解Skills系统
-☐ 能实现互操作AI应用</code></pre>
-
-                <div class="highlight-box">
-                    <h4>🎓 下一步学习</h4>
-                    <p><a href="./01.AI基础层概念详解.md">→ 01.AI基础层概念详解</a></p>
-                </div>
-
-                <p style="margin-top: 40px; font-size: 14px; color: #9ca3af; text-align: center;">
-                    文档版本：v1.0 | 更新时间：2026年3月 | 维护者：AI转型小组
-                </p>
-            </div>
+□ 理解MCP协议价值
+□ 了解Skills系统
+□ 能实现互操作AI应用</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<strong>下一步学习：</strong>
+<p>
+→ <a href="./01.AI基础层概念详解.md">01.AI基础层概念详解</a>
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<em>文档版本：v1.0</em>
+<em>更新时间：2026年3月</em>
+<em>维护者：AI转型小组</em>
+            </section>
         </main>
     </div>
 
-    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-        ↑
-    </button>
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top" onclick="scrollToTop()">↑</div>
 
     <script>
-        // Smooth scrolling for anchor links
+        // 平滑滚动
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -710,9 +1791,16 @@ Agent协作：
             });
         });
 
-        // Back to top button
-        const backToTop = document.querySelector('.back-to-top');
+        // 返回顶部
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
 
+        // 返回顶部按钮显示/隐藏
+        const backToTop = document.querySelector('.back-to-top');
         window.addEventListener('scroll', () => {
             if (window.pageYOffset > 300) {
                 backToTop.classList.add('show');
@@ -721,10 +1809,10 @@ Agent协作：
             }
         });
 
-        // Active navigation link
+        // 活动导航链接
         window.addEventListener('scroll', () => {
-            const sections = document.querySelectorAll('h2[id], h3[id], h4[id]');
-            const scrollPosition = window.pageYOffset + 150;
+            const sections = document.querySelectorAll('section[id]');
+            const scrollPosition = window.pageYOffset + 100;
 
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;

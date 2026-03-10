@@ -4,125 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>数据与知识层概念详解</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
     <style>
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
             line-height: 1.8;
-            color: #4b5563;
+            color: #333;
             background: #f5f7fa;
         }
 
         .container {
+            display: flex;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 20px;
+            gap: 30px;
         }
 
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 80px 0 60px;
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .hero h1 {
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .hero-meta {
-            font-size: 16px;
-            opacity: 0.95;
-            margin-bottom: 30px;
-        }
-
-        .hero-meta p {
-            margin: 8px 0;
-        }
-
-        .hero-meta strong {
-            font-weight: 600;
-        }
-
-        /* Layout */
-        .main-content {
-            display: flex;
-            gap: 40px;
-            margin-bottom: 60px;
-        }
-
-        /* Sidebar Navigation */
+        /* 侧边导航 */
         .sidebar {
             width: 280px;
             flex-shrink: 0;
-        }
-
-        .sidebar-sticky {
             position: sticky;
             top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
             background: white;
             border-radius: 12px;
             padding: 25px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            max-height: calc(100vh - 40px);
-            overflow-y: auto;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
         }
 
-        .sidebar h3 {
-            font-size: 18px;
-            color: #1f2937;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e5e7eb;
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
         }
 
-        .nav-links {
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .nav-menu {
             list-style: none;
         }
 
-        .nav-links li {
-            margin-bottom: 12px;
+        .nav-item {
+            margin-bottom: 8px;
         }
 
         .nav-link {
             display: block;
+            padding: 10px 15px;
             color: #4b5563;
             text-decoration: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            transition: all 0.3s ease;
+            border-radius: 8px;
+            transition: all 0.3s;
             font-size: 14px;
         }
 
         .nav-link:hover {
             background: #f3f4f6;
             color: #2563eb;
-            padding-left: 16px;
         }
 
         .nav-link.active {
             background: #2563eb;
             color: white;
-            font-weight: 500;
         }
 
-        /* Content Area */
-        .content {
+        /* 主内容区 */
+        .main-content {
             flex: 1;
             min-width: 0;
         }
@@ -132,39 +114,73 @@
             border-radius: 12px;
             padding: 40px;
             margin-bottom: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
         }
 
-        /* Headings */
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+        .meta-icon {
+            font-size: 20px;
+        }
+
         h2 {
             font-size: 32px;
-            font-weight: 700;
             color: #1f2937;
-            margin: 40px 0 25px;
+            margin: 50px 0 25px;
             padding-bottom: 15px;
             border-bottom: 3px solid #2563eb;
+            font-weight: 700;
         }
 
         h3 {
             font-size: 24px;
+            color: #374151;
+            margin: 35px 0 20px;
             font-weight: 600;
-            color: #1f2937;
-            margin: 30px 0 20px;
         }
 
         h4 {
             font-size: 20px;
+            color: #4b5563;
+            margin: 30px 0 15px;
             font-weight: 600;
-            color: #374151;
-            margin: 25px 0 15px;
         }
 
         p {
-            margin-bottom: 16px;
+            margin-bottom: 15px;
+            color: #4b5563;
+            line-height: 1.8;
             font-size: 16px;
         }
 
-        /* Code Blocks */
+        /* 代码块 */
         pre {
             background: #1f2937;
             color: #f3f4f6;
@@ -174,41 +190,23 @@
             margin: 20px 0;
             font-size: 14px;
             line-height: 1.6;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         code {
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-        }
-
-        :not(pre) > code {
             background: #f3f4f6;
             color: #dc2626;
-            padding: 3px 8px;
+            padding: 2px 8px;
             border-radius: 4px;
             font-size: 13px;
         }
 
-        /* Lists */
-        ul, ol {
-            margin-bottom: 20px;
-            padding-left: 30px;
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
         }
 
-        li {
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-
-        ul li {
-            list-style-type: disc;
-        }
-
-        ol li {
-            list-style-type: decimal;
-        }
-
-        /* Tables */
+        /* 表格 */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -242,10 +240,22 @@
             background: #f9fafb;
         }
 
-        /* Content Boxes */
-        .info-box {
-            background: #e0e7ff;
-            border-left: 4px solid #6366f1;
+        /* 列表 */
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 强调框 */
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
             padding: 25px;
             margin: 30px 0;
             border-radius: 0 8px 8px 0;
@@ -267,28 +277,52 @@
             border-radius: 0 8px 8px 0;
         }
 
-        .highlight-box {
-            background: #eff6ff;
-            border-left: 4px solid #2563eb;
+        .info-box {
+            background: #e0e7ff;
+            border-left: 4px solid #6366f1;
             padding: 25px;
             margin: 30px 0;
             border-radius: 0 8px 8px 0;
         }
 
-        .info-box h4,
-        .warning-box h4,
-        .success-box h4,
-        .highlight-box h4 {
-            margin-top: 0;
-            margin-bottom: 10px;
-            font-size: 16px;
+        /* 时间标签 */
+        .time-tag {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
         }
 
-        /* Links */
+        /* 问答框 */
+        .qa-box {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #2563eb;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .answer {
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 链接 */
         a {
             color: #2563eb;
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: color 0.3s;
         }
 
         a:hover {
@@ -296,14 +330,7 @@
             text-decoration: underline;
         }
 
-        /* Separator */
-        hr {
-            border: none;
-            border-top: 1px solid #e5e7eb;
-            margin: 40px 0;
-        }
-
-        /* Back to Top Button */
+        /* 返回顶部按钮 */
         .back-to-top {
             position: fixed;
             bottom: 30px;
@@ -318,38 +345,38 @@
             justify-content: center;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-            transition: all 0.3s ease;
-            border: none;
+            transition: all 0.3s;
             font-size: 24px;
-            z-index: 1000;
         }
 
         .back-to-top:hover {
             background: #1d4ed8;
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
         }
 
         .back-to-top.show {
             display: flex;
         }
 
-        /* Responsive Design */
+        /* 响应式设计 */
         @media (max-width: 968px) {
-            .main-content {
+            .container {
                 flex-direction: column;
             }
 
             .sidebar {
                 width: 100%;
-            }
-
-            .sidebar-sticky {
                 position: static;
                 max-height: none;
             }
+        }
 
-            .hero h1 {
+        @media (max-width: 640px) {
+            .content-card {
+                padding: 25px;
+            }
+
+            h1 {
                 font-size: 32px;
             }
 
@@ -357,146 +384,126 @@
                 font-size: 26px;
             }
 
-            h3 {
-                font-size: 22px;
-            }
-
-            .content-card {
-                padding: 25px;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .hero h1 {
-                font-size: 26px;
-            }
-
             .hero-meta {
-                font-size: 14px;
-            }
-
-            h2 {
-                font-size: 22px;
-            }
-
-            h3 {
-                font-size: 20px;
-            }
-
-            .content-card {
-                padding: 20px;
-            }
-
-            pre {
-                font-size: 12px;
-                padding: 15px;
-            }
-
-            table {
-                font-size: 14px;
-            }
-
-            th, td {
-                padding: 12px;
+                flex-direction: column;
+                gap: 10px;
             }
         }
 
-        /* Print Styles */
+        /* 打印样式 */
         @media print {
-            .sidebar,
-            .back-to-top {
+            .sidebar {
                 display: none;
             }
 
-            .content {
-                width: 100%;
+            .container {
+                max-width: 100%;
             }
 
             .content-card {
                 box-shadow: none;
-                border: 1px solid #e5e7eb;
-            }
-
-            .hero {
-                background: #667eea;
-                color: white;
-            }
-
-            pre {
-                white-space: pre-wrap;
+                page-break-inside: avoid;
             }
         }
-
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
+    
     </style>
 </head>
 <body>
-    <!-- Hero Section -->
-    <div class="hero">
-        <div class="container">
-            <h1>数据与知识层概念详解</h1>
-            <div class="hero-meta">
-                <p><strong>文档定位：</strong>AI应用的数据处理和知识管理指南</p>
-                <p><strong>学习目标：</strong>掌握构建高质量知识库的核心技术</p>
-                <p><strong>适合人群：</strong>需要搭建RAG系统和知识库的Java开发者</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Content -->
     <div class="container">
-        <div class="main-content">
-            <!-- Sidebar Navigation -->
-            <aside class="sidebar">
-                <div class="sidebar-sticky">
-                    <h3>目录导航</h3>
-                    <ul class="nav-links">
-                        <li><a href="#1-chunking分块策略" class="nav-link">1. Chunking（分块策略）</a></li>
-                        <li><a href="#2-data-cleaning数据清洗" class="nav-link">2. Data Cleaning（数据清洗）</a></li>
-                        <li><a href="#3-metadata-management元数据管理" class="nav-link">3. Metadata Management（元数据管理）</a></li>
-                        <li><a href="#4-re-ranking重排序" class="nav-link">4. Re-ranking（重排序）</a></li>
-                        <li><a href="#5-hybrid-search混合检索" class="nav-link">5. Hybrid Search（混合检索）</a></li>
-                        <li><a href="#6-knowledge-base-construction知识库构建" class="nav-link">6. Knowledge Base Construction（知识库构建）</a></li>
-                    </ul>
+        <!-- 侧边导航 -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">📚</span>
+                <span>AI核心概念</span>
+            </div>
+            <div class="subtitle">
+                AI应用的数据处理和知识管理指南
+            </div>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#intro" class="nav-link active">📖 概述</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#目录" class="nav-link">📚 目录</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#1-chunking-分块策略" class="nav-link">📚 1. Chunking（分块策略）</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#2-data-cleaning-数据清洗" class="nav-link">📚 2. Data Cleaning（数据清洗）</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#3-metadata-management-元数据管理" class="nav-link">📚 3. Metadata Management（元数据管理）</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#4-re-ranking-重排序" class="nav-link">📚 4. Re-ranking（重排序）</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#5-hybrid-search-混合检索" class="nav-link">📚 5. Hybrid Search（混合检索）</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#6-knowledge-base-construction-知识库构建" class="nav-link">📚 6. Knowledge Base Construction（知识库构建）</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#学习路径总结" class="nav-link">📚 学习路径总结</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#学习检查清单" class="nav-link">📚 学习检查清单</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 英雄区域 -->
+            <section class="hero-section">
+                <h1>数据与知识层概念详解</h1>
+                <div class="hero-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon">🎯</span>
+                        <span>学习目标：掌握构建高质量知识库的核心技术</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">👥</span>
+                        <span>适合人群：需要搭建RAG系统和知识库的Java开发者</span>
+                    </div>
                 </div>
-            </aside>
+            </section>
 
-            <!-- Content Area -->
-            <main class="content">
-                <!-- Section 1: Chunking -->
-                <section id="1-chunking分块策略" class="content-card">
-                    <h2>1. Chunking（分块策略）</h2>
-
-                    <h3>🎯 掌握程度：必须掌握</h3>
-
-                    <h3>什么是Chunking？</h3>
-
-                    <p><strong>通俗解释：</strong><br>
-                    Chunking就是"把长文章切成小段"。就像把长面包切成片，方便食用。把长文档切成小段，方便AI理解和检索。</p>
-
-                    <p><strong>技术定义：</strong><br>
-                    将长文本分割成适合处理的小块（chunks），是构建向量数据库的核心步骤。</p>
-
-                    <h3>为什么需要Chunking？</h3>
-
-                    <pre><code>问题：长文档无法直接处理
+            <!-- 内容区域 -->
+            <section id="intro" class="content-card">
+                <p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="目录">目录</h2>
+<ul>
+<li><a href="#1-chunking分块策略">1. Chunking（分块策略）</a></li>
+<li><a href="#2-data-cleaning数据清洗">2. Data Cleaning（数据清洗）</a></li>
+<li><a href="#3-metadata-management元数据管理">3. Metadata Management（元数据管理）</a></li>
+<li><a href="#4-re-ranking重排序">4. Re-ranking（重排序）</a></li>
+<li><a href="#5-hybrid-search混合检索">5. Hybrid Search（混合检索）</a></li>
+<li><a href="#6-knowledge-base-construction知识库构建">6. Knowledge Base Construction（知识库构建）</a></li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="1-chunking-分块策略">1. Chunking（分块策略）</h2>
+<h3>🎯 掌握程度：必须掌握</h3>
+<h3>什么是Chunking？</h3>
+<strong>通俗解释：</strong>
+<p>
+Chunking就是"把长文章切成小段"。就像把长面包切成片，方便食用。把长文档切成小段，方便AI理解和检索。
+</p>
+<strong>技术定义：</strong>
+<p>
+将长文本分割成适合处理的小块（chunks），是构建向量数据库的核心步骤。
+</p>
+<h3>为什么需要Chunking？</h3>
+<pre><code>问题：长文档无法直接处理
 
 ❌ 整个文档作为一个向量：
 ├─ 文档太长：超过Token限制
@@ -509,12 +516,9 @@
 ├─ 语义清晰：每块语义完整
 ├─ 存储高效：多个向量，灵活检索
 └─ 成本降低：只检索需要的部分</code></pre>
-
-                    <h3>Chunking策略对比</h3>
-
-                    <h4>策略1：固定大小分块（Fixed-size）</h4>
-
-                    <pre><code>@Service
+<h3>Chunking策略对比</h3>
+<h4>策略1：固定大小分块（Fixed-size）</h4>
+<pre><code class="language-java">@Service
 public class FixedSizeChunker {
 
     private static final int CHUNK_SIZE = 500;  // 字符数
@@ -545,31 +549,28 @@ public class FixedSizeChunker {
         return chunks;
     }
 }</code></pre>
-
-                    <p><strong>优点：</strong></p>
-                    <ul>
-                        <li>实现简单</li>
-                        <li>性能好</li>
-                        <li>覆盖全面</li>
-                    </ul>
-
-                    <p><strong>缺点：</strong></p>
-                    <ul>
-                        <li>可能在句子中间截断</li>
-                        <li>语义不完整</li>
-                    </ul>
-
-                    <hr>
-
-                    <h4>策略2：段落分块（Paragraph-based）</h4>
-
-                    <pre><code>@Service
+<strong>优点：</strong>
+<ul>
+<li>实现简单</li>
+<li>性能好</li>
+<li>覆盖全面</li>
+</ul>
+<strong>缺点：</strong>
+<ul>
+<li>可能在句子中间截断</li>
+<li>语义不完整</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h4>策略2：段落分块（Paragraph-based）</h4>
+<pre><code class="language-java">@Service
 public class ParagraphChunker {
 
     public List&lt;String&gt; chunkByParagraph(String text) {
 
         // 按段落分割（\n\n 或 \n）
-        String[] paragraphs = text.split("\\n\\n|\\n");
+        String[] paragraphs = text.split(&quot;\\n\\n|\\n&quot;);
 
         List&lt;String&gt; chunks = new ArrayList&lt;&gt;();
         StringBuilder currentChunk = new StringBuilder();
@@ -602,7 +603,7 @@ public class ParagraphChunker {
             }
 
             // 添加段落
-            currentChunk.append(paragraph).append("\n\n");
+            currentChunk.append(paragraph).append(&quot;\n\n&quot;);
             currentLength += paragraph.length() + 2;
         }
 
@@ -626,7 +627,7 @@ public class ParagraphChunker {
             // 尝试在句子边界分割
             if (end &lt; paragraph.length()) {
                 // 往前找最近的句号
-                int lastPeriod = paragraph.lastIndexOf("。", end);
+                int lastPeriod = paragraph.lastIndexOf(&quot;。&quot;, end);
                 if (lastPeriod &gt; start) {
                     end = lastPeriod + 1;
                 }
@@ -639,25 +640,22 @@ public class ParagraphChunker {
         return chunks;
     }
 }</code></pre>
-
-                    <p><strong>优点：</strong></p>
-                    <ul>
-                        <li>保持段落完整</li>
-                        <li>语义相对完整</li>
-                        <li>更易阅读</li>
-                    </ul>
-
-                    <p><strong>缺点：</strong></p>
-                    <ul>
-                        <li>实现复杂</li>
-                        <li>段落长度不均</li>
-                    </ul>
-
-                    <hr>
-
-                    <h4>策略3：语义分块（Semantic）</h4>
-
-                    <pre><code>@Service
+<strong>优点：</strong>
+<ul>
+<li>保持段落完整</li>
+<li>语义相对完整</li>
+<li>更易阅读</li>
+</ul>
+<strong>缺点：</strong>
+<ul>
+<li>实现复杂</li>
+<li>段落长度不均</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h4>策略3：语义分块（Semantic）</h4>
+<pre><code class="language-java">@Service
 public class SemanticChunker {
 
     @Autowired
@@ -666,7 +664,7 @@ public class SemanticChunker {
     public List&lt;String&gt; chunkBySemantic(String text) {
 
         // 1. 先按段落粗分
-        List&lt;String&gt; paragraphs = Arrays.asList(text.split("\\n\\n"));
+        List&lt;String&gt; paragraphs = Arrays.asList(text.split(&quot;\\n\\n&quot;));
 
         // 2. 计算每段的向量
         List&lt;float[]&gt; embeddings = paragraphs.stream()
@@ -692,7 +690,7 @@ public class SemanticChunker {
 
         for (int i = 0; i &lt; paragraphs.size(); i++) {
 
-            currentChunk.append(paragraphs.get(i)).append("\n\n");
+            currentChunk.append(paragraphs.get(i)).append(&quot;\n\n&quot;);
 
             // 如果是最后一段，或与下一段语义差异大
             if (i == paragraphs.size() - 1 ||
@@ -716,34 +714,31 @@ public class SemanticChunker {
         return sorted.get(index);
     }
 }</code></pre>
-
-                    <p><strong>优点：</strong></p>
-                    <ul>
-                        <li>语义完整性最好</li>
-                        <li>检索质量最高</li>
-                    </ul>
-
-                    <p><strong>缺点：</strong></p>
-                    <ul>
-                        <li>计算成本高（需要多次Embedding）</li>
-                        <li>实现复杂</li>
-                    </ul>
-
-                    <hr>
-
-                    <h4>策略4：递归分块（Recursive）</h4>
-
-                    <pre><code>@Service
+<strong>优点：</strong>
+<ul>
+<li>语义完整性最好</li>
+<li>检索质量最高</li>
+</ul>
+<strong>缺点：</strong>
+<ul>
+<li>计算成本高（需要多次Embedding）</li>
+<li>实现复杂</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h4>策略4：递归分块（Recursive）</h4>
+<pre><code class="language-java">@Service
 public class RecursiveChunker {
 
     // 多级分割符：从粗到细
     private static final String[] SEPARATORS = {
-        "\n\n\n",  // 三次换行（章节）
-        "\n\n",    // 两次换行（段落）
-        "\n",      // 一次换行（行）
-        "。",      // 句号（句子）
-        "，",      // 逗号（短语）
-        " "        // 空格（词）
+        &quot;\n\n\n&quot;,  // 三次换行（章节）
+        &quot;\n\n&quot;,    // 两次换行（段落）
+        &quot;\n&quot;,      // 一次换行（行）
+        &quot;。&quot;,      // 句号（句子）
+        &quot;，&quot;,      // 逗号（短语）
+        &quot; &quot;        // 空格（词）
     };
 
     public List&lt;String&gt; chunkRecursive(String text,
@@ -840,23 +835,22 @@ public class RecursiveChunker {
         return chunks;
     }
 }</code></pre>
-
-                    <p><strong>优点：</strong></p>
-                    <ul>
-                        <li>灵活性高</li>
-                        <li>保持语义结构</li>
-                        <li>适用各种文本</li>
-                    </ul>
-
-                    <p><strong>缺点：</strong></p>
-                    <ul>
-                        <li>实现复杂</li>
-                        <li>需要调参</li>
-                    </ul>
-
-                    <h3>最佳实践</h3>
-
-                    <pre><code>@Service
+<strong>优点：</strong>
+<ul>
+<li>灵活性高</li>
+<li>保持语义结构</li>
+<li>适用各种文本</li>
+</ul>
+<strong>缺点：</strong>
+<ul>
+<li>实现复杂</li>
+<li>需要调参</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>最佳实践</h3>
+<pre><code class="language-java">@Service
 public class ChunkingBestPractices {
 
     // 推荐配置
@@ -896,13 +890,13 @@ public class ChunkingBestPractices {
 
     private String cleanText(String text) {
         // 移除多余空白
-        text = text.replaceAll("\\s+", " ");
+        text = text.replaceAll(&quot;\\s+&quot;, &quot; &quot;);
 
         // 修复乱码
         text = fixEncoding(text);
 
         // 统一换行符
-        text = text.replaceAll("\\r\\n|\\r", "\n");
+        text = text.replaceAll(&quot;\\r\\n|\\r&quot;, &quot;\n&quot;);
 
         return text;
     }
@@ -912,18 +906,16 @@ public class ChunkingBestPractices {
                                               int total) {
 
         Map&lt;String, Object&gt; metadata = new HashMap&lt;&gt;();
-        metadata.put("source", source);
-        metadata.put("chunk_index", index);
-        metadata.put("total_chunks", total);
-        metadata.put("timestamp", Instant.now());
+        metadata.put(&quot;source&quot;, source);
+        metadata.put(&quot;chunk_index&quot;, index);
+        metadata.put(&quot;total_chunks&quot;, total);
+        metadata.put(&quot;timestamp&quot;, Instant.now());
 
         return metadata;
     }
 }</code></pre>
-
-                    <h3>Chunk Size选择</h3>
-
-                    <pre><code>推荐配置（经验值）：
+<h3>Chunk Size选择</h3>
+<pre><code>推荐配置（经验值）：
 
 短文本（&lt; 1000字）：
 ├─ Chunk Size: 200-300 字符
@@ -944,1241 +936,1051 @@ public class ChunkingBestPractices {
 ├─ Chunk Size: 按代码块分割
 ├─ Overlap: 保留上下文
 └─ 场景：API文档、代码</code></pre>
-                </section>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="2-data-cleaning-数据清洗">2. Data Cleaning（数据清洗）</h2>
+<h3>🎯 掌握程度：必须掌握</h3>
+<h3>什么是数据清洗？</h3>
+<strong>通俗解释：</strong>
+<p>
+数据清洗就像"打扫房间"。把脏乱的数据整理干净，让知识库更整洁、更准确。
+</p>
+<strong>技术定义：</strong>
+<p>
+去除数据中的噪声、错误、重复等内容，提升数据质量的过程。
+</p>
+<h3>为什么需要数据清洗？</h3>
+<pre><code>脏数据的问题：
+❌ 影响检索质量
+   &quot;如何    使用    Java？&quot;  → 多余空格
 
-                <!-- Section 2: Data Cleaning -->
-                <section id="2-data-cleaning数据清洗" class="content-card">
-                    <h2>2. Data Cleaning（数据清洗）</h2>
+❌ 影响向量化
+   &quot;[乱码内容]使用说明&quot; → 向量不准确
 
-                    <h3>🎯 掌握程度：必须掌握</h3>
+❌ 影响用户体验
+   &quot;详见附表一（见下页）&quot; → 脱离上下文，无意义
 
-                    <h3>什么是数据清洗？</h3>
+清洗后的效果：
+✅ 检索更准确
+✅ 向量更精准
+✅ 用户体验更好</code></pre>
+<h3>数据清洗技术</h3>
+<h4>技术1：文本规范化</h4>
+<pre><code class="language-java">@Service
+public class TextNormalizer {
 
-                    <p><strong>通俗解释：</strong><br>
-                    数据清洗就像"打扫房间"。把脏乱的数据整理干净，让知识库更整洁、更准确。</p>
+    public String normalize(String text) {
 
-                    <p><strong>技术定义：</strong><br>
-                    去除数据中的噪声、错误、重复等内容，提升数据质量的过程。</p>
+        // 1. 统一换行符
+        text = text.replaceAll(&quot;\\r\\n|\\r&quot;, &quot;\n&quot;);
 
-                    <h3>为什么需要数据清洗？</h3>
+        // 2. 移除多余空白
+        text = text.replaceAll(&quot;\\s+&quot;, &quot; &quot;);
 
-                    <pre><code>脏数据的问题：
-❌ 影响检索质量：垃圾进，垃圾出
-❌ 浪费存储空间：重复数据占用资源
-❌ 降低模型性能：噪声干扰语义理解
-❌ 误导AI回答：错误信息产生错误答案
+        // 3. 移除控制字符
+        text = text.replaceAll(&quot;[\\p{Cntrl}]&quot;, &quot;&quot;);
 
-✅ 清洗后的好处：
-├─ 提升检索精度：相关性更高
-├─ 节省存储成本：去重减少冗余
-├─ 提高响应速度：数据量更小
-└─ 保证回答质量：信息准确可靠</code></pre>
+        // 4. 统一引号
+        text = text.replaceAll(&quot;[\u201c\u201d]&quot;, &quot;\&quot;&quot;);  // 中文引号→英文
+        text = text.replaceAll(&quot;[\u2018\u2019]&quot;, &quot;&#39;&quot;);  // 中文单引号→英文
 
-                    <h3>常见数据问题</h3>
-
-                    <pre><code>1. 格式问题
-   ├─ 混乱换行：\r\n \n \r 不统一
-   ├─ 特殊字符：乱码、控制字符
-   ├─ 空白过多：连续空格、空行
-   └─ 编码问题：UTF-8 GBK 混乱
-
-2. 内容问题
-   ├─ 重复内容：完全相同或高度相似
-   ├─ 无意义内容：广告、导航栏、版权声明
-   ├─ 过时信息：失效的链接、过期的数据
-   └─ 错误信息：拼写错误、逻辑矛盾
-
-3. 结构问题
-   ├─ 缺失字段：关键字段为空
-   ├─ 格式不一致：日期、数字格式混乱
-   ├─ 嵌套过深：HTML标签嵌套复杂
-   └─ 编码特殊字符：HTML实体未解码</code></pre>
-
-                    <h3>数据清洗流程</h3>
-
-                    <pre><code>@Service
-public class DataCleaningPipeline {
-
-    public String clean(String rawText) {
-
-        // 1. 基础清洗
-        String text = basicClean(rawText);
-
-        // 2. 深度清洗
-        text = deepClean(text);
-
-        // 3. 结构化处理
-        text = structureClean(text);
-
-        // 4. 验证
-        validate(text);
+        // 5. 全角转半角
+        text = fullWidthToHalfWidth(text);
 
         return text;
     }
 
-    private String basicClean(String text) {
-        // 统一换行符
-        text = text.replaceAll("\\r\\n|\\r", "\n");
-
-        // 移除控制字符
-        text = text.replaceAll("[\\p{Cntrl}&&[^\n\t]]", "");
-
-        // 移除多余空白
-        text = text.replaceAll(" +", " ");
-        text = text.replaceAll("\n{3,}", "\n\n");
-
-        // 修复编码
-        text = fixEncoding(text);
-
-        return text;
-    }
-
-    private String deepClean(String text) {
-        // 移除页眉页脚
-        text = removeHeadersFooters(text);
-
-        // 移除版权声明
-        text = removeCopyright(text);
-
-        // 移除广告内容
-        text = removeAds(text);
-
-        // 移除无意义内容
-        text = removeNoise(text);
-
-        return text;
-    }
-
-    private String structureClean(String text) {
-        // 解码HTML实体
-        text = HtmlUtils.htmlUnescape(text);
-
-        // 标准化日期格式
-        text = normalizeDates(text);
-
-        // 标准化数字格式
-        text = normalizeNumbers(text);
-
-        return text;
-    }
-
-    private void validate(String text) {
-        // 检查是否为空
-        if (text.trim().isEmpty()) {
-            throw new IllegalArgumentException("清洗后文本为空");
-        }
-
-        // 检查长度
-        if (text.length() &lt; 50) {
-            throw new IllegalArgumentException("文本过短");
-        }
-
-        // 检查是否包含有效内容
-        if (!hasValidContent(text)) {
-            throw new IllegalArgumentException("文本无有效内容");
-        }
-    }
-}</code></pre>
-
-                    <h3>高级清洗技巧</h3>
-
-                    <pre><code>@Service
-public class AdvancedDataCleaning {
-
-    // 智能去重
-    public String deduplicate(String text) {
-        // 1. 计算文本指纹（SimHash）
-        String fingerprint = simHash(text);
-
-        // 2. 查找相似文档
-        List&lt;String&gt; similarDocs = findSimilar(fingerprint);
-
-        // 3. 如果存在高度相似文档，返回已存在的
-        if (hasHighlySimilar(similarDocs, text)) {
-            return null;  // 表示重复，不保存
-        }
-
-        return text;
-    }
-
-    // 语言检测
-    public String filterByLanguage(String text) {
-        // 检测文本语言
-        Language language = detectLanguage(text);
-
-        // 只保留中文和英文
-        if (!language.equals(Language.CHINESE) &&
-            !language.equals(Language.ENGLISH)) {
-            return null;
-        }
-
-        return text;
-    }
-
-    // 内容质量评分
-    public double scoreQuality(String text) {
-        double score = 0.0;
-
-        // 1. 长度评分（适中为佳）
-        int length = text.length();
-        if (length &gt;= 200 && length &lt;= 5000) {
-            score += 0.3;
-        }
-
-        // 2. 结构评分（有段落结构）
-        if (text.contains("\n\n")) {
-            score += 0.2;
-        }
-
-        // 3. 内容评分（包含关键词）
-        if (containsKeywords(text)) {
-            score += 0.3;
-        }
-
-        // 4. 完整性评分（句子完整）
-        if (hasCompleteSentences(text)) {
-            score += 0.2;
-        }
-
-        return score;
-    }
-
-    // 移除敏感信息
-    public String removeSensitiveInfo(String text) {
-        // 移除邮箱
-        text = text.replaceAll("\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b", "[邮箱]");
-
-        // 移除手机号
-        text = text.replaceAll("\\b1[3-9]\\d{9}\\b", "[手机号]");
-
-        // 移除身份证号
-        text = text.replaceAll("\\b\\d{17}[\\dXx]\\b", "[身份证]");
-
-        // 移除银行卡号
-        text = text.replaceAll("\\b\\d{16,19}\\b", "[银行卡]");
-
-        return text;
-    }
-}</code></pre>
-
-                    <h3>最佳实践</h3>
-
-                    <div class="info-box">
-                        <h4>💡 数据清洗建议</h4>
-                        <ul>
-                            <li><strong>渐进式清洗：</strong>先做基础清洗，再做深度清洗，每步都验证结果</li>
-                            <li><strong>保留原始数据：</strong>清洗前备份原始数据，以便回溯和调试</li>
-                            <li><strong>可配置化：</strong>将清洗规则配置化，便于调整和维护</li>
-                            <li><strong>质量监控：</strong>建立数据质量监控机制，及时发现和修复问题</li>
-                            <li><strong>A/B测试：</strong>对比不同清洗策略的效果，选择最优方案</li>
-                        </ul>
-                    </div>
-
-                    <pre><code>推荐清洗优先级：
-1️⃣ 高优先级（必须清洗）：
-   ├─ 统一编码和换行符
-   ├─ 移除控制字符
-   ├─ 去除完全重复的内容
-   └─ 移除敏感信息
-
-2️⃣ 中优先级（建议清洗）：
-   ├─ 移除页眉页脚
-   ├─ 移除广告和导航
-   ├─ 去除高度相似内容
-   └─ 修复拼写错误
-
-3️⃣ 低优先级（可选清洗）：
-   ├─ 内容质量评分
-   ├─ 语言过滤
-   ├─ 过时信息清理
-   └─ 格式美化</code></pre>
-                </section>
-
-                <!-- Section 3: Metadata Management -->
-                <section id="3-metadata-management元数据管理" class="content-card">
-                    <h2>3. Metadata Management（元数据管理）</h2>
-
-                    <h3>🎯 掌握程度：必须掌握</h3>
-
-                    <h3>什么是元数据？</h3>
-
-                    <p><strong>通俗解释：</strong><br>
-                    元数据就是"数据的标签"。就像商品的价格标签，告诉你这个商品叫什么、多少钱、哪里生产的。元数据告诉你文档是谁写的、什么时候写的、属于哪个类别。</p>
-
-                    <p><strong>技术定义：</strong><br>
-                    描述数据属性的信息，包括数据的来源、结构、特征、关系等。</p>
-
-                    <h3>为什么需要元数据？</h3>
-
-                    <pre><code>元数据的作用：
-📚 数据管理
-├─ 追踪来源：知道数据从哪里来
-├─ 版本控制：管理数据的不同版本
-├─ 分类组织：按类别组织数据
-└─ 权限控制：控制谁可以访问
-
-🔍 检索增强
-├─ 精确过滤：按元数据筛选结果
-├─ 上下文补充：给AI提供更多背景信息
-├─ 结果排序：按相关性、时间等排序
-└─ 结果去重：识别重复内容
-
-💪 智能应用
-├─ 个性化推荐：基于用户偏好
-├─ 权限控制：基于角色访问
-├─ 审计追踪：记录数据使用情况
-└─ 数据分析：分析数据使用模式</code></pre>
-
-                    <h3>常见元数据类型</h3>
-
-                    <pre><code>1. 基础元数据
-   ├─ 文档ID：唯一标识符
-   ├─ 标题：文档标题
-   ├─ 摘要：内容摘要
-   ├─ 关键词：内容关键词
-   └─ 语言：文档语言
-
-2. 来源元数据
-   ├─ 来源URL：原始网址
-   ├─ 来源类型：网页/文件/数据库
-   ├─ 作者：作者名称
-   ├─ 创建时间：文档创建日期
-   └─ 更新时间：最后更新日期
-
-3. 内容元数据
-   ├─ 字数：文档长度
-   ├─ 段落数：结构信息
-   ├─ 分类：内容类别
-   ├─ 标签：内容标签
-   └─ 相似文档：相关文档ID
-
-4. 技术元数据
-   ├─ Chunk索引：当前chunk索引
-   ├─ 总Chunk数：文档总chunk数
-   ├─ 向量模型：使用的embedding模型
-   ├─ Token数：token使用量
-   └─ 处理时间：处理耗时
-
-5. 业务元数据
-   ├─ 部门：所属部门
-   ├─ 项目：所属项目
-   ├─ 优先级：重要程度
-   ├─ 访问权限：谁可以访问
-   └─ 有效期：数据有效期</code></pre>
-
-                    <h3>元数据管理实现</h3>
-
-                    <pre><code>@Service
-public class MetadataManager {
-
-    // 创建文档元数据
-    public DocumentMetadata createDocumentMetadata(
-        String content,
-        String sourceUrl,
-        String author) {
-
-        DocumentMetadata metadata = new DocumentMetadata();
-
-        // 基础信息
-        metadata.setId(UUID.randomUUID().toString());
-        metadata.setTitle(extractTitle(content));
-        metadata.setSummary(extractSummary(content));
-
-        // 来源信息
-        metadata.setSourceUrl(sourceUrl);
-        metadata.setSourceType("web");
-        metadata.setAuthor(author);
-        metadata.setCreatedAt(Instant.now());
-
-        // 内容分析
-        metadata.setWordCount(countWords(content));
-        metadata.setLanguage(detectLanguage(content));
-        metadata.setKeywords(extractKeywords(content));
-
-        // 技术信息
-        metadata.setVectorModel("text-embedding-ada-002");
-        metadata.setEstimatedTokens(estimateTokens(content));
-
-        return metadata;
-    }
-
-    // 创建Chunk元数据
-    public ChunkMetadata createChunkMetadata(
-        DocumentMetadata docMetadata,
-        String chunkContent,
-        int chunkIndex,
-        int totalChunks) {
-
-        ChunkMetadata metadata = new ChunkMetadata();
-
-        // 继承文档元数据
-        metadata.setDocumentId(docMetadata.getId());
-        metadata.setTitle(docMetadata.getTitle());
-        metadata.setSourceUrl(docMetadata.getSourceUrl());
-        metadata.setAuthor(docMetadata.getAuthor());
-
-        // Chunk特有信息
-        metadata.setChunkIndex(chunkIndex);
-        metadata.setTotalChunks(totalChunks);
-        metadata.setContentLength(chunkContent.length());
-        metadata.setCreatedAt(Instant.now());
-
-        // 计算chunk的位置信息
-        metadata.setStartPosition(calculateStartPosition(chunkIndex, chunkContent.length()));
-        metadata.setEndPosition(metadata.getStartPosition() + chunkContent.length());
-
-        return metadata;
-    }
-
-    // 提取标题
-    private String extractTitle(String content) {
-        // 尝试从内容中提取标题（如第一个#标题）
-        Pattern pattern = Pattern.compile("^#\\s+(.+)$", Pattern.MULTILINE);
-        Matcher matcher = pattern.matcher(content);
-
-        if (matcher.find()) {
-            return matcher.group(1).trim();
-        }
-
-        // 如果没有找到，使用前50个字符作为标题
-        return content.substring(0, Math.min(50, content.length())) + "...";
-    }
-
-    // 提取摘要
-    private String extractSummary(String content) {
-        // 移除标题和空行
-        String[] lines = content.split("\n");
-        StringBuilder summary = new StringBuilder();
-
-        for (String line : lines) {
-            line = line.trim();
-            if (!line.isEmpty() && !line.startsWith("#")) {
-                summary.append(line).append(" ");
-                if (summary.length() &gt;= 200) {
-                    break;
-                }
+    private String fullWidthToHalfWidth(String text) {
+        StringBuilder result = new StringBuilder();
+
+        for (char c : text.toCharArray()) {
+            if (c &gt;= 0xFF01 &amp;&amp; c &lt;= 0xFF5E) {
+                // 全角字符转半角
+                result.append((char) (c - 0xFEE0));
+            } else if (c == 0x3000) {
+                // 全角空格转半角
+                result.append(&#39; &#39;);
+            } else {
+                result.append(c);
             }
         }
 
-        return summary.toString().trim();
-    }
-
-    // 提取关键词
-    private List&lt;String&gt; extractKeywords(String content) {
-        // 使用TF-IDF或RAKE算法提取关键词
-        // 这里简化处理，使用词频统计
-        Map&lt;String, Integer&gt; wordFreq = new HashMap&lt;&gt;();
-
-        // 分词（简化版）
-        String[] words = content.split("[\\s\\p{Punct}]+");
-
-        for (String word : words) {
-            if (word.length() &gt;= 2) {
-                wordFreq.merge(word, 1, Integer::sum);
-            }
-        }
-
-        // 返回词频最高的10个词
-        return wordFreq.entrySet().stream()
-            .sorted(Map.Entry.&lt;String, Integer&gt;comparingByValue().reversed())
-            .limit(10)
-            .map(Map.Entry::getKey)
-            .collect(Collectors.toList());
+        return result.toString();
     }
 }</code></pre>
+<h4>技术2：去除无用信息</h4>
+<pre><code class="language-java">@Service
+public class ContentCleaner {
 
-                    <h3>元数据在RAG中的应用</h3>
+    public String clean(String text) {
 
-                    <pre><code>@Service
-public class MetadataEnhancedRetrieval {
+        // 1. 移除页眉页脚
+        text = removeHeadersAndFooters(text);
+
+        // 2. 移除页码
+        text = removePageNumbers(text);
+
+        // 3. 移除特殊标记
+        text = removeSpecialMarkers(text);
+
+        // 4. 移除HTML标签
+        text = removeHtmlTags(text);
+
+        return text;
+    }
+
+    private String removeHeadersAndFooters(String text) {
+
+        // 移除常见的页眉页脚模式
+        String[] patterns = {
+            &quot;第.*页.*共.*页&quot;,
+            &quot;Page \\d+ of \\d+&quot;,
+            &quot;保密文件.*内部资料&quot;,
+            &quot;^\\s*.{0,20}\\s*$&quot;  // 过短的行（可能是页眉页脚）
+        };
+
+        for (String pattern : patterns) {
+            text = text.replaceAll(pattern, &quot;&quot;);
+        }
+
+        return text;
+    }
+
+    private String removePageNumbers(String text) {
+
+        // 移除单独成行的页码
+        text = text.replaceAll(&quot;^\\s*-?\\d+-?\\s*$&quot;, &quot;&quot;);
+
+        return text;
+    }
+
+    private String removeSpecialMarkers(String text) {
+
+        // 移除HTML注释
+        text = text.replaceAll(&quot;&lt;!--.*?--&gt;&quot;, &quot;&quot;);
+
+        // 移除Markdown特殊符号（保留内容）
+        text = text.replaceAll(&quot;\\[\\^.*?\\]&quot;, &quot;&quot;);  // 脚注标记
+        text = text.replaceAll(&quot;\\[.*?\\]\\(.*?\\)&quot;, &quot;$2&quot;);  // Markdown链接
+
+        return text;
+    }
+
+    private String removeHtmlTags(String text) {
+
+        // 简单的HTML标签移除
+        text = text.replaceAll(&quot;&lt;[^&gt;]+&gt;&quot;, &quot;&quot;);
+
+        return text;
+    }
+}</code></pre>
+<h4>技术3：去重</h4>
+<pre><code class="language-java">@Service
+public class DocumentDeduplicator {
+
+    @Autowired
+    private EmbeddingModel embeddingModel;
 
     @Autowired
     private VectorStore vectorStore;
 
-    // 使用元数据增强检索
-    public List&lt;Document&gt; searchWithMetadata(
-        String query,
-        String department,
-        String author,
-        LocalDate startDate,
-        LocalDate endDate) {
+    public List&lt;String&gt; deduplicate(List&lt;String&gt; documents) {
 
-        // 1. 向量检索
-        List&lt;Document&gt; results = vectorStore.similaritySearch(query);
+        List&lt;String&gt; uniqueDocs = new ArrayList&lt;&gt;();
+        Set&lt;String&gt; seenHashes = new HashSet&lt;&gt;();
 
-        // 2. 元数据过滤
-        results = results.stream()
-            // 按部门过滤
-            .filter(doc -&gt; department == null ||
-                department.equals(doc.getMetadata().get("department")))
+        for (String doc : documents) {
 
-            // 按作者过滤
-            .filter(doc -&gt; author == null ||
-                author.equals(doc.getMetadata().get("author")))
-
-            // 按时间范围过滤
-            .filter(doc -&gt; {
-                if (startDate == null && endDate == null) return true;
-                LocalDate createdAt = (LocalDate) doc.getMetadata().get("createdAt");
-                return (startDate == null || !createdAt.isBefore(startDate)) &&
-                       (endDate == null || !createdAt.isAfter(endDate));
-            })
-
-            .collect(Collectors.toList());
-
-        return results;
-    }
-
-    // 使用元数据补充上下文
-    public String augmentWithMetadata(String query, List&lt;Document&gt; documents) {
-        StringBuilder context = new StringBuilder();
-
-        for (Document doc : documents) {
-            Map&lt;String, Object&gt; metadata = doc.getMetadata();
-
-            // 添加元数据信息
-            context.append("【").append(metadata.get("title")).append("】\n");
-            context.append("作者：").append(metadata.get("author")).append("\n");
-            context.append("日期：").append(metadata.get("createdAt")).append("\n");
-            context.append("来源：").append(metadata.get("sourceUrl")).append("\n");
-            context.append("\n");
-
-            // 添加文档内容
-            context.append(doc.getContent()).append("\n\n");
-        }
-
-        return context.toString();
-    }
-}</code></pre>
-
-                    <h3>元数据最佳实践</h3>
-
-                    <div class="success-box">
-                        <h4>✅ 元数据管理建议</h4>
-                        <ul>
-                            <li><strong>结构化设计：</strong>使用统一的元数据结构，便于查询和管理</li>
-                            <li><strong>自动化提取：</strong>尽可能自动化元数据提取，减少人工操作</li>
-                            <li><strong>标准化命名：</strong>使用标准的元数据字段名称和格式</li>
-                            <li><strong>版本控制：</strong>记录元数据的变更历史</li>
-                            <li><strong>权限管理：</strong>对敏感元数据进行访问控制</li>
-                        </ul>
-                    </div>
-
-                    <pre><code>推荐元数据字段：
-{
-  "id": "uuid",
-  "title": "文档标题",
-  "summary": "内容摘要",
-  "author": "作者",
-  "department": "部门",
-  "project": "项目",
-  "sourceUrl": "来源网址",
-  "sourceType": "来源类型",
-  "createdAt": "创建时间",
-  "updatedAt": "更新时间",
-  "language": "语言",
-  "wordCount": 字数,
-  "keywords": ["关键词1", "关键词2"],
-  "tags": ["标签1", "标签2"],
-  "category": "分类",
-  "priority": "优先级",
-  "accessLevel": "访问级别",
-  "chunkIndex": chunk索引,
-  "totalChunks": 总chunk数,
-  "vectorModel": "向量模型",
-  "estimatedTokens": token估算
-}</code></pre>
-                </section>
-
-                <!-- Section 4: Re-ranking -->
-                <section id="4-re-ranking重排序" class="content-card">
-                    <h2>4. Re-ranking（重排序）</h2>
-
-                    <h3>🎯 掌握程度：必须掌握</h3>
-
-                    <h3>什么是Re-ranking？</h3>
-
-                    <p><strong>通俗解释：</strong><br>
-                    Re-ranking就是"二次筛选"。第一次检索可能返回很多结果，但不够精确。重排序就像老师批改作业，把最相关的答案挑出来，排在最前面。</p>
-
-                    <p><strong>技术定义：</strong><br>
-                    对初始检索结果进行重新排序，使用更精确的模型计算相关性，提升结果质量。</p>
-
-                    <h3>为什么需要Re-ranking？</h3>
-
-                    <pre><code>传统检索的问题：
-❌ 向量检索不够精确
-   ├─ 语义相似度计算有误差
-   ├─ 可能返回不相关的内容
-   └─ 无法处理复杂的查询需求
-
-❌ 简单的相似度计算
-   ├─ 只考虑整体语义
-   ├─ 忽略具体的关键词匹配
-   └─ 无法理解查询意图
-
-✅ Re-ranking的优势：
-├─ 精确度高：使用更强的模型
-├─ 结果更好：最相关的内容排在前面
-├─ 灵活性强：可以自定义排序规则
-└─ 成本可控：只对少量结果重排序</code></pre>
-
-                    <h3>Re-ranking流程</h3>
-
-                    <pre><code>┌─────────────────────────────────────────────────────┐
-│                    Re-ranking流程                    │
-├─────────────────────────────────────────────────────┤
-│                                                      │
-│  1. 初始检索（粗筛）                                  │
-│  ├─ 使用向量检索                                      │
-│  ├─ 快速返回大量候选结果（如100条）                   │
-│  └─ 速度优先，精确度次之                              │
-│           ↓                                          │
-│  2. Re-ranking（精排）                                │
-│  ├─ 使用更强的模型（如Cross-encoder）                 │
-│  ├─ 对query和每个candidate计算精确相关性              │
-│  └─ 精确度优先，速度次之                              │
-│           ↓                                          │
-│  3. 最终结果                                          │
-│  ├─ 返回重排序后的Top结果（如Top 10）                 │
-│  └─ 质量更高，相关性更强                              │
-│                                                      │
-└─────────────────────────────────────────────────────┘</code></pre>
-
-                    <h3>Re-ranking实现方式</h3>
-
-                    <h4>方式1：Cross-encoder重排序</h4>
-
-                    <pre><code>@Service
-public class CrossEncoderReRanker {
-
-    @Autowired
-    private CrossEncoderModel crossEncoder;
-
-    public List&lt;Document&gt; reRank(
-        String query,
-        List&lt;Document&gt; candidates,
-        int topK) {
-
-        // 1. 计算query与每个候选文档的相关性分数
-        List&lt;ScoreDocument&gt; scoredDocs = new ArrayList&lt;&gt;();
-
-        for (Document doc : candidates) {
-            // 使用Cross-encoder计算精确相关性
-            double score = crossEncoder.calculateScore(
-                query,
-                doc.getContent()
+            // 1. 计算哈希（精确去重）
+            String hash = DigestUtils.md5DigestAsHex(
+                doc.getBytes(StandardCharsets.UTF_8)
             );
 
-            scoredDocs.add(new ScoreDocument(doc, score));
+            if (seenHashes.contains(hash)) {
+                continue;  // 完全重复，跳过
+            }
+
+            // 2. 语义去重
+            if (isSemanticallyDuplicate(doc, uniqueDocs)) {
+                continue;  // 语义重复，跳过
+            }
+
+            uniqueDocs.add(doc);
+            seenHashes.add(hash);
         }
 
-        // 2. 按分数排序
-        scoredDocs.sort((a, b) -&gt; Double.compare(b.score, a.score));
-
-        // 3. 返回Top K结果
-        return scoredDocs.stream()
-            .limit(topK)
-            .map(sd -&gt; sd.document)
-            .collect(Collectors.toList());
+        return uniqueDocs;
     }
-}
 
-// Cross-encoder模型示例（伪代码）
-public class CrossEncoderModel {
+    private boolean isSemanticallyDuplicate(String doc,
+                                           List&lt;String&gt; existing) {
 
-    public double calculateScore(String query, String document) {
-        // 拼接query和document
-        String input = "[CLS] " + query + " [SEP] " + document + " [SEP]";
+        // 向量化当前文档
+        float[] docEmbedding = embeddingModel.embed(doc).content();
 
-        // 输入到BERT模型
-        float[] embedding = bertModel.encode(input);
+        // 与已有文档比较
+        for (String existingDoc : existing) {
 
-        // 分类层输出相关性分数
-        double score = classificationLayer.predict(embedding);
+            float[] existingEmbedding = embeddingModel
+                .embed(existingDoc).content();
 
-        return score;  // 返回0-1之间的相关性分数
+            double similarity = cosineSimilarity(
+                docEmbedding,
+                existingEmbedding
+            );
+
+            // 如果相似度 &gt; 0.95，认为是重复
+            if (similarity &gt; 0.95) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }</code></pre>
+<h4>技术4：敏感信息脱敏</h4>
+<pre><code class="language-java">@Service
+public class PIIRedactor {
 
-                    <h4>方式2：基于特征的重排序</h4>
+    // PII模式
+    private static final Pattern EMAIL_PATTERN =
+        Pattern.compile(&quot;\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b&quot;);
 
-                    <pre><code>@Service
-public class FeatureBasedReRanker {
+    private static final Pattern PHONE_PATTERN =
+        Pattern.compile(&quot;(?:(?:\\+|00)86)?1[3-9]\\d{9}&quot;);
 
-    public List&lt;Document&gt; reRank(String query, List&lt;Document&gt; candidates) {
+    private static final Pattern ID_CARD_PATTERN =
+        Pattern.compile(&quot;\\d{17}[\\dXx]&quot;);
 
-        List&lt;ScoreDocument&gt; scoredDocs = new ArrayList&lt;&gt;();
+    private static final Pattern CREDIT_CARD_PATTERN =
+        Pattern.compile(&quot;\\b(?:\\d[ -]*?){13,16}\\b&quot;);
 
-        for (Document doc : candidates) {
-            double score = calculateCompositeScore(query, doc);
-            scoredDocs.add(new ScoreDocument(doc, score));
+    public String redact(String text) {
+
+        // 1. 邮箱脱敏
+        text = EMAIL_PATTERN.matcher(text)
+            .replaceAll(m -&gt; {
+                String email = m.group();
+                String[] parts = email.split(&quot;@&quot;);
+                String name = parts[0];
+                String domain = parts[1];
+
+                // 只保留首尾
+                String maskedName = name.charAt(0) +
+                    &quot;*****&quot; +
+                    name.charAt(name.length() - 1);
+
+                return maskedName + &quot;@&quot; + domain;
+            });
+
+        // 2. 手机号脱敏
+        text = PHONE_PATTERN.matcher(text)
+            .replaceAll(m -&gt; {
+                String phone = m.group();
+                return phone.substring(0, 3) + &quot;****&quot; +
+                    phone.substring(7);
+            });
+
+        // 3. 身份证脱敏
+        text = ID_CARD_PATTERN.matcher(text)
+            .replaceAll(&quot;$1**********$2&quot;);
+
+        // 4. 银行卡脱敏
+        text = CREDIT_CARD_PATTERN.matcher(text)
+            .replaceAll(m -&gt; {
+                String card = m.group().replaceAll(&quot;[ -]&quot;, &quot;&quot;);
+                if (card.length() &gt;= 16) {
+                    return card.substring(0, 4) + &quot;********&quot; +
+                        card.substring(card.length() - 4);
+                }
+                return m.group();
+            });
+
+        return text;
+    }
+
+    // 使用NER模型识别更多PII
+    public String advancedRedact(String text) {
+
+        // 调用NER服务识别实体
+        List&lt;PIIEntity&gt; entities = nerService.detectPII(text);
+
+        // 按位置倒序替换（避免索引偏移）
+        entities.sort((a, b) -&gt;
+            Integer.compare(b.getStart(), a.getStart()));
+
+        StringBuilder sb = new StringBuilder(text);
+
+        for (PIIEntity entity : entities) {
+
+            String replacement = switch (entity.getType()) {
+                case &quot;PERSON&quot; -&gt; maskName(entity.getText());
+                case &quot;ADDRESS&quot; -&gt; &quot;[地址已隐藏]&quot;;
+                case &quot;ORG&quot; -&gt; entity.getText();  // 组织名称不脱敏
+                default -&gt; entity.getText();
+            };
+
+            sb.replace(entity.getStart(), entity.getEnd(), replacement);
         }
 
-        // 按综合分数排序
-        scoredDocs.sort((a, b) -&gt; Double.compare(b.score, a.score));
+        return sb.toString();
+    }
 
-        return scoredDocs.stream()
-            .map(sd -&gt; sd.document)
+    private String maskName(String name) {
+
+        if (name.length() &lt;= 2) {
+            return &quot;*&quot;.repeat(name.length());
+        }
+
+        return name.charAt(0) + &quot;*&quot;.repeat(name.length() - 2) +
+            name.charAt(name.length() - 1);
+    }
+}</code></pre>
+<h3>数据清洗Pipeline</h3>
+<pre><code class="language-java">@Service
+public class DataCleaningPipeline {
+
+    @Autowired
+    private TextNormalizer normalizer;
+
+    @Autowired
+    private ContentCleaner cleaner;
+
+    @Autowired
+    private DocumentDeduplicator deduplicator;
+
+    @Autowired
+    private PIIRedactor piiRedactor;
+
+    public List&lt;CleanDocument&gt; clean(List&lt;RawDocument&gt; rawDocuments) {
+
+        log.info(&quot;Starting data cleaning pipeline for {} documents&quot;,
+            rawDocuments.size());
+
+        // Stage 1: 提取文本
+        List&lt;String&gt; extractedTexts = rawDocuments.stream()
+            .map(this::extractText)
             .collect(Collectors.toList());
+
+        // Stage 2: 规范化
+        List&lt;String&gt; normalized = extractedTexts.stream()
+            .map(normalizer::normalize)
+            .collect(Collectors.toList());
+
+        // Stage 3: 清洗
+        List&lt;String&gt; cleaned = normalized.stream()
+            .map(cleaner::clean)
+            .collect(Collectors.toList());
+
+        // Stage 4: 脱敏
+        List&lt;String&gt; redacted = cleaned.stream()
+            .map(piiRedactor::redact)
+            .collect(Collectors.toList());
+
+        // Stage 5: 去重
+        List&lt;String&gt; deduplicated = deduplicator.deduplicate(redacted);
+
+        // Stage 6: 质量检查
+        List&lt;CleanDocument&gt; finalDocs = deduplicated.stream()
+            .filter(this::qualityCheck)
+            .map(text -&gt; new CleanDocument(text, buildMetadata(text)))
+            .collect(Collectors.toList());
+
+        log.info(&quot;Data cleaning completed. {} documents passed quality check&quot;,
+            finalDocs.size());
+
+        return finalDocs;
     }
 
-    private double calculateCompositeScore(String query, Document doc) {
-        double score = 0.0;
+    private boolean qualityCheck(String text) {
 
-        // 1. 向量相似度（权重：0.4）
-        double vectorSim = calculateVectorSimilarity(query, doc);
-        score += vectorSim * 0.4;
+        // 检查长度
+        if (text.length() &lt; 50) {
+            log.warn(&quot;Document too short: {} chars&quot;, text.length());
+            return false;
+        }
 
-        // 2. 关键词匹配度（权重：0.3）
-        double keywordMatch = calculateKeywordMatch(query, doc);
-        score += keywordMatch * 0.3;
-
-        // 3. BM25分数（权重：0.2）
-        double bm25Score = calculateBM25(query, doc);
-        score += bm25Score * 0.2;
-
-        // 4. 文档新鲜度（权重：0.1）
-        double freshness = calculateFreshness(doc);
-        score += freshness * 0.1;
-
-        return score;
-    }
-
-    private double calculateKeywordMatch(String query, Document doc) {
-        Set&lt;String&gt; queryKeywords = extractKeywords(query);
-        String content = doc.getContent().toLowerCase();
-
-        long matchCount = queryKeywords.stream()
-            .filter(keyword -&gt; content.contains(keyword.toLowerCase()))
+        // 检查是否包含过多特殊字符
+        long specialCharCount = text.chars()
+            .filter(c -&gt; !Character.isLetterOrDigit(c) &amp;&amp;
+                       !Character.isWhitespace(c))
             .count();
 
-        return (double) matchCount / queryKeywords.size();
+        if (specialCharCount &gt; text.length() * 0.3) {
+            log.warn(&quot;Document contains too many special characters&quot;);
+            return false;
+        }
+
+        // 检查是否包含有效内容（非空、非乱码）
+        if (!containsValidContent(text)) {
+            log.warn(&quot;Document appears to be garbage&quot;);
+            return false;
+        }
+
+        return true;
     }
 
-    private double calculateFreshness(Document doc) {
-        LocalDate docDate = (LocalDate) doc.getMetadata().get("createdAt");
-        LocalDate now = LocalDate.now();
+    private boolean containsValidContent(String text) {
 
-        long daysOld = ChronoUnit.DAYS.between(docDate, now);
+        // 检查中文字符比例
+        long chineseCharCount = text.chars()
+            .filter(c -&gt; c &gt;= 0x4E00 &amp;&amp; c &lt;= 0x9FFF)
+            .count();
 
-        // 越新的文档分数越高
-        return Math.max(0, 1.0 - daysOld / 365.0);
+        double chineseRatio = (double) chineseCharCount / text.length();
+
+        // 中文文档：中文字符应占30%以上
+        if (chineseRatio &gt; 0.1 &amp;&amp; chineseRatio &lt; 0.3) {
+            return false;
+        }
+
+        return true;
     }
 }</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="3-metadata-management-元数据管理">3. Metadata Management（元数据管理）</h2>
+<h3>🎯 掌握程度：必须掌握</h3>
+<h3>什么是元数据？</h3>
+<strong>通俗解释：</strong>
+<p>
+元数据就是"数据的数据"。就像图书卡片记录书名、作者、ISBN，元数据记录文档的各种属性信息。
+</p>
+<strong>技术定义：</strong>
+<p>
+描述数据属性、结构、来源等信息的数据，用于提升检索准确性和数据管理能力。
+</p>
+<h3>元数据的价值</h3>
+<pre><code>没有元数据：
+❌ 检索不准确
+   &quot;如何使用Java？&quot; → 可能找到3年前的旧文档
 
-                    <h4>方式3：LLM辅助重排序</h4>
+❌ 无法过滤
+   不能限定搜索范围（如只搜索&quot;API文档&quot;）
 
-                    <pre><code>@Service
-public class LLMReRanker {
+有元数据：
+✅ 精确检索
+   &quot;如何使用Java？&quot; + &quot;最新&quot; + &quot;API文档&quot; → 准确找到
+
+✅ 灵活过滤
+   按分类、时间、作者等多维度筛选
+
+✅ 上下文丰富
+   答案可以标注来源、作者、更新时间等</code></pre>
+<h3>元数据设计</h3>
+<pre><code class="language-java">@Data
+@Builder
+public class DocumentMetadata {
+
+    // 基础信息
+    private String documentId;       // 文档唯一ID
+    private String title;            // 标题
+    private String source;           // 来源（文件名、URL等）
+    private String author;           // 作者
+    private LocalDateTime createdAt; // 创建时间
+    private LocalDateTime updatedAt; // 更新时间
+
+    // 分类信息
+    private String category;         // 分类（如&quot;技术文档&quot;、&quot;FAQ&quot;）
+    private List&lt;String&gt; tags;       // 标签（如[&quot;Java&quot;, &quot;Spring&quot;, &quot;API&quot;]）
+    private String department;       // 部门（如&quot;研发部&quot;、&quot;产品部&quot;）
+
+    // 版本信息
+    private String version;          // 版本号
+    private boolean isLatest;        // 是否最新版本
+
+    // 内容信息
+    private String language;         // 语言（zh-CN, en-US）
+    private int length;              // 文档长度
+    private String contentType;      // 内容类型（tutorial, reference, guide）
+
+    // 访问控制
+    private String accessLevel;      // 访问级别（public, internal, confidential）
+    private List&lt;String&gt; allowedRoles; // 允许访问的角色
+
+    // 技术信息
+    private String format;           // 格式（pdf, html, markdown）
+    private int pageIndex;           // 页码（如果适用）
+    private String chunkId;          // Chunk ID（如果是分块）
+
+    // 质量信息
+    private double qualityScore;     // 质量分数（0-1）
+    private int viewCount;           // 查看次数
+    private double usefulnessScore;  // 有用性评分
+}</code></pre>
+<h3>元数据提取</h3>
+<pre><code class="language-java">@Service
+public class MetadataExtractor {
+
+    // 从文档提取元数据
+    public DocumentMetadata extract(Document doc) {
+
+        DocumentMetadata.Builder builder = DocumentMetadata.builder();
+
+        // 1. 基础信息
+        builder.documentId(UUID.randomUUID().toString());
+        builder.source(extractSource(doc));
+        builder.createdAt(Instant.now());
+
+        // 2. 从文档内容提取标题
+        builder.title(extractTitle(doc.getContent()));
+
+        // 3. 自动分类
+        builder.category(classifyDocument(doc.getContent()));
+
+        // 4. 提取关键词
+        builder.tags(extractKeywords(doc.getContent()));
+
+        // 5. 语言检测
+        builder.language(detectLanguage(doc.getContent()));
+
+        // 6. 访问级别判断
+        builder.accessLevel(determineAccessLevel(doc.getContent()));
+
+        // 7. 内容类型判断
+        builder.contentType(detectContentType(doc.getContent()));
+
+        return builder.build();
+    }
+
+    private String extractTitle(String content) {
+
+        // 尝试提取第一行作为标题
+        String[] lines = content.split(&quot;\\n&quot;, 2);
+
+        if (lines.length &gt; 0) {
+            String firstLine = lines[0].trim();
+
+            // 标题通常较短（&lt; 100字符）
+            if (firstLine.length() &lt; 100) {
+                return firstLine;
+            }
+        }
+
+        // 如果没有明显标题，使用&quot;未命名文档&quot;
+        return &quot;未命名文档&quot;;
+    }
+
+    private String classifyDocument(String content) {
+
+        String prompt = String.format(&quot;&quot;&quot;
+            请将以下文档分类到以下类别之一：
+            - 技术文档
+            - 产品说明
+            - 操作指南
+            - FAQ
+            - 政策制度
+            - 其他
+
+            文档内容（前500字）：
+            %s
+
+            只返回类别名称。
+            &quot;&quot;&quot;, content.substring(0, Math.min(500, content.length()))
+        );
+
+        String category = llmService.chat(prompt);
+        return category.trim();
+    }
+
+    private List&lt;String&gt; extractKeywords(String content) {
+
+        // 使用LLM提取关键词
+        String prompt = String.format(&quot;&quot;&quot;
+            从以下文档中提取5-10个关键词标签：
+
+            %s
+
+            返回格式：标签1, 标签2, 标签3, ...
+            &quot;&quot;&quot;, content.substring(0, Math.min(1000, content.length()))
+        );
+
+        String response = llmService.chat(prompt);
+
+        return Arrays.stream(response.split(&quot;,&quot;))
+            .map(String::trim)
+            .collect(Collectors.toList());
+    }
+
+    private String detectLanguage(String content) {
+
+        // 简单的中文检测
+        long chineseChars = content.chars()
+            .filter(c -&gt; c &gt;= 0x4E00 &amp;&amp; c &lt;= 0x9FFF)
+            .count();
+
+        if (chineseChars &gt; content.length() * 0.3) {
+            return &quot;zh-CN&quot;;
+        } else {
+            return &quot;en-US&quot;;
+        }
+    }
+
+    private String determineAccessLevel(String content) {
+
+        // 检测敏感词
+        if (containsSensitiveKeywords(content)) {
+            return &quot;confidential&quot;;
+        }
+
+        // 检测内部标记
+        if (content.contains(&quot;内部&quot;) || content.contains(&quot;保密&quot;)) {
+            return &quot;internal&quot;;
+        }
+
+        return &quot;public&quot;;
+    }
+
+    private boolean containsSensitiveKeywords(String content) {
+
+        String[] sensitiveKeywords = {
+            &quot;机密&quot;, &quot;秘密&quot;, &quot;涉密&quot;,
+            &quot;Confidential&quot;, &quot;Secret&quot;
+        };
+
+        for (String keyword : sensitiveKeywords) {
+            if (content.contains(keyword)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}</code></pre>
+<h3>元数据增强检索</h3>
+<pre><code class="language-java">@Service
+public class MetadataAwareSearch {
 
     @Autowired
-    private ChatLanguageModel chatModel;
+    private VectorStore vectorStore;
 
-    public List&lt;Document&gt; reRankWithLLM(
+    public List&lt;Document&gt; searchWithMetadata(
         String query,
-        List&lt;Document&gt; candidates,
-        int topK) {
+        Map&lt;String, Object&gt; filters
+    ) {
 
-        // 1. 构建prompt
-        String prompt = buildReRankingPrompt(query, candidates);
+        // 1. 问题向量化
+        float[] queryEmbedding = embeddingModel.embed(query).content();
 
-        // 2. 调用LLM进行重排序
-        String response = chatModel.generate(prompt);
+        // 2. 基础向量检索
+        List&lt;EmbeddingMatch&lt;Document&gt;&gt; matches =
+            vectorStore.findRelevant(queryEmbedding, 50);  // 召回50个
 
-        // 3. 解析LLM返回的排序结果
-        List&lt;Integer&gt; ranking = parseRanking(response);
+        // 3. 应用元数据过滤
+        List&lt;Document&gt; filtered = matches.stream()
+            .map(EmbeddingMatch::embedded)
+            .filter(doc -&gt; matchesFilters(doc.getMetadata(), filters))
+            .collect(Collectors.toList());
 
-        // 4. 按照LLM的排序返回结果
-        List&lt;Document&gt; reRankedList = new ArrayList&lt;&gt;();
-        for (int index : ranking) {
-            reRankedList.add(candidates.get(index));
-        }
-
-        // 返回Top K
-        return reRankedList.subList(0, Math.min(topK, reRankedList.size()));
+        // 4. 重新排序（结合元数据）
+        return rerankWithMetadata(filtered, query, filters);
     }
 
-    private String buildReRankingPrompt(String query, List&lt;Document&gt; candidates) {
-        StringBuilder prompt = new StringBuilder();
+    private boolean matchesFilters(DocumentMetadata metadata,
+                                   Map&lt;String, Object&gt; filters) {
 
-        prompt.append("请根据以下查询，对文档进行相关性排序。\n\n");
-        prompt.append("查询：").append(query).append("\n\n");
-        prompt.append("文档列表：\n");
+        for (Map.Entry&lt;String, Object&gt; filter : filters.entrySet()) {
 
-        for (int i = 0; i &lt; candidates.size(); i++) {
-            Document doc = candidates.get(i);
-            prompt.append(i + 1).append(". ")
-                 .append(doc.getTitle())
-                 .append("\n")
-                 .append(doc.getContent())
-                 .append("\n\n");
+            String key = filter.getKey();
+            Object value = filter.getValue();
+
+            switch (key) {
+                case &quot;category&quot;:
+                    if (!metadata.getCategory().equals(value)) {
+                        return false;
+                    }
+                    break;
+
+                case &quot;tags&quot;:
+                    List&lt;String&gt; requiredTags = (List&lt;String&gt;) value;
+                    if (!metadata.getTags().containsAll(requiredTags)) {
+                        return false;
+                    }
+                    break;
+
+                case &quot;accessLevel&quot;:
+                    String required = (String) value;
+                    String allowed = metadata.getAccessLevel();
+
+                    // accessLevel优先级：confidential &gt; internal &gt; public
+                    if (getAccessLevelPriority(allowed) &lt;
+                        getAccessLevelPriority(required)) {
+                        return false;
+                    }
+                    break;
+
+                case &quot;dateRange&quot;:
+                    Map&lt;String, LocalDate&gt; range =
+                        (Map&lt;String, LocalDate&gt;) value;
+                    LocalDate updated = metadata.getUpdatedAt().toLocalDate();
+
+                    if (updated.isBefore(range.get(&quot;start&quot;)) ||
+                        updated.isAfter(range.get(&quot;end&quot;))) {
+                        return false;
+                    }
+                    break;
+            }
         }
 
-        prompt.append("请返回最相关的5个文档的编号，用逗号分隔。");
-        prompt.append("例如：3,1,5,2,4");
+        return true;
+    }
 
-        return prompt.toString();
+    private List&lt;Document&gt; rerankWithMetadata(
+        List&lt;Document&gt; documents,
+        String query,
+        Map&lt;String, Object&gt; filters
+    ) {
+
+        // 结合向量相似度和元数据进行重排序
+        return documents.stream()
+            .sorted((d1, d2) -&gt; {
+
+                double score1 = calculateCompositeScore(
+                    d1,
+                    query,
+                    filters
+                );
+
+                double score2 = calculateCompositeScore(
+                    d2,
+                    query,
+                    filters
+                );
+
+                return Double.compare(score2, score1);  // 降序
+            })
+            .collect(Collectors.toList());
+    }
+
+    private double calculateCompositeScore(
+        Document doc,
+        String query,
+        Map&lt;String, Object&gt; filters
+    ) {
+
+        DocumentMetadata metadata = doc.getMetadata();
+
+        // 基础向量相似度
+        double baseScore = doc.getSimilarity();
+
+        // 质量分数加成
+        double qualityBoost = metadata.getQualityScore() * 0.1;
+
+        // 新鲜度加成（最近文档优先）
+        long daysSinceUpdate = ChronoUnit.DAYS.between(
+            metadata.getUpdatedAt(),
+            Instant.now()
+        );
+        double freshnessBoost = Math.max(0, 1 - daysSinceUpdate / 365.0) * 0.05;
+
+        // 热门度加成
+        double popularityBoost = Math.log1d(metadata.getViewCount()) * 0.02;
+
+        return baseScore + qualityBoost + freshnessBoost + popularityBoost;
+    }
+
+    private int getAccessLevelPriority(String level) {
+
+        return switch (level) {
+            case &quot;public&quot; -&gt; 1;
+            case &quot;internal&quot; -&gt; 2;
+            case &quot;confidential&quot; -&gt; 3;
+            default -&gt; 0;
+        };
     }
 }</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="4-re-ranking-重排序">4. Re-ranking（重排序）</h2>
+<h3>📖 掌握程度：需要了解</h3>
+<h3>什么是Re-ranking？</h3>
+<strong>通俗解释：</strong>
+<p>
+重排序就像"精选"。先粗选出候选答案，再仔细比较，选出最准确的几个。
+</p>
+<strong>技术定义：</strong>
+<p>
+对初步检索结果进行精细化排序的过程，使用更精确但更慢的模型。
+</p>
+<h3>为什么需要Re-ranking？</h3>
+<pre><code>问题：向量检索不够精确
 
-                    <h3>Re-ranking策略对比</h3>
+查询：&quot;如何修复数据库连接超时？&quot;
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>方法</th>
-                                <th>优点</th>
-                                <th>缺点</th>
-                                <th>适用场景</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Cross-encoder</td>
-                                <td>精确度高，效果好</td>
-                                <td>计算成本高，速度慢</td>
-                                <td>对结果质量要求高的场景</td>
-                            </tr>
-                            <tr>
-                                <td>特征融合</td>
-                                <td>速度快，可控性强</td>
-                                <td>需要设计特征权重</td>
-                                <td>需要平衡速度和质量的场景</td>
-                            </tr>
-                            <tr>
-                                <td>LLM重排序</td>
-                                <td>理解能力最强</td>
-                                <td>成本最高，速度最慢</td>
-                                <td>复杂查询，少量结果</td>
-                            </tr>
-                        </tbody>
-                    </table>
+向量检索结果（Top 5）：
+1. &quot;数据库连接池配置&quot;（相似度0.85） ← 相关，但不直接
+2. &quot;网络超时问题排查&quot;（相似度0.83） ← 相关
+3. &quot;数据库连接超时修复方法&quot;（相似度0.82） ← 最相关！
+4. &quot;数据库性能优化&quot;（相似度0.80） ← 不太相关
+5. &quot;JDBC驱动配置&quot;（相似度0.79） ← 相关
 
-                    <h3>最佳实践</h3>
+重排序后（基于更精确的模型）：
+1. &quot;数据库连接超时修复方法&quot; ← 正确排到第一
+2. &quot;网络超时问题排查&quot;
+3. &quot;数据库连接池配置&quot;
+...</code></pre>
+<h3>Re-ranking实现</h3>
+<pre><code class="language-java">@Service
+public class ReRankingService {
 
-                    <div class="warning-box">
-                        <h4>⚠️ Re-ranking注意事项</h4>
-                        <ul>
-                            <li><strong>候选数量：</strong>初始检索返回50-100个候选，重排序后返回Top 10</li>
-                            <li><strong>性能平衡：</strong>根据实际需求选择合适的重排序方法</li>
-                            <li><strong>缓存策略：</strong>对常见的query缓存重排序结果</li>
-                            <li><strong>A/B测试：</strong>对比不同重排序策略的效果</li>
-                            <li><strong>渐进式优化：</strong>先实现简单的重排序，再逐步优化</li>
-                        </ul>
-                    </div>
+    // 使用Cross-Encoder进行重排序
+    public List&lt;Document&gt; rerank(String query,
+                                 List&lt;Document&gt; candidates) {
 
-                    <pre><code>推荐的Re-ranking配置：
+        // 1. 为每个候选文档计算精确相关性分数
+        List&lt;ScoredDocument&gt; scored = candidates.stream()
+            .map(doc -&gt; {
+                double score = calculateRelevanceScore(query, doc);
+                return new ScoredDocument(doc, score);
+            })
+            .collect(Collectors.toList());
 
-场景1：实时检索（速度优先）
-├─ 初始检索：Top 50
-├─ 重排序方式：特征融合
-├─ 最终返回：Top 10
-└─ 耗时：&lt; 100ms
+        // 2. 重新排序
+        scored.sort((a, b) -&gt; Double.compare(b.score, a.score));
 
-场景2：高质量检索（质量优先）
-├─ 初始检索：Top 100
-├─ 重排序方式：Cross-encoder
-├─ 最终返回：Top 10
-└─ 耗时：&lt; 500ms
+        // 3. 返回Top N
+        return scored.stream()
+            .limit(10)
+            .map(ScoredDocument::getDocument)
+            .collect(Collectors.toList());
+    }
 
-场景3：复杂查询（精确度优先）
-├─ 初始检索：Top 20
-├─ 重排序方式：LLM重排序
-├─ 最终返回：Top 5
-└─ 耗时：&lt; 2000ms</code></pre>
-                </section>
+    private double calculateRelevanceScore(String query, Document doc) {
 
-                <!-- Section 5: Hybrid Search -->
-                <section id="5-hybrid-search混合检索" class="content-card">
-                    <h2>5. Hybrid Search（混合检索）</h2>
+        // 方法1：使用LLM直接评分
+        return llmRelevanceScore(query, doc);
 
-                    <h3>🎯 掌握程度：必须掌握</h3>
+        // 方法2：使用专门的Reranker模型
+        // return crossEncoder.score(query, doc.getContent());
+    }
 
-                    <h3>什么是混合检索？</h3>
+    private double llmRelevanceScore(String query, Document doc) {
 
-                    <p><strong>通俗解释：</strong><br>
-                    混合检索就是"多管齐下"。同时用多种方法找答案，比如既查意思相似的，又查关键词完全匹配的，然后把结果合并，取长补短。</p>
+        String prompt = String.format(&quot;&quot;&quot;
+            请评估以下文档与查询的相关性（0-1分）：
 
-                    <p><strong>技术定义：</strong><br>
-                    结合多种检索技术（如向量检索、关键词检索、BM25等），综合多种信号进行检索，提升召回率和准确率。</p>
+            查询：%s
 
-                    <h3>为什么需要混合检索？</h3>
+            文档：%s
 
-                    <pre><code>单一检索的局限性：
-❌ 纯向量检索
-   ├─ 可能漏掉精确匹配的关键词
-   ├─ 对专业术语、缩写不敏感
-   └─ 无法处理字面匹配的需求
+            只返回一个数字（0-1之间的小数）。
+            &quot;&quot;&quot;, query, doc.getContent().substring(0, 500)
+        );
 
-❌ 纯关键词检索
-   ├─ 无法理解语义相似性
-   ├─ 需要精确的关键词匹配
-   └─ 对同义词、变体不敏感
+        String response = llmService.chat(prompt);
 
-✅ 混合检索的优势：
-├─ 召回率更高：结合多种检索方式
-├─ 准确率更高：互补优势
-├─ 鲁棒性更强：不依赖单一方法
-└─ 灵活性更高：可调整不同方法的权重</code></pre>
-
-                    <h3>混合检索架构</h3>
-
-                    <pre><code>┌─────────────────────────────────────────────────────┐
-│                  混合检索架构                         │
-├─────────────────────────────────────────────────────┤
-│                                                      │
-│  用户查询                                             │
-│     ↓                                                │
-│  ┌──────────────┐                                   │
-│  │ 查询预处理    │                                   │
-│  │ - 分词       │                                   │
-│  │ - 同义词扩展 │                                   │
-│  │ - 意图识别   │                                   │
-│  └──────────────┘                                   │
-│     ↓                                                │
-│  ┌──────────────────────────────────┐               │
-│  │   并行检索（多路召回）             │               │
-│  ├──────────────────────────────────┤               │
-│  │ ┌─────────┐  ┌─────────┐        │               │
-│  │ │向量检索 │  │关键词检索│        │               │
-│  │ │语义相似 │  │精确匹配 │        │               │
-│  │ │Top 100  │  │Top 100  │        │               │
-│  │ └─────────┘  └─────────┘        │               │
-│  │      ↓             ↓            │               │
-│  │  ┌─────────────────────┐        │               │
-│  │  │   结果合并与去重      │        │               │
-│  │  └─────────────────────┘        │               │
-│  │           ↓                    │               │
-│  │  ┌─────────────────────┐        │               │
-│  │  │   重排序（精排）      │        │               │
-│  │  └─────────────────────┘        │               │
-│  └──────────────────────────────────┘               │
-│     ↓                                                │
-│  最终结果（Top 10）                                   │
-│                                                      │
-└─────────────────────────────────────────────────────┘</code></pre>
-
-                    <h3>混合检索实现</h3>
-
-                    <pre><code>@Service
-public class HybridSearchService {
+        try {
+            return Double.parseDouble(response.trim());
+        } catch (NumberFormatException e) {
+            log.warn(&quot;Failed to parse relevance score: {}&quot;, response);
+            return 0.5;
+        }
+    }
+}</code></pre>
+<h3>混合检索 + Re-ranking</h3>
+<pre><code class="language-java">@Service
+public class HybridSearchWithReranking {
 
     @Autowired
-    private VectorSearchService vectorSearch;
+    private VectorStore vectorStore;
 
     @Autowired
     private KeywordSearchService keywordSearch;
 
     @Autowired
-    private ReRankingService reRankingService;
+    private ReRankingService reranker;
 
-    public List&lt;Document&gt; hybridSearch(
-        String query,
-        int topK) {
+    public List&lt;Document&gt; search(String query) {
 
-        // 1. 并行检索
+        // Stage 1: 并行检索
         CompletableFuture&lt;List&lt;Document&gt;&gt; vectorFuture =
-            CompletableFuture.supplyAsync(() -&gt; vectorSearch.search(query, 100));
+            CompletableFuture.supplyAsync(() -&gt; vectorSearch(query));
 
         CompletableFuture&lt;List&lt;Document&gt;&gt; keywordFuture =
-            CompletableFuture.supplyAsync(() -&gt; keywordSearch.search(query, 100));
+            CompletableFuture.supplyAsync(() -&gt; keywordSearch.search(query));
 
-        // 等待两个检索完成
+        // 等待两种检索完成
         CompletableFuture.allOf(vectorFuture, keywordFuture).join();
 
-        List&lt;Document&gt; vectorResults = vectorFuture.join();
-        List&lt;Document&gt; keywordResults = keywordFuture.join();
+        // Stage 2: 合并结果
+        List&lt;Document&gt; combined = new ArrayList&lt;&gt;();
+        combined.addAll(vectorFuture.join());
+        combined.addAll(keywordFuture.join());
 
-        // 2. 合并结果
-        List&lt;Document&gt; mergedResults = mergeResults(
-            vectorResults,
-            keywordResults
-        );
+        // 去重
+        List&lt;Document&gt; deduplicated = deduplicate(combined);
 
-        // 3. 重排序
-        List&lt;Document&gt; reRankResults = reRankingService.reRank(
-            query,
-            mergedResults,
-            topK
-        );
-
-        return reRankResults;
-    }
-
-    private List&lt;Document&gt; mergeResults(
-        List&lt;Document&gt; vectorResults,
-        List&lt;Document&gt; keywordResults) {
-
-        Map&lt;String, MergedDocument&gt; mergedMap = new LinkedHashMap&lt;&gt;();
-
-        // 处理向量检索结果
-        for (int i = 0; i &lt; vectorResults.size(); i++) {
-            Document doc = vectorResults.get(i);
-            String docId = doc.getId();
-
-            // 计算分数（排名越前分数越高）
-            double score = 1.0 / (i + 1);
-
-            MergedDocument merged = new MergedDocument(doc);
-            merged.setVectorScore(score);
-            mergedMap.put(docId, merged);
-        }
-
-        // 处理关键词检索结果
-        for (int i = 0; i &lt; keywordResults.size(); i++) {
-            Document doc = keywordResults.get(i);
-            String docId = doc.getId();
-
-            double score = 1.0 / (i + 1);
-
-            if (mergedMap.containsKey(docId)) {
-                // 文档已存在，累加分数
-                mergedMap.get(docId).setKeywordScore(score);
-            } else {
-                // 新文档
-                MergedDocument merged = new MergedDocument(doc);
-                merged.setKeywordScore(score);
-                mergedMap.put(docId, merged);
-            }
-        }
-
-        // 计算综合分数并排序
-        return mergedMap.values().stream()
-            .peek(merged -&gt; {
-                // 加权融合：向量0.6 + 关键词0.4
-                double compositeScore =
-                    merged.getVectorScore() * 0.6 +
-                    merged.getKeywordScore() * 0.4;
-                merged.setCompositeScore(compositeScore);
-            })
-            .sorted((a, b) -&gt; Double.compare(
-                b.getCompositeScore(),
-                a.getCompositeScore()
-            ))
-            .map(MergedDocument::getDocument)
-            .collect(Collectors.toList());
-    }
-}
-
-// 合并的文档对象
-@Data
-private static class MergedDocument {
-    private Document document;
-    private double vectorScore;
-    private double keywordScore;
-    private double compositeScore;
-
-    public MergedDocument(Document document) {
-        this.document = document;
-        this.vectorScore = 0.0;
-        this.keywordScore = 0.0;
-        this.compositeScore = 0.0;
+        // Stage 3: Re-ranking
+        return reranker.rerank(query, deduplicated);
     }
 }</code></pre>
-
-                    <h3>检索融合策略</h3>
-
-                    <h4>策略1：加权融合（Weighted Fusion）</h4>
-
-                    <pre><code>// 简单加权融合
-double score = w1 * vectorScore + w2 * keywordScore + w3 * bm25Score;
-
-// 推荐权重
-// 短查询（关键词明确）：w1=0.4, w2=0.6
-// 长查询（语义为主）：w1=0.7, w2=0.3
-// 平衡查询：w1=0.5, w2=0.5</code></pre>
-
-                    <h4>策略2：倒数排名融合（RRF）</h4>
-
-                    <pre><code>// Reciprocal Rank Fusion
-// 公式：score = Σ 1/(k + rank_i)
-// k是常数（通常k=60）
-
-public double calculateRRF(
-    List&lt;Integer&gt; ranks,
-    int k) {
-
-    double score = 0.0;
-    for (int rank : ranks) {
-        score += 1.0 / (k + rank);
-    }
-    return score;
-}
-
-// 示例：
-// 文档A：向量检索rank=1，关键词检索rank=5
-// score = 1/(60+1) + 1/(60+5) = 0.0164 + 0.0154 = 0.0318</code></pre>
-
-                    <h4>策略3：学习融合（Learning to Rank）</h4>
-
-                    <pre><code>@Service
-public class LearningToRankFusion {
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="5-hybrid-search-混合检索">5. Hybrid Search（混合检索）</h2>
+<h3>🚀 掌握程度：进阶学习</h3>
+<h3>什么是混合检索？</h3>
+<strong>通俗解释：</strong>
+<p>
+混合检索就是"多种方法一起找"。同时用向量检索（理解语义）和关键词检索（精确匹配），结果合并后更准确。
+</p>
+<strong>技术定义：</strong>
+<p>
+结合向量检索和关键词检索的搜索方法，取两者之长。
+</p>
+<h3>混合检索实现</h3>
+<pre><code class="language-java">@Service
+public class HybridSearchService {
 
     @Autowired
-    private RankModel rankModel;
+    private VectorStore vectorStore;
 
-    public List&lt;Document&gt; rankWithModel(
-        String query,
-        List&lt;Document&gt; candidates) {
+    @Autowired
+    private KeywordSearchService keywordSearch;
 
-        List&lt;ScoreDocument&gt; scoredDocs = new ArrayList&lt;&gt;();
+    public List&lt;Document&gt; hybridSearch(String query,
+                                      int alpha) {
+        // alpha: 向量检索的权重（0-1）
+        // 1-alpha: 关键词检索的权重
 
-        for (Document doc : candidates) {
-            // 提取特征
-            Map&lt;String, Double&gt; features = extractFeatures(query, doc);
+        // 1. 向量检索
+        List&lt;SearchResult&gt; vectorResults = vectorStore
+            .search(query, 50)
+            .stream()
+            .map(doc -&gt; new SearchResult(doc, doc.getSimilarity()))
+            .collect(Collectors.toList());
 
-            // 使用模型预测分数
-            double score = rankModel.predict(features);
+        // 2. 关键词检索（BM25）
+        List&lt;SearchResult&gt; keywordResults = keywordSearch
+            .searchBM25(query, 50)
+            .stream()
+            .map(result -&gt; new SearchResult(
+                result.getDocument(),
+                result.getBm25Score()
+            ))
+            .collect(Collectors.toList());
 
-            scoredDocs.add(new ScoreDocument(doc, score));
+        // 3. 分数归一化
+        normalizeScores(vectorResults);
+        normalizeScores(keywordResults);
+
+        // 4. 合并分数
+        Map&lt;String, SearchResult&gt; merged = new HashMap&lt;&gt;();
+
+        for (SearchResult result : vectorResults) {
+            String docId = result.getDocument().getId();
+            merged.putIfAbsent(docId, result);
+            merged.get(docId).addVectorScore(result.getScore());
         }
 
-        // 按预测分数排序
-        scoredDocs.sort((a, b) -&gt; Double.compare(b.score, a.score));
+        for (SearchResult result : keywordResults) {
+            String docId = result.getDocument().getId();
+            merged.putIfAbsent(docId, result);
+            merged.get(docId).addKeywordScore(result.getScore());
+        }
 
-        return scoredDocs.stream()
-            .map(sd -&gt; sd.document)
+        // 5. 计算混合分数
+        for (SearchResult result : merged.values()) {
+            double hybridScore = alpha * result.getVectorScore() +
+                                (1 - alpha) * result.getKeywordScore();
+            result.setScore(hybridScore);
+        }
+
+        // 6. 排序并返回Top N
+        return merged.values().stream()
+            .sorted((a, b) -&gt; Double.compare(b.getScore(), a.getScore()))
+            .limit(20)
+            .map(SearchResult::getDocument)
             .collect(Collectors.toList());
     }
 
-    private Map&lt;String, Double&gt; extractFeatures(
-        String query,
-        Document doc) {
+    private void normalizeScores(List&lt;SearchResult&gt; results) {
 
-        Map&lt;String, Double&gt; features = new HashMap&lt;&gt;();
+        if (results.isEmpty()) return;
 
-        // 特征1：向量相似度
-        features.put("vector_sim", calculateVectorSimilarity(query, doc));
+        // Min-Max归一化到[0, 1]
+        double min = results.stream()
+            .mapToDouble(SearchResult::getScore)
+            .min()
+            .orElse(0);
 
-        // 特征2：关键词匹配度
-        features.put("keyword_match", calculateKeywordMatch(query, doc));
+        double max = results.stream()
+            .mapToDouble(SearchResult::getScore)
+            .max()
+            .orElse(1);
 
-        // 特征3：BM25分数
-        features.put("bm25_score", calculateBM25(query, doc));
+        double range = max - min;
 
-        // 特征4：文档长度
-        features.put("doc_length", (double) doc.getContent().length());
-
-        // 特征5：文档新鲜度
-        features.put("freshness", calculateFreshness(doc));
-
-        // 特征6：查询长度
-        features.put("query_length", (double) query.length());
-
-        return features;
+        for (SearchResult result : results) {
+            double normalized = range == 0 ?
+                0 :
+                (result.getScore() - min) / range;
+            result.setScore(normalized);
+        }
     }
 }</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="6-knowledge-base-construction-知识库构建">6. Knowledge Base Construction（知识库构建）</h2>
+<h3>🎯 掌握程度：必须掌握</h3>
+<h3>知识库构建完整流程</h3>
+<pre><code>┌─────────────────────────────────────────┐
+│ 知识库构建Pipeline                       │
+└─────────────────────────────────────────┘
 
-                    <h3>混合检索最佳实践</h3>
+1. 数据收集
+   ├── 文件系统扫描
+   ├── 数据库查询
+   ├── API抓取
+   └── 网页爬虫
 
-                    <div class="highlight-box">
-                        <h4>💡 混合检索建议</h4>
-                        <ul>
-                            <li><strong>查询分析：</strong>根据查询类型动态调整不同检索方法的权重</li>
-                            <li><strong>并行执行：</strong>多种检索方式并行执行，减少总耗时</li>
-                            <li><strong>结果去重：</strong>合并结果时要去重，避免重复文档</li>
-                            <li><strong>权重调优：</strong>通过A/B测试找到最优的权重配置</li>
-                            <li><strong>性能监控：</strong>监控各检索方法的性能和效果</li>
-                        </ul>
-                    </div>
+2. 数据提取
+   ├── PDF解析
+   ├── Word解析
+   ├── HTML解析
+   └── 其他格式
 
-                    <pre><code>推荐的混合检索配置：
+3. 数据清洗
+   ├── 文本规范化
+   ├── 去除噪声
+   ├── 脱敏
+   └── 去重
 
-场景1：短查询（1-3个词）
-├─ 向量检索：权重40%
-├─ 关键词检索：权重60%
-└─ 说明：短查询关键词明确，关键词检索更重要
+4. 分块
+   ├── 智能分块
+   ├── 保留上下文
+   └── 添加元数据
 
-场景2：长查询（完整句子）
-├─ 向量检索：权重70%
-├─ 关键词检索：权重30%
-└─ 说明：长查询语义丰富，向量检索更准确
+5. 向量化
+   ├── 调用Embedding API
+   ├── 批量处理
+   └── 错误重试
 
-场景3：专业术语查询
-├─ 向量检索：权重30%
-├─ 关键词检索：权重70%
-└─ 说明：专业术语需要精确匹配
+6. 存储
+   ├── 存入向量库
+   ├── 建立索引
+   └── 元数据库
 
-场景4：通用问题查询
-├─ 向量检索：权重60%
-├─ 关键词检索：权重40%
-└─ 说明：语义理解比精确匹配更重要</code></pre>
-                </section>
-
-                <!-- Section 6: Knowledge Base Construction -->
-                <section id="6-knowledge-base-construction知识库构建" class="content-card">
-                    <h2>6. Knowledge Base Construction（知识库构建）</h2>
-
-                    <h3>🎯 掌握程度：必须掌握</h3>
-
-                    <h3>什么是知识库？</h3>
-
-                    <p><strong>通俗解释：</strong><br>
-                    知识库就像"数字图书馆"。把所有的文档、资料、经验都整理好，存储起来，让AI可以随时查阅，回答用户的问题。</p>
-
-                    <p><strong>技术定义：</strong><br>
-                    结构化存储和管理领域知识的系统，支持高效的检索和推理，为AI应用提供知识支撑。</p>
-
-                    <h3>知识库构建流程</h3>
-
-                    <pre><code>┌─────────────────────────────────────────────────────┐
-│                知识库构建全流程                         │
-├─────────────────────────────────────────────────────┤
-│                                                      │
-│  1. 数据收集                                          │
-│  ├─ 文档文件（PDF、Word、Markdown）                   │
-│  ├─ 网页内容（爬虫抓取）                              │
-│  ├─ 数据库（结构化数据）                              │
-│  └─ API接口（外部数据源）                             │
-│           ↓                                          │
-│  2. 数据预处理                                        │
-│  ├─ 格式转换（统一为文本）                            │
-│  ├─ 编码处理（UTF-8统一）                             │
-│  ├─ 噪声去除（广告、导航等）                          │
-│  └─ 质量过滤（去重、验证）                            │
-│           ↓                                          │
-│  3. 数据清洗                                          │
-│  ├─ 文本标准化（大小写、标点）                        │
-│  ├─ 去除特殊字符                                      │
-│  ├─ 修复格式错误                                      │
-│  └─ 内容验证                                         │
-│           ↓                                          │
-│  4. 文档分块（Chunking）                              │
-│  ├─ 策略选择（固定大小/段落/语义）                    │
-│  ├─ 参数配置（chunk size、overlap）                   │
-│  └─ 元数据提取                                       │
-│           ↓                                          │
-│  5. 向量化（Embedding）                               │
-│  ├─ 选择模型（OpenAI/BERT/M3E等）                     │
-│  ├─ 批量处理（提高效率）                              │
-│  └─ 向量存储                                         │
-│           ↓                                          │
-│  6. 索引构建                                          │
-│  ├─ 向量索引（HNSW、IVF等）                           │
-│  ├─ 关键词索引（倒排索引）                            │
-│  └─ 元数据索引（过滤查询）                            │
-│           ↓                                          │
-│  7. 持久化存储                                        │
-│  ├─ 向量数据库（Milvus、Pinecone等）                  │
-│  ├─ 文档存储（文件系统、对象存储）                    │
-│  └─ 元数据存储（关系数据库、ES）                      │
-│                                                      │
-└─────────────────────────────────────────────────────┘</code></pre>
-
-                    <h3>知识库构建实现</h3>
-
-                    <pre><code>@Service
+7. 质量检查
+   ├── 检索测试
+   ├── 准确性验证
+   └── 持续优化</code></pre>
+<h3>完整实现</h3>
+<pre><code class="language-java">@Service
 public class KnowledgeBaseBuilder {
 
     @Autowired
-    private DataLoader dataLoader;
+    private DocumentExtractor extractor;
 
     @Autowired
-    private DataCleaner dataCleaner;
+    private DataCleaningPipeline cleaningPipeline;
 
     @Autowired
-    private Chunker chunker;
+    private SmartChunker chunker;
 
     @Autowired
     private EmbeddingService embeddingService;
@@ -2189,408 +1991,163 @@ public class KnowledgeBaseBuilder {
     @Autowired
     private MetadataExtractor metadataExtractor;
 
-    // 构建知识库
-    public BuildResult buildKnowledgeBase(BuildConfig config) {
+    @Async
+    public void buildKnowledgeBase(List&lt;SourceDocument&gt; sources) {
 
-        List&lt;String&gt; errors = new ArrayList&lt;&gt;();
-        int successCount = 0;
-        int skipCount = 0;
+        log.info(&quot;Building knowledge base from {} sources&quot;, sources.size());
 
-        try {
-            // 1. 加载数据
-            log.info("开始加载数据...");
-            List&lt;Document&gt; documents = dataLoader.load(config.getDataPaths());
-            log.info("加载完成，共{}个文档", documents.size());
+        int totalDocuments = 0;
+        int totalChunks = 0;
 
-            // 2. 处理每个文档
-            for (Document doc : documents) {
-                try {
-                    processDocument(doc, config);
-                    successCount++;
+        for (SourceDocument source : sources) {
 
-                    if (successCount % 100 == 0) {
-                        log.info("已处理{}个文档", successCount);
-                    }
+            try {
+                // Stage 1: 提取文本
+                String text = extractor.extract(source);
+                log.debug(&quot;Extracted {} chars from {}&quot;, text.length(), source);
 
-                } catch (SkipException e) {
-                    skipCount++;
-                    log.warn("跳过文档：{} - {}", doc.getId(), e.getMessage());
+                // Stage 2: 清洗
+                CleanDocument cleaned = cleaningPipeline.clean(
+                    List.of(new RawDocument(text, source))
+                ).get(0);
 
-                } catch (Exception e) {
-                    errors.add(doc.getId() + ": " + e.getMessage());
-                    log.error("处理文档失败：{}", doc.getId(), e);
+                // Stage 3: 分块
+                List&lt;Chunk&gt; chunks = chunker.smartChunk(cleaned.getText());
+                log.debug(&quot;Split into {} chunks&quot;, chunks.size());
+
+                // Stage 4: 处理每个chunk
+                for (Chunk chunk : chunks) {
+
+                    // 提取元数据
+                    DocumentMetadata metadata = metadataExtractor.extract(
+                        new Document(chunk.getText(), source)
+                    );
+
+                    // 向量化
+                    float[] embedding = embeddingService.embed(chunk.getText());
+
+                    // 存储
+                    vectorStore.insert(new VectorDocument(
+                        chunk.getText(),
+                        embedding,
+                        metadata
+                    ));
+
+                    totalChunks++;
                 }
-            }
 
-            // 3. 保存构建统计
-            BuildResult result = new BuildResult();
-            result.setTotalDocuments(documents.size());
-            result.setSuccessCount(successCount);
-            result.setSkipCount(skipCount);
-            result.setErrorCount(errors.size());
-            result.setErrors(errors);
+                totalDocuments++;
 
-            log.info("知识库构建完成：成功={}, 跳过={}, 失败={}",
-                successCount, skipCount, errors.size());
-
-            return result;
-
-        } catch (Exception e) {
-            log.error("知识库构建失败", e);
-            throw new BuildException("知识库构建失败", e);
-        }
-    }
-
-    // 处理单个文档
-    private void processDocument(Document doc, BuildConfig config) {
-
-        // 1. 数据清洗
-        String cleanedContent = dataCleaner.clean(doc.getContent());
-
-        // 验证清洗后的内容
-        if (cleanedContent.length() &lt; config.getMinDocLength()) {
-            throw new SkipException("文档过短");
-        }
-
-        // 2. 提取元数据
-        DocumentMetadata metadata = metadataExtractor.extract(doc, cleanedContent);
-
-        // 3. 文档分块
-        List&lt;Chunk&gt; chunks = chunker.chunk(cleanedContent, config.getChunkConfig());
-
-        // 验证分块结果
-        if (chunks.isEmpty()) {
-            throw new SkipException("分块结果为空");
-        }
-
-        // 4. 向量化并存储
-        List&lt;VectorChunk&gt; vectorChunks = new ArrayList&lt;&gt;();
-
-        for (int i = 0; i &lt; chunks.size(); i++) {
-            Chunk chunk = chunks.get(i);
-
-            // 创建chunk元数据
-            ChunkMetadata chunkMetadata = createChunkMetadata(
-                metadata,
-                chunk,
-                i,
-                chunks.size()
-            );
-
-            // 向量化
-            float[] embedding = embeddingService.embed(chunk.getContent());
-
-            // 创建向量chunk
-            VectorChunk vectorChunk = new VectorChunk(
-                chunk.getId(),
-                embedding,
-                chunk.getContent(),
-                chunkMetadata
-            );
-
-            vectorChunks.add(vectorChunk);
-        }
-
-        // 5. 批量存储到向量数据库
-        vectorStore.add(vectorChunks);
-
-        log.debug("文档处理成功：{}, chunk数量：{}", doc.getId(), chunks.size());
-    }
-
-    private ChunkMetadata createChunkMetadata(
-        DocumentMetadata docMetadata,
-        Chunk chunk,
-        int index,
-        int total) {
-
-        ChunkMetadata metadata = new ChunkMetadata();
-
-        // 继承文档元数据
-        metadata.setDocumentId(docMetadata.getId());
-        metadata.setTitle(docMetadata.getTitle());
-        metadata.setSourceUrl(docMetadata.getSourceUrl());
-        metadata.setAuthor(docMetadata.getAuthor());
-        metadata.setDepartment(docMetadata.getDepartment());
-
-        // Chunk特有元数据
-        metadata.setChunkIndex(index);
-        metadata.setTotalChunks(total);
-        metadata.setContentLength(chunk.getContent().length());
-        metadata.setCreatedAt(Instant.now());
-
-        // 添加位置信息
-        metadata.setStartPosition(chunk.getStartPosition());
-        metadata.setEndPosition(chunk.getEndPosition());
-
-        return metadata;
-    }
-}</code></pre>
-
-                    <h3>增量更新策略</h3>
-
-                    <pre><code>@Service
-public class KnowledgeBaseUpdater {
-
-    @Autowired
-    private VectorStore vectorStore;
-
-    @Autowired
-    private DocumentRepository docRepository;
-
-    // 增量更新知识库
-    public void updateKnowledgeBase(List&lt;Document&gt; newDocuments) {
-
-        for (Document doc : newDocuments) {
-
-            // 1. 检查文档是否已存在
-            Optional&lt;Document&gt; existing = docRepository.findById(doc.getId());
-
-            if (existing.isPresent()) {
-                // 文档已存在，检查是否需要更新
-                if (shouldUpdate(existing.get(), doc)) {
-                    // 删除旧的chunks
-                    deleteDocumentChunks(doc.getId());
-
-                    // 处理新文档
-                    processDocument(doc);
-
-                    log.info("文档已更新：{}", doc.getId());
-                } else {
-                    log.debug("文档无需更新：{}", doc.getId());
-                }
-            } else {
-                // 新文档，直接处理
-                processDocument(doc);
-                log.info("新文档已添加：{}", doc.getId());
+            } catch (Exception e) {
+                log.error(&quot;Failed to process document: {}&quot;, source, e);
             }
         }
+
+        log.info(&quot;Knowledge base built successfully: {} documents, {} chunks&quot;,
+            totalDocuments, totalChunks);
     }
 
-    // 判断是否需要更新
-    private boolean shouldUpdate(Document existing, Document newDoc) {
+    // 增量更新
+    public void updateKnowledgeBase(List&lt;SourceDocument&gt; newSources) {
 
-        // 1. 检查内容是否变化
-        if (!existing.getContent().equals(newDoc.getContent())) {
-            return true;
+        for (SourceDocument source : newSources) {
+
+            // 检查是否已存在
+            if (vectorStore.exists(source.getId())) {
+
+                // 删除旧版本
+                vectorStore.deleteBySourceId(source.getId());
+            }
+
+            // 处理新版本
+            buildKnowledgeBase(List.of(source));
         }
-
-        // 2. 检查更新时间
-        if (newDoc.getUpdatedAt().isAfter(existing.getUpdatedAt())) {
-            return true;
-        }
-
-        // 3. 检查版本号
-        if (newDoc.getVersion() &gt; existing.getVersion()) {
-            return true;
-        }
-
-        return false;
     }
-
-    // 删除文档的所有chunks
-    private void deleteDocumentChunks(String documentId) {
-
-        // 构建删除条件
-        DeleteQuery query = DeleteQuery.builder()
-            .filter(Expression.builder()
-                .key("document_id")
-                .value(documentId)
-                .build())
-            .build();
-
-        // 执行删除
-        vectorStore.delete(query);
-
-        log.info("已删除文档的chunks：{}", documentId);
-    }
-}</code></pre>
-
-                    <h3>知识库质量保证</h3>
-
-                    <pre><code>@Service
-public class KnowledgeBaseQA {
-
-    @Autowired
-    private VectorStore vectorStore;
-
-    @Autowired
-    private EmbeddingService embeddingService;
 
     // 质量检查
     public QualityReport qualityCheck() {
 
-        QualityReport report = new QualityReport();
+        // 测试查询集
+        List&lt;TestQuery&gt; testQueries = loadTestQueries();
 
-        // 1. 检查向量数量
-        long vectorCount = vectorStore.count();
-        report.setVectorCount(vectorCount);
+        int total = testQueries.size();
+        int passed = 0;
 
-        // 2. 检查重复向量
-        long duplicateCount = checkDuplicates();
-        report.setDuplicateCount(duplicateCount);
+        for (TestQuery test : testQueries) {
 
-        // 3. 检查向量质量
-        VectorQualityStats qualityStats = checkVectorQuality();
-        report.setQualityStats(qualityStats);
+            List&lt;Document&gt; results = vectorStore.search(
+                test.getQuery(),
+                5
+            );
 
-        // 4. 检查元数据完整性
-        MetadataCompleteness metadataCompleteness = checkMetadata();
-        report.setMetadataCompleteness(metadataCompleteness);
-
-        // 5. 生成建议
-        List&lt;String&gt; recommendations = generateRecommendations(report);
-        report.setRecommendations(recommendations);
-
-        return report;
-    }
-
-    // 检查重复向量
-    private long checkDuplicates() {
-
-        // 使用MinHash算法检测近似重复
-        MinHash minHash = new MinHash(100);
-        Map&lt;String, List&lt;String&gt;[] buckets = new HashMap&lt;&gt;();
-
-        // 这里简化处理，实际需要遍历所有向量
-        // 返回检测到的重复向量数量
-
-        return 0L;
-    }
-
-    // 检查向量质量
-    private VectorQualityStats checkVectorQuality() {
-
-        VectorQualityStats stats = new VectorQualityStats();
-
-        // 1. 检查向量维度
-        int dimension = vectorStore.getDimension();
-        stats.setDimension(dimension);
-
-        // 2. 检查向量范数（应该接近1）
-        double avgNorm = calculateAverageNorm();
-        stats.setAverageNorm(avgNorm);
-
-        // 3. 检查零向量
-        long zeroVectorCount = countZeroVectors();
-        stats.setZeroVectorCount(zeroVectorCount);
-
-        return stats;
-    }
-
-    // 检查元数据完整性
-    private MetadataCompleteness checkMetadata() {
-
-        MetadataCompleteness completeness = new MetadataCompleteness();
-
-        // 检查必需字段的完整性
-        List&lt;String&gt; requiredFields = Arrays.asList(
-            "document_id", "title", "created_at"
-        );
-
-        for (String field : requiredFields) {
-            long missingCount = countMissingMetadata(field);
-            completeness.addFieldStats(field, missingCount);
+            if (isRelevant(results, test.getExpectedDocId())) {
+                passed++;
+            }
         }
 
-        return completeness;
-    }
+        double accuracy = (double) passed / total;
 
-    private List&lt;String&gt; generateRecommendations(QualityReport report) {
-
-        List&lt;String&gt; recommendations = new ArrayList&lt;&gt;();
-
-        // 基于检查结果生成建议
-        if (report.getDuplicateCount() &gt; 0) {
-            recommendations.add("发现" + report.getDuplicateCount() + "个重复向量，建议去重");
-        }
-
-        if (report.getQualityStats().getZeroVectorCount() &gt; 0) {
-            recommendations.add("发现" + report.getQualityStats().getZeroVectorCount() + "个零向量，需要重新处理");
-        }
-
-        if (report.getQualityStats().getAverageNorm() &lt; 0.8) {
-            recommendations.add("向量平均范数偏低，建议检查embedding模型");
-        }
-
-        return recommendations;
+        return new QualityReport(total, passed, accuracy);
     }
 }</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="学习路径总结">学习路径总结</h2>
+<h3>Week 5-6：数据处理</h3>
+<pre><code>Day 1-2：学习分块策略
+Day 3-4：数据清洗实践
+Day 5-6：元数据管理
+Day 7：综合项目</code></pre>
+<h3>Week 7-8：优化提升</h3>
+<pre><code>Day 1-3：混合检索
+Day 4-5：Re-ranking
+Day 6-7：知识库构建完整流程</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="学习检查清单">学习检查清单</h2>
+<pre><code>分块技术：
+□ 理解不同分块策略
+□ 能实现智能分块
+□ 能选择合适的chunk size
 
-                    <h3>最佳实践</h3>
+数据清洗：
+□ 理解数据质量问题
+□ 能实现数据清洗Pipeline
+□ 能进行敏感信息脱敏
 
-                    <div class="success-box">
-                        <h4>✅ 知识库构建建议</h4>
-                        <ul>
-                            <li><strong>分阶段构建：</strong>先构建MVP版本，再逐步优化和扩展</li>
-                            <li><strong>版本控制：</strong>记录知识库的版本历史，支持回滚</li>
-                            <li><strong>自动化流程：</strong>使用CI/CD自动化知识库构建和更新</li>
-                            <li><strong>质量监控：</strong>建立质量监控体系，定期检查知识库健康度</li>
-                            <li><strong>备份策略：</strong>定期备份知识库，防止数据丢失</li>
-                            <li><strong>性能优化：</strong>批量处理、并行化、缓存等优化策略</li>
-                        </ul>
-                    </div>
+元数据管理：
+□ 理解元数据的价值
+□ 能提取和管理元数据
+□ 能基于元数据过滤检索
 
-                    <pre><code>推荐的知识库配置：
-
-小型知识库（&lt; 10万文档）
-├─ 向量数据库：Milvus Standalone
-├─ Embedding模型：text-embedding-ada-002
-├─ Chunk Size：500-800
-├─ 索引类型：HNSW
-└─ 构建时间：&lt; 1小时
-
-中型知识库（10万-100万文档）
-├─ 向量数据库：Milvus Cluster
-├─ Embedding模型：text-embedding-ada-002
-├─ Chunk Size：500-800
-├─ 索引类型：HNSW
-└─ 构建时间：&lt; 1天
-
-大型知识库（&gt; 100万文档）
-├─ 向量数据库：Milvus Cluster / Pinecone
-├─ Embedding模型：自定义微调模型
-├─ Chunk Size：800-1000
-├─ 索引类型：IVF + HNSW
-└─ 构建时间：&lt; 1周</code></pre>
-
-                    <div class="info-box">
-                        <h4>💡 常见问题与解决方案</h4>
-                        <p><strong>问题1：检索结果不相关</strong></p>
-                        <ul>
-                            <li>原因：分块策略不当、embedding模型不匹配、数据质量差</li>
-                            <li>解决：优化分块策略、更换embedding模型、加强数据清洗</li>
-                        </ul>
-
-                        <p><strong>问题2：检索速度慢</strong></p>
-                        <ul>
-                            <li>原因：索引参数不当、数据量过大、硬件资源不足</li>
-                            <li>解决：调整索引参数、分片存储、增加硬件资源</li>
-                        </ul>
-
-                        <p><strong>问题3：知识库更新困难</strong></p>
-                        <ul>
-                            <li>原因：缺乏增量更新机制、元数据不完整</li>
-                            <li>解决：实现增量更新、完善元数据管理</li>
-                        </ul>
-                    </div>
-                </section>
-
-                <!-- Footer -->
-                <div class="content-card" style="text-align: center; color: #6b7280;">
-                    <p>文档更新时间：2026-03-09</p>
-                    <p>AI应用的数据处理和知识管理指南</p>
-                </div>
-            </main>
-        </div>
+高级技术：
+□ 了解Re-ranking
+□ 了解混合检索
+□ 能构建完整知识库</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<strong>下一步学习：</strong>
+<p>
+→ <a href="./05.安全与合规层概念详解.md">05.安全与合规层概念详解</a>
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<em>文档版本：v1.0</em>
+<em>更新时间：2026年3月</em>
+<em>维护者：AI转型小组</em>
+            </section>
+        </main>
     </div>
 
-    <!-- Back to Top Button -->
-    <button class="back-to-top" id="backToTop" aria-label="返回顶部">
-        ↑
-    </button>
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top" onclick="scrollToTop()">↑</div>
 
     <script>
-        // Smooth scrolling for navigation links
+        // 平滑滚动
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -2604,9 +2161,16 @@ public class KnowledgeBaseQA {
             });
         });
 
-        // Back to top button
-        const backToTop = document.getElementById('backToTop');
+        // 返回顶部
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
 
+        // 返回顶部按钮显示/隐藏
+        const backToTop = document.querySelector('.back-to-top');
         window.addEventListener('scroll', () => {
             if (window.pageYOffset > 300) {
                 backToTop.classList.add('show');
@@ -2615,19 +2179,10 @@ public class KnowledgeBaseQA {
             }
         });
 
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-
-        // Active navigation link based on scroll position
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.nav-link');
-
+        // 活动导航链接
         window.addEventListener('scroll', () => {
-            const scrollPosition = window.pageYOffset + 150;
+            const sections = document.querySelectorAll('section[id]');
+            const scrollPosition = window.pageYOffset + 100;
 
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
@@ -2635,7 +2190,7 @@ public class KnowledgeBaseQA {
                 const sectionId = section.getAttribute('id');
 
                 if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                    navLinks.forEach(link => {
+                    document.querySelectorAll('.nav-link').forEach(link => {
                         link.classList.remove('active');
                         if (link.getAttribute('href') === `#${sectionId}`) {
                             link.classList.add('active');
