@@ -186,6 +186,34 @@
 
 ---
 
+### 7. [前沿AI概念详解](./07.前沿AI概念详解.md)
+
+**学习目标：** 掌握2025-2026年最新AI工程方法论
+
+**核心内容：**
+
+**Engineering方法论：**
+- Prompt Engineering（提示词工程）
+- Context Engineering（上下文工程）
+- Agentic Engineering（智能体工程）
+- Harness Engineering（驾驭工程）
+
+**Agent协作模式：**
+- A2A（Agent to Agent）协作
+- A2UI（Agent to User Interface）交互
+- Skills（技能）系统
+
+**通信协议标准：**
+- MCP（Model Context Protocol）
+
+**适合人群：** 需要深入理解AI架构的高级开发者
+
+**学习周期：** Week 5-12
+
+**掌握程度：** 🎯 必须掌握 / 📖 需要了解 / 🚀 进阶学习
+
+---
+
 ## 🎯 掌握程度说明
 
 - **🎯 必须掌握**：核心工作必备，需要深度理解和实践
