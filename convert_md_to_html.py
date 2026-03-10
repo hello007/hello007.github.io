@@ -19,7 +19,28 @@ def read_template():
     css_match = re.search(r'<style>(.*?)</style>', content, re.DOTALL)
     css = css_match.group(1) if css_match else ""
 
-    return css
+    # Append blockquote styles (not in template)
+    blockquote_css = """
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+"""
+
+    return css + blockquote_css
 
 def generate_html_from_markdown(md_content, title, css):
     """Convert markdown content to HTML with full styling"""
@@ -246,6 +267,7 @@ def generate_html_from_markdown(md_content, title, css):
         result = []
         in_paragraph = False
         in_pre_block = False  # Track if inside <pre> block
+        in_blockquote = False  # Track if inside blockquote
 
         for line in lines:
             stripped = line.strip()
@@ -256,6 +278,9 @@ def generate_html_from_markdown(md_content, title, css):
                 if in_paragraph:
                     result.append('</p>')
                     in_paragraph = False
+                if in_blockquote:
+                    result.append('</blockquote>')
+                    in_blockquote = False
                 result.append(line)
                 continue
             elif '</pre>' in line:
@@ -268,11 +293,33 @@ def generate_html_from_markdown(md_content, title, css):
                 result.append(line)
                 continue
 
+            # Handle blockquote (lines starting with >)
+            if line.startswith('>'):
+                # Remove the > prefix and optional space
+                quote_content = line[1:].lstrip() if line.startswith('> ') else line[1:].strip()
+
+                if not in_blockquote:
+                    if in_paragraph:
+                        result.append('</p>')
+                        in_paragraph = False
+                    result.append('<blockquote>')
+                    in_blockquote = True
+
+                result.append(f'<p>{quote_content}</p>')
+                continue
+            elif in_blockquote and stripped:
+                # End blockquote when non-empty, non-quote line encountered
+                result.append('</blockquote>')
+                in_blockquote = False
+
             # Skip empty lines, already converted elements, and special patterns
             if not stripped:
                 if in_paragraph:
                     result.append('</p>')
                     in_paragraph = False
+                if in_blockquote:
+                    result.append('</blockquote>')
+                    in_blockquote = False
                 continue
 
             if stripped.startswith('<'):
@@ -313,6 +360,8 @@ def generate_html_from_markdown(md_content, title, css):
 
         if in_paragraph:
             result.append('</p>')
+        if in_blockquote:
+            result.append('</blockquote>')
 
         return '\n'.join(result)
 

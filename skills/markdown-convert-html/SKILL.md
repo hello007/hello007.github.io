@@ -439,6 +439,51 @@ li {
 }
 ```
 
+#### 引用块（Blockquote）
+
+```css
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+```
+
+**转换规则：**
+- 以 `>` 开头的行转换为 `<blockquote>`
+- 连续的引用行合并到一个 blockquote 中
+- 移除 `>` 前缀，保留内容的 markdown 格式（加粗、斜体等）
+- 每个引用行包裹在 `<p>` 标签中
+
+**示例：**
+
+```markdown
+> **业务总监：** "现在都说AI，我们能不能也搞个智能客服？"
+>
+> **我当时的回答：** "这个...需要评估，技术上挺复杂的..."
+```
+
+应转换为：
+
+```html
+<blockquote>
+<p><strong>业务总监：</strong> "现在都说AI，我们能不能也搞个智能客服？"</p>
+<p><strong>我当时的回答：</strong> "这个...需要评估，技术上挺复杂的..."</p>
+</blockquote>
+```
+
 ### 步骤 5：添加交互功能
 
 #### 平滑滚动
