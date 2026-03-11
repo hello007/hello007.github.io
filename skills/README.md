@@ -43,15 +43,45 @@ When working in this project, you can use the markdown-convert-html skill by say
 
 ```
 markdown-convert-html/
-├── SKILL.md                    # Main skill file with instructions
-└── evals/                      # Test cases
-    ├── evals.json              # Test case definitions
-    ├── test-simple.md          # Simple test file
-    ├── test-complex.md         # Complex test with tables, code blocks
-    └── test-chinese.md         # Chinese content test
+├── script/                    # Scripts directory
+│   ├── convert_md_to_html.py  # Main conversion tool
+│   ├── test_regex.py          # Regex testing script
+│   └── test_process.py        # Paragraph processing test
+├── SKILL.md                   # Skill instructions (Chinese)
+├── SKILL_en.md                # Skill instructions (English)
+├── README.md                  # This file
+└── evals/                     # Test cases
+    ├── evals.json            # Test case definitions
+    ├── test-simple.md        # Simple test file
+    ├── test-complex.md       # Complex test with tables, code blocks
+    └── test-chinese.md       # Chinese content test
 ```
 
 ## 🔧 Development
+
+### Using the Python Tool
+
+The conversion can also be done directly using the Python script:
+
+```bash
+# Convert a specific file
+python skills/markdown-convert-html/script/convert_md_to_html.py "path/to/file.md"
+
+# Convert all default files
+python skills/markdown-convert-html/script/convert_md_to_html.py
+```
+
+### Testing the Conversion
+
+Test the conversion logic:
+
+```bash
+# Test code block regex patterns
+python skills/markdown-convert-html/script/test_regex.py
+
+# Test paragraph wrapping logic
+python skills/markdown-convert-html/script/test_process.py
+```
 
 ### Modifying the Skill
 

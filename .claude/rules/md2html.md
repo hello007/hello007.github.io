@@ -14,10 +14,10 @@
 
 ```bash
 # 转换指定文件
-python convert_md_to_html.py "path/to/file.md"
+python skills/markdown-convert-html/script/convert_md_to_html.py "path/to/file.md"
 
 # 转换所有默认文件 (ai/03.核心概念知识体系/)
-python convert_md_to_html.py
+python skills/markdown-convert-html/script/convert_md_to_html.py
 ```
 
 ### 方法 2：使用技能系统

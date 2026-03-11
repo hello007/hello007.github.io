@@ -20,10 +20,14 @@
 hello007.github.io/
 ├── _config.yml                 # Jekyll 配置
 ├── index.html                  # 带导航卡片的着陆页
-├── convert_md_to_html.py       # 主工具：将 MD 转换为 HTML
-├── test_*.py                   # 转换器测试脚本
 ├── skills/                     # Claude 技能定义
 │   └── markdown-convert-html/  # Markdown转HTML转换技能
+│       ├── script/                 # 脚本目录
+│       │   ├── convert_md_to_html.py   # 主工具：将 MD 转换为 HTML
+│       │   └── test_*.py               # 转换器测试脚本
+│       ├── SKILL.md               # 技能说明（中文）
+│       ├── SKILL_en.md            # 技能说明（英文）
+│       └── evals/                 # 测试用例
 ├── ai/                         # 文档内容
 │   ├── AI转型启动会.md/html
 │   ├── 团队向AI方向转型实操指南.md/html
@@ -33,6 +37,9 @@ hello007.github.io/
 │       ├── ... (共7个模块)
 │       └── README.md/html
 └── .claude/
+    ├── CLAUDE.md               # 项目指南
+    ├── rules/                  # Claude 规则
+    │   └── md2html.md          # Markdown转HTML规则
     └── settings.local.json     # 本地 Claude 设置
 ```
 
@@ -40,15 +47,15 @@ hello007.github.io/
 
 ### convert_md_to_html.py
 
-用于将 markdown 文档转换为样式化 HTML 页面的主要工具。
+位于 `skills/markdown-convert-html/convert_md_to_html.py`，用于将 markdown 文档转换为样式化 HTML 页面的主要工具。
 
 **使用方法：**
 ```bash
 # 转换指定文件
-python convert_md_to_html.py "path/to/file.md"
+python skills/markdown-convert-html/script/convert_md_to_html.py "path/to/file.md"
 
 # 转换所有默认文件 (ai/03.核心概念知识体系/)
-python convert_md_to_html.py
+python skills/markdown-convert-html/script/convert_md_to_html.py
 ```
 
 **功能特性：**
@@ -122,7 +129,7 @@ line-height: 1.8;
 3. 使用 `##` 标题作为主要章节（自动生成导航）
 4. 转换为 HTML：
    ```bash
-   python convert_md_to_html.py "path/to/new-file.md"
+   python skills/markdown-convert-html/script/convert_md_to_html.py "path/to/new-file.md"
    ```
 
 ### 更新现有文档
@@ -135,8 +142,8 @@ line-height: 1.8;
 
 可使用以下测试脚本：
 ```bash
-python test_regex.py      # 测试代码块正则表达式模式
-python test_process.py    # 测试段落包装逻辑
+python skills/markdown-convert-html/script/test_regex.py      # 测试代码块正则表达式模式
+python skills/markdown-convert-html/script/test_process.py    # 测试段落包装逻辑
 ```
 
 ## 文件命名规范
@@ -149,7 +156,7 @@ python test_process.py    # 测试段落包装逻辑
 ## 重要说明
 
 - **始终先编辑 `.md` 文件**，然后重新生成 `.html`
-- `convert_md_to_html.py` 脚本是权威转换器 - 使用它而不是手动编辑 HTML
+- `skills/markdown-convert-html/script/convert_md_to_html.py` 脚本是权威转换器 - 使用它而不是手动编辑 HTML
 - HTML 文件是生成的产物，不应手动编辑
 - 使用 `skills/markdown-convert-html/evals/` 中的测试文件测试 markdown 转 HTML 转换
 - 网站主要内容为中文 - 确保 UTF-8 编码和正确的中文字体支持
