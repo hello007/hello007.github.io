@@ -80,11 +80,56 @@ def generate_html_from_markdown(md_content, title, css):
     for i, heading in enumerate(headings):
         # Create ID from heading
         heading_id = re.sub(r'[^\w\u4e00-\u9fa5]+', '-', heading).strip('-').lower()
-        emoji = "📚"
-        if "掌握" in heading:
+
+        # Select emoji based on heading content
+        emoji = "📚"  # Default
+
+        # Priority matching (check in order)
+        if any(keyword in heading for keyword in ["掌握", "目标", "学习"]):
             emoji = "🎯"
-        elif "详解" in heading:
+        elif any(keyword in heading for keyword in ["详解", "详细", "说明", "介绍"]):
             emoji = "📖"
+        elif any(keyword in heading for keyword in ["AI", "智能", "模型", "LLM", "大语言"]):
+            emoji = "🤖"
+        elif any(keyword in heading for keyword in ["应用", "技术", "开发"]):
+            emoji = "⚙️"
+        elif any(keyword in heading for keyword in ["工程", "架构", "框架", "系统"]):
+            emoji = "🏗️"
+        elif any(keyword in heading for keyword in ["数据", "知识", "向量", "数据库"]):
+            emoji = "📊"
+        elif any(keyword in heading for keyword in ["安全", "合规", "隐私", "防护"]):
+            emoji = "🔒"
+        elif any(keyword in heading for keyword in ["方法", "工具", "技巧", "实践"]):
+            emoji = "🛠️"
+        elif any(keyword in heading for keyword in ["概念", "基础", "入门", "原理"]):
+            emoji = "💡"
+        elif any(keyword in heading for keyword in ["核心", "重要", "关键"]):
+            emoji = "⭐"
+        elif any(keyword in heading for keyword in ["设计", "模式", "架构"]):
+            emoji = "🎨"
+        elif any(keyword in heading for keyword in ["测试", "验证", "检查"]):
+            emoji = "✅"
+        elif any(keyword in heading for keyword in ["问题", "问答", "Q&A", "FAQ"]):
+            emoji = "❓"
+        elif any(keyword in heading for keyword in ["警告", "注意", "提示"]):
+            emoji = "⚠️"
+        elif any(keyword in heading for keyword in ["进阶", "前沿", "高级", "深入"]):
+            emoji = "🚀"
+        elif any(keyword in heading for keyword in ["总结", "回顾", "概览"]):
+            emoji = "📝"
+        elif any(keyword in heading for keyword in ["环境", "配置", "安装", "部署"]):
+            emoji = "🔧"
+        elif any(keyword in heading for keyword in ["性能", "优化", "提升"]):
+            emoji = "⚡"
+        elif any(keyword in heading for keyword in ["示例", "案例", "演示"]):
+            emoji = "🎬"
+        elif any(keyword in heading for keyword in ["协议", "标准", "规范"]):
+            emoji = "📋"
+        elif any(keyword in heading for keyword in ["协作", "通信", "交互"]):
+            emoji = "🤝"
+        elif any(keyword in heading for keyword in ["资源", "参考", "文档"]):
+            emoji = "📁"
+
         nav_html += f'''
                     <li class="nav-item">
                         <a href="#{heading_id}" class="nav-link">{emoji} {heading}</a>
@@ -102,11 +147,56 @@ def generate_html_from_markdown(md_content, title, css):
     for i, heading in enumerate(headings):
         # Create ID from heading
         heading_id = re.sub(r'[^\w\u4e00-\u9fa5]+', '-', heading).strip('-').lower()
-        emoji = "📚"
-        if "掌握" in heading:
+
+        # Select emoji based on heading content
+        emoji = "📚"  # Default
+
+        # Priority matching (check in order)
+        if any(keyword in heading for keyword in ["掌握", "目标", "学习"]):
             emoji = "🎯"
-        elif "详解" in heading:
+        elif any(keyword in heading for keyword in ["详解", "详细", "说明", "介绍"]):
             emoji = "📖"
+        elif any(keyword in heading for keyword in ["AI", "智能", "模型", "LLM", "大语言"]):
+            emoji = "🤖"
+        elif any(keyword in heading for keyword in ["应用", "技术", "开发"]):
+            emoji = "⚙️"
+        elif any(keyword in heading for keyword in ["工程", "架构", "框架", "系统"]):
+            emoji = "🏗️"
+        elif any(keyword in heading for keyword in ["数据", "知识", "向量", "数据库"]):
+            emoji = "📊"
+        elif any(keyword in heading for keyword in ["安全", "合规", "隐私", "防护"]):
+            emoji = "🔒"
+        elif any(keyword in heading for keyword in ["方法", "工具", "技巧", "实践"]):
+            emoji = "🛠️"
+        elif any(keyword in heading for keyword in ["概念", "基础", "入门", "原理"]):
+            emoji = "💡"
+        elif any(keyword in heading for keyword in ["核心", "重要", "关键"]):
+            emoji = "⭐"
+        elif any(keyword in heading for keyword in ["设计", "模式", "架构"]):
+            emoji = "🎨"
+        elif any(keyword in heading for keyword in ["测试", "验证", "检查"]):
+            emoji = "✅"
+        elif any(keyword in heading for keyword in ["问题", "问答", "Q&A", "FAQ"]):
+            emoji = "❓"
+        elif any(keyword in heading for keyword in ["警告", "注意", "提示"]):
+            emoji = "⚠️"
+        elif any(keyword in heading for keyword in ["进阶", "前沿", "高级", "深入"]):
+            emoji = "🚀"
+        elif any(keyword in heading for keyword in ["总结", "回顾", "概览"]):
+            emoji = "📝"
+        elif any(keyword in heading for keyword in ["环境", "配置", "安装", "部署"]):
+            emoji = "🔧"
+        elif any(keyword in heading for keyword in ["性能", "优化", "提升"]):
+            emoji = "⚡"
+        elif any(keyword in heading for keyword in ["示例", "案例", "演示"]):
+            emoji = "🎬"
+        elif any(keyword in heading for keyword in ["协议", "标准", "规范"]):
+            emoji = "📋"
+        elif any(keyword in heading for keyword in ["协作", "通信", "交互"]):
+            emoji = "🤝"
+        elif any(keyword in heading for keyword in ["资源", "参考", "文档"]):
+            emoji = "📁"
+
         nav_html += f'''
                     <li class="nav-item">
                         <a href="#{heading_id}" class="nav-link">{emoji} {heading}</a>
@@ -142,8 +232,16 @@ def generate_html_from_markdown(md_content, title, css):
     # Inline code
     html_content = re.sub(r'`([^`]+?)`', r'<code>\1</code>', html_content)
 
-    # Links
-    html_content = re.sub(r'\[([^\]]+?)\]\(([^\)]+?)\)', r'<a href="\2">\1</a>', html_content)
+    # Links - convert .md to .html in href
+    def convert_link(match):
+        text = match.group(1)
+        url = match.group(2)
+        # Convert .md extension to .html
+        if url.endswith('.md'):
+            url = url[:-3] + '.html'
+        return f'<a href="{url}">{text}</a>'
+
+    html_content = re.sub(r'\[([^\]]+?)\]\(([^\)]+?)\)', convert_link, html_content)
 
     # Unordered lists
     def convert_list(lines):
