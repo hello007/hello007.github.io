@@ -1,4 +1,4 @@
-# All For AI
+# All In AI
 
 > AI 转型实践指南与资源分享
 
