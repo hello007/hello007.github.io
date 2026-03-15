@@ -11,7 +11,9 @@ from pathlib import Path
 
 def read_template():
     """Read the template HTML file to extract styles and structure"""
-    template_path = Path(__file__).parent / "ai" / "AI转型启动会.html"
+    # Get project root (script/ -> markdown-convert-html/ -> skills/ -> root)
+    project_root = Path(__file__).parent.parent.parent.parent
+    template_path = project_root / "ai" / "AI转型启动会.html"
     with open(template_path, 'r', encoding='utf-8') as f:
         content = f.read()
 
@@ -65,8 +67,8 @@ def generate_html_from_markdown(md_content, title, css):
     target_audience = re.search(r'\*\*适合人群：\*\*\s*(.*?)\n', md_content)
 
     doc_position = doc_position.group(1).strip() if doc_position else ""
-    learning_goal = learning_goal.group(1).strip() if learning_goal else ""
-    target_audience = target_audience.group(1).strip() if target_audience else ""
+    learning_goal = learning_goal.group(1).strip() if learning_goal else "见标题"
+    target_audience = target_audience.group(1).strip() if target_audience else "所有人"
 
     # Extract main title (first # heading)
     title_match = re.search(r'^#\s+(.+?)\n', md_content)

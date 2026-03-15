@@ -47,7 +47,7 @@ hello007.github.io/
 
 ### convert_md_to_html.py
 
-位于 `skills/markdown-convert-html/convert_md_to_html.py`，用于将 markdown 文档转换为样式化 HTML 页面的主要工具。
+位于 `skills/markdown-convert-html/script/convert_md_to_html.py`，用于将 markdown 文档转换为样式化 HTML 页面的主要工具。
 
 **使用方法：**
 ```bash
@@ -60,11 +60,15 @@ python skills/markdown-convert-html/script/convert_md_to_html.py
 
 **功能特性：**
 - 提取 frontmatter 元数据（文档定位、学习目标、适合人群）
-- 从 `##` 标题生成侧边栏导航
+- 从 `##` 标题生成侧边栏导航（自动选择23种表情图标）
 - 处理带语言标识符的代码块
 - 支持表格、列表、强调、链接
+- 自动转换 `.md` 链接为 `.html` 链接
 - 创建带粘性侧边栏的响应式 HTML
 - 使用 `ai/AI转型启动会.html` 作为 CSS 模板
+
+**导航图标自动选择：**
+根据标题关键词自动匹配图标：🎯(目标)、🤖(AI)、⚙️(应用)、🏗️(架构)、📊(数据)、🔒(安全)、🛠️(工具)、💡(概念)、⭐(核心) 等
 
 **关键实现细节：**
 - 使用占位符系统在 markdown 处理期间保护代码块
@@ -120,6 +124,48 @@ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
 line-height: 1.8;
 ```
 
+## 开发工作流
+
+### 本地预览
+
+```bash
+# 安装 Jekyll（首次）
+gem install bundler jekyll
+
+# 本地预览网站
+bundle exec jekyll serve
+
+# 访问 http://localhost:4000
+```
+
+### 部署到 GitHub Pages
+
+```bash
+# 添加所有更改
+git add .
+
+# 提交更改
+git commit -m "描述性提交信息"
+
+# 推送到 main/master 分支自动部署
+git push origin master
+```
+
+**注意：** 推送到 `master` 分支后，GitHub Pages 会自动构建并部署到 https://hello007.github.io
+
+### 测试转换逻辑
+
+```bash
+# 测试代码块正则表达式模式
+python skills/markdown-convert-html/script/test_regex.py
+
+# 测试段落包装逻辑
+python skills/markdown-convert-html/script/test_process.py
+
+# 使用 evals 测试文件
+python skills/markdown-convert-html/script/convert_md_to_html.py "skills/markdown-convert-html/evals/test-complex.md"
+```
+
 ## 常见任务
 
 ### 添加新文档
@@ -137,14 +183,6 @@ line-height: 1.8;
 1. 编辑 `.md` 文件
 2. 重新运行转换以更新 `.html`
 3. 两个文件应保持同步
-
-### 测试转换器更改
-
-可使用以下测试脚本：
-```bash
-python skills/markdown-convert-html/script/test_regex.py      # 测试代码块正则表达式模式
-python skills/markdown-convert-html/script/test_process.py    # 测试段落包装逻辑
-```
 
 ## 文件命名规范
 

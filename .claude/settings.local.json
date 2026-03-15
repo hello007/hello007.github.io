@@ -5,7 +5,8 @@
       "Bash(python convert_md_to_html.py *)",
       "Bash(python convert_md_to_html.py **/*.md)",
       "Bash(ls -lh *.html)",
-      "Bash(python test_*.py)"
+      "Bash(python test_*.py)",
+      "Bash(python skills/markdown-convert-html/script/convert_md_to_html.py \"**.md\")"
     ]
   }
 }
