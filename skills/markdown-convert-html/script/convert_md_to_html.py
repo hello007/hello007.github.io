@@ -506,6 +506,9 @@ def generate_html_from_markdown(md_content, title, css):
             <nav>
                 <ul class="nav-menu">
                     <li class="nav-item">
+                        <a href="/" class="nav-link">🏠 返回首页</a>
+                    </li>
+                    <li class="nav-item">
                         <a href="#intro" class="nav-link active">📖 概述</a>
                     </li>
 {nav_html}
@@ -575,18 +578,17 @@ def generate_html_from_markdown(md_content, title, css):
 
         // 活动导航链接
         window.addEventListener('scroll', () => {{
-            const sections = document.querySelectorAll('section[id]');
+            const headings = document.querySelectorAll('h2[id]');
             const scrollPosition = window.pageYOffset + 100;
 
-            sections.forEach(section => {{
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.offsetHeight;
-                const sectionId = section.getAttribute('id');
+            headings.forEach(heading => {{
+                const headingTop = heading.offsetTop;
+                const headingId = heading.getAttribute('id');
 
-                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {{
+                if (scrollPosition >= headingTop - 50) {{
                     document.querySelectorAll('.nav-link').forEach(link => {{
                         link.classList.remove('active');
-                        if (link.getAttribute('href') === `#${{sectionId}}`) {{
+                        if (link.getAttribute('href') === '#' + headingId) {{
                             link.classList.add('active');
                         }}
                     }});

@@ -1,0 +1,5 @@
+# 忽略 Python 编译缓存
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
