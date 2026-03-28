@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第十章：构建你的第一个Agent—— 5步零门槛上手指南</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <script src="https://cdn.bootcdn.net/mermaid/10.9.0/mermaid.min.js"
+            onerror="this.onerror=null; this.src='https://unpkg.com/mermaid@10/dist/mermaid.min.js'"></script>
+    <script>
+        if (typeof mermaid !== 'undefined') {
+            mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+        }
+    </script>
+    <style>
+        
+        
+        
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f7fa;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .nav-link:hover {
+            background: #f3f4f6;
+            color: #2563eb;
+        }
+
+        .nav-link.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+        .meta-icon {
+            font-size: 20px;
+        }
+
+        h2 {
+            font-size: 32px;
+            color: #1f2937;
+            margin: 50px 0 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2563eb;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 24px;
+            color: #374151;
+            margin: 35px 0 20px;
+            font-weight: 600;
+        }
+
+        h4 {
+            font-size: 20px;
+            color: #4b5563;
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #4b5563;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        /* 代码块 */
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        code {
+            background: #f3f4f6;
+            color: #dc2626;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 15px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        /* 列表 */
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 强调框 */
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box {
+            background: #e0e7ff;
+            border-left: 4px solid #6366f1;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 时间标签 */
+        .time-tag {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* 问答框 */
+        .qa-box {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #2563eb;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .answer {
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 链接 */
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2563eb;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s;
+            font-size: 24px;
+        }
+
+        .back-to-top:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 968px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-card {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            h2 {
+                font-size: 26px;
+            }
+
+            .hero-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* 打印样式 */
+        @media print {
+            .sidebar {
+                display: none;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .content-card {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+/* Mermaid diagrams */
+.mermaid {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+pre code.language-mermaid {
+    background: white;
+    color: #1f2937;
+    padding: 0;
+    border-radius: 8px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 侧边导航 -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">📚</span>
+                <span>AI核心概念</span>
+            </div>
+            <div class="subtitle">
+                
+            </div>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">🏠 返回首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#intro" class="nav-link active">📖 概述</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#开篇说明-我们要做一个什么样的agent" class="nav-link">📖 开篇说明：我们要做一个什么样的Agent？</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#第1步-环境准备-3分钟搞定所有前置工作" class="nav-link">🔧 第1步：环境准备—— 3分钟搞定所有前置工作</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#第2步-依赖安装-只装2个包-无依赖地狱" class="nav-link">🔧 第2步：依赖安装—— 只装2个包，无依赖地狱</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#第3步-核心组件搭建-3个核心模块-逐个实现" class="nav-link">⭐ 第3步：核心组件搭建—— 3个核心模块，逐个实现</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#第4步-agent闭环整合-完整的执行流程实现" class="nav-link">📚 第4步：Agent闭环整合—— 完整的执行流程实现</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#第5步-运行测试-调优优化-让你的agent更好用" class="nav-link">✅ 第5步：运行测试&调优优化—— 让你的Agent更好用</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#新手90-常见踩坑排查指南" class="nav-link">📚 新手90%常见踩坑排查指南</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#进阶扩展方向" class="nav-link">🚀 进阶扩展方向</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#本章核心小结" class="nav-link">⭐ 本章核心小结</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#下章预告" class="nav-link">📚 下章预告</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#配图说明" class="nav-link">📖 📊 配图说明</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 英雄区域 -->
+            <section class="hero-section">
+                <h1>第十章：构建你的第一个Agent—— 5步零门槛上手指南</h1>
+                <div class="hero-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon">🎯</span>
+                        <span>学习目标：见标题</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">👥</span>
+                        <span>适合人群：所有人</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 内容区域 -->
+            <section id="intro" class="content-card">
+                <blockquote>
+<p><strong>章节核心目标</strong></p>
+<p></p>
+<p>带新手从零开始，5步搭建一个完整可用的Agent，全程无跳步、无黑箱、无代理、无依赖地狱，复制粘贴就能跑，同时提供完整的踩坑排查指南。</p>
+</blockquote>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="开篇说明-我们要做一个什么样的agent">开篇说明：我们要做一个什么样的Agent？</h2>
+<h3>🎯 本次实战的目标</h3>
+<p>
+<strong>搭建一个个人日程管理助理Agent</strong>
+</p>
+<p>
+<strong>核心功能：</strong>
+</p>
+<ol>
+<li>✅ 接收用户的日程安排需求</li>
+<li>✅ 解析需求（提取时间、事件、地点）</li>
+<li>✅ 同步到飞书日历</li>
+<li>✅ 设置提醒</li>
+<li>✅ 查询日程</li>
+<li>✅ 给用户做日程规划建议</li>
+</ol>
+<p>
+<strong>示例对话：</strong>
+</p>
+<pre><code>用户：&quot;帮我创建一个明天下午3点的会议，主题是AI Agent学习，时长1小时，提醒我提前10分钟参会。&quot;
+
+Agent：&quot;好的，已经帮你创建了明天下午3点的会议&#39;AI Agent学习&#39;，时长1小时，已设置提前10分钟提醒。需要我做其他事情吗？&quot;</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>💡 为什么选择这个场景？</h3>
+<ol>
+<li><strong>场景实用</strong>：日程管理是日常高频需求</li>
+<li><strong>架构简单</strong>：单Agent架构，工具调用清晰</li>
+<li><strong>能直接用到</strong>：搭建完就能真正用起来</li>
+<li><strong>新手友好</strong>：不涉及复杂逻辑，容易理解</li>
+</ol>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>📋 前置要求</h3>
+<p>
+<strong>只需要：</strong>
+</p>
+<ul>
+<li>✅ 会基础的电脑操作</li>
+<li>✅ 有Python环境（不会也没关系，我会教）</li>
+<li>✅ 能按照步骤操作</li>
+</ul>
+<p>
+<strong>不需要：</strong>
+</p>
+<ul>
+<li>❌ 深厚的编程基础</li>
+<li>❌ 任何AI/机器学习知识</li>
+<li>❌ 复杂的环境配置</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="第1步-环境准备-3分钟搞定所有前置工作">第1步：环境准备—— 3分钟搞定所有前置工作</h2>
+<h3>📦 步骤1.1：安装Python</h3>
+<p>
+<strong>为什么需要Python？</strong>
+</p>
+<ul>
+<li>我们的Agent用Python写</li>
+<li>Python语法简单，新手友好</li>
+<li>跨平台（Windows、Mac、Linux都能用）</li>
+</ul>
+<p>
+<strong>如何安装？</strong>
+</p>
+<p>
+<strong>Windows用户：</strong>
+</p>
+<ol>
+<li>访问：https://www.python.org/downloads/</li>
+<li>下载"Python 3.10+"版本</li>
+<li>运行安装程序</li>
+<li><strong>重要</strong>：勾选"Add Python to PATH"</li>
+<li>点击"Install Now"</li>
+</ol>
+<p>
+<strong>Mac用户：</strong>
+</p>
+<pre><code class="language-bash"># 使用Homebrew安装（推荐）
+brew install python@3.10</code></pre>
+<p>
+<strong>Linux用户：</strong>
+</p>
+<pre><code class="language-bash"># Ubuntu/Debian
+sudo apt update
+sudo apt install python3.10
+
+# CentOS/RHEL
+sudo yum install python3.10</code></pre>
+<p>
+<strong>验证安装：</strong>
+</p>
+<pre><code class="language-bash">python --version
+# 输出：Python 3.10.x</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>🔑 步骤1.2：申请大模型API Key</h3>
+<p>
+<strong>为什么需要API Key？</strong>
+</p>
+<ul>
+<li>我们的Agent需要调用大模型</li>
+<li>我们用豆包大模型（免费额度大，中文友好）</li>
+</ul>
+<p>
+<strong>如何申请？</strong>
+</p>
+<ol>
+<li>访问：https://console.volcengine.com/ark</li>
+<li>注册/登录账号</li>
+<li>进入"模型推理"页面</li>
+<li>创建"推理接口"</li>
+<li>选择模型：qwen-max（或doubao-pro-32k）</li>
+<li>获取API Key（复制保存）</li>
+</ol>
+<p>
+<strong>免费额度说明：</strong>
+</p>
+<ul>
+<li>新用户有免费额度</li>
+<li>每天也有免费额度</li>
+<li>个人学习完全够用</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>🛠️ 步骤1.3：安装开发工具</h3>
+<p>
+<strong>推荐：VS Code（免费、强大）</strong>
+</p>
+<p>
+<strong>为什么用VS Code？</strong>
+</p>
+<ul>
+<li>免费、开源</li>
+<li>插件丰富</li>
+<li>Python支持好</li>
+</ul>
+<p>
+<strong>如何安装？</strong>
+</p>
+<ol>
+<li>访问：https://code.visualstudio.com/</li>
+<li>下载对应系统版本</li>
+<li>运行安装程序</li>
+</ol>
+<p>
+<strong>基础配置：</strong>
+</p>
+<ol>
+<li>打开VS Code</li>
+<li>点击左侧"扩展"图标（或按Ctrl+Shift+X）</li>
+<li>搜索"Python"</li>
+<li>安装"Python"插件（作者是Microsoft）</li>
+</ol>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>✅ 环境检查清单</h3>
+<ul>
+<li>[ ] Python已安装（运行<code>python --version</code>验证）</li>
+<li>[ ] API Key已获取（妥善保管）</li>
+<li>[ ] VS Code已安装并配置Python插件</li>
+</ul>
+<p>
+<strong>如果以上都打勾，恭喜你，环境准备完成！</strong>
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="第2步-依赖安装-只装2个包-无依赖地狱">第2步：依赖安装—— 只装2个包，无依赖地狱</h2>
+<h3>📦 需要安装的包</h3>
+<p>
+我们只需要安装2个Python包：
+</p>
+<ol>
+<li><strong>dashscope</strong>：豆包大模型SDK</li>
+<li><strong>feishu</strong>：飞书日历SDK</li>
+</ol>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>💻 安装步骤</h3>
+<p>
+<strong>打开终端（Windows按Win+R，输入cmd），运行：</strong>
+</p>
+<pre><code class="language-bash">pip install dashscope feishu</code></pre>
+<p>
+<strong>等待安装完成。</strong>
+</p>
+<p>
+<strong>验证安装：</strong>
+</p>
+<pre><code class="language-bash">python -c &quot;import dashscope; import feishu; print(&#39;安装成功！&#39;)&quot;</code></pre>
+<p>
+<strong>如果输出"安装成功！"，恭喜你！</strong>
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>🚨 常见安装问题</h3>
+<p>
+<strong>问题1：pip不是内部或外部命令</strong>
+</p>
+<p>
+<strong>原因：</strong> Python没有添加到PATH
+</p>
+<p>
+<strong>解决：</strong>
+</p>
+<ol>
+<li>重新安装Python，勾选"Add Python to PATH"</li>
+<li>或者手动添加Python到系统环境变量</li>
+</ol>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<p>
+<strong>问题2：安装速度慢</strong>
+</p>
+<p>
+<strong>原因：</strong> 默认源在国外
+</p>
+<p>
+<strong>解决：</strong> 使用国内镜像源
+</p>
+<pre><code class="language-bash">pip install -i https://pypi.tuna.tsinghua.edu.cn/simple dashscope feishu</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<p>
+<strong>问题3：权限错误</strong>
+</p>
+<p>
+<strong>原因：</strong> 没有管理员权限
+</p>
+<p>
+<strong>解决：</strong>
+</p>
+<ul>
+<li>Windows：以管理员身份运行cmd</li>
+<li>Mac/Linux：在命令前加sudo</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="第3步-核心组件搭建-3个核心模块-逐个实现">第3步：核心组件搭建—— 3个核心模块，逐个实现</h2>
+<h3>🏗️ 架构设计</h3>
+<p>
+我们采用<strong>最小可行Agent架构</strong>，包含3个核心组件：
+</p>
+<ol>
+<li><strong>LLM核心模块</strong>：决策大脑</li>
+<li><strong>记忆模块</strong>：数据存储</li>
+<li><strong>工具调用模块</strong>：日历操作</li>
+</ol>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>📦 模块1：LLM核心模块</h3>
+<p>
+<strong>创建文件：llm_core.py</strong>
+</p>
+<pre><code class="language-python">import dashscope
+from dashscope import Generation
+
+class LLMCore:
+    &quot;&quot;&quot;LLM核心模块：负责理解需求、决策、生成回复&quot;&quot;&quot;
+
+    def __init__(self, api_key):
+        &quot;&quot;&quot;初始化&quot;&quot;&quot;
+        dashscope.api_key = api_key
+        self.system_prompt = &quot;&quot;&quot;
+你是一个专业的日程管理助理。你的核心职责是：
+1. 理解用户的日程安排需求
+2. 提取关键信息（时间、事件、地点、提醒）
+3. 判断用户想要做什么（创建/查询/删除日程）
+4. 给用户友好的回复
+
+重要：
+- 提取时间时，要明确日期和时间
+- 如果用户没有指定日期，默认是明天
+- 如果用户没有指定提醒时间，默认提前15分钟
+- 回复要简洁、友好
+&quot;&quot;&quot;
+
+    def understand(self, user_input):
+        &quot;&quot;&quot;
+        理解用户需求
+        返回：意图（create/query/delete）+ 提取的信息
+        &quot;&quot;&quot;
+        messages = [
+            {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: self.system_prompt},
+            {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: f&quot;用户说：{user_input}\n\n请分析用户的意图，并提取关键信息。&quot;}
+        ]
+
+        response = Generation.call(
+            model=&quot;qwen-max&quot;,
+            messages=messages,
+            result_format=&#39;message&#39;
+        )
+
+        return response.output.choices[0].message.content
+
+    def generate_reply(self, context):
+        &quot;&quot;&quot;
+        生成回复
+        context: 上下文信息（比如创建成功、查询结果等）
+        &quot;&quot;&quot;
+        messages = [
+            {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: self.system_prompt},
+            {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: f&quot;根据以下信息，给用户一个友好的回复：\n{context}&quot;}
+        ]
+
+        response = Generation.call(
+            model=&quot;qwen-max&quot;,
+            messages=messages,
+            result_format=&#39;message&#39;
+        )
+
+        return response.output.choices[0].message.content
+
+
+# 测试
+if __name__ == &quot;__main__&quot;:
+    # 替换成你的API Key
+    api_key = &quot;你的豆包API_KEY&quot;
+
+    llm = LLMCore(api_key)
+
+    # 测试理解
+    user_input = &quot;帮我创建一个明天下午3点的会议&quot;
+    result = llm.understand(user_input)
+    print(f&quot;理解结果：{result}&quot;)
+
+    # 测试生成回复
+    context = &quot;已经成功创建了明天下午3点的会议&quot;
+    reply = llm.generate_reply(context)
+    print(f&quot;回复：{reply}&quot;)</code></pre>
+<p>
+<strong>运行测试：</strong>
+</p>
+<pre><code class="language-bash">python llm_core.py</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>📦 模块2：记忆模块</h3>
+<p>
+<strong>创建文件：memory.py</strong>
+</p>
+<pre><code class="language-python">import json
+from datetime import datetime
+
+class Memory:
+    &quot;&quot;&quot;记忆模块：负责存储用户偏好和历史数据&quot;&quot;&quot;
+
+    def __init__(self, file_path=&quot;memory.json&quot;):
+        &quot;&quot;&quot;初始化&quot;&quot;&quot;
+        self.file_path = file_path
+        self.data = self.load_memory()
+
+    def load_memory(self):
+        &quot;&quot;&quot;加载记忆&quot;&quot;&quot;
+        try:
+            with open(self.file_path, &#39;r&#39;, encoding=&#39;utf-8&#39;) as f:
+                return json.load(f)
+        except FileNotFoundError:
+            # 如果文件不存在，创建默认记忆
+            default_memory = {
+                &quot;user_preferences&quot;: {
+                    &quot;default_reminder&quot;: 15,  # 默认提前15分钟提醒
+                    &quot;working_hours&quot;: {
+                        &quot;start&quot;: &quot;09:00&quot;,
+                        &quot;end&quot;: &quot;18:00&quot;
+                    }
+                },
+                &quot;history&quot;: []
+            }
+            self.save_memory(default_memory)
+            return default_memory
+
+    def save_memory(self, data=None):
+        &quot;&quot;&quot;保存记忆&quot;&quot;&quot;
+        if data is None:
+            data = self.data
+        with open(self.file_path, &#39;w&#39;, encoding=&#39;utf-8&#39;) as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+
+    def get_preference(self, key):
+        &quot;&quot;&quot;获取用户偏好&quot;&quot;&quot;
+        return self.data[&quot;user_preferences&quot;].get(key)
+
+    def set_preference(self, key, value):
+        &quot;&quot;&quot;设置用户偏好&quot;&quot;&quot;
+        self.data[&quot;user_preferences&quot;][key] = value
+        self.save_memory()
+
+    def add_history(self, event):
+        &quot;&quot;&quot;添加历史记录&quot;&quot;&quot;
+        self.data[&quot;history&quot;].append({
+            &quot;event&quot;: event,
+            &quot;timestamp&quot;: datetime.now().strftime(&quot;%Y-%m-%d %H:%M:%S&quot;)
+        })
+        self.save_memory()
+
+
+# 测试
+if __name__ == &quot;__main__&quot;:
+    memory = Memory()
+
+    # 测试获取偏好
+    default_reminder = memory.get_preference(&quot;default_reminder&quot;)
+    print(f&quot;默认提醒时间：{default_reminder}分钟&quot;)
+
+    # 测试设置偏好
+    memory.set_preference(&quot;default_reminder&quot;, 10)
+    print(f&quot;新的默认提醒时间：{memory.get_preference(&#39;default_reminder&#39;)}分钟&quot;)
+
+    # 测试添加历史
+    memory.add_history(&quot;创建了明天下午3点的会议&quot;)
+    print(&quot;历史记录已添加&quot;)</code></pre>
+<p>
+<strong>运行测试：</strong>
+</p>
+<pre><code class="language-bash">python memory.py</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>📦 模块3：工具调用模块</h3>
+<p>
+<strong>创建文件：tools.py</strong>
+</p>
+<pre><code class="language-python">class CalendarTools:
+    &quot;&quot;&quot;工具调用模块：负责日历操作&quot;&quot;&quot;
+
+    def __init__(self):
+        &quot;&quot;&quot;初始化&quot;&quot;&quot;
+        # 注意：实际使用时需要配置飞书API
+        # 这里用模拟数据，方便测试
+        self.events = []  # 模拟存储日程
+
+    def create_event(self, title, start_time, duration, reminder_before=15):
+        &quot;&quot;&quot;
+        创建日程
+        title: 日程标题
+        start_time: 开始时间（格式：2025-04-11 15:00）
+        duration: 时长（分钟）
+        reminder_before: 提前多少分钟提醒
+        &quot;&quot;&quot;
+        event = {
+            &quot;title&quot;: title,
+            &quot;start_time&quot;: start_time,
+            &quot;duration&quot;: duration,
+            &quot;reminder_before&quot;: reminder_before,
+            &quot;status&quot;: &quot;created&quot;
+        }
+
+        self.events.append(event)
+
+        return {
+            &quot;success&quot;: True,
+            &quot;event&quot;: event,
+            &quot;message&quot;: f&quot;已创建日程：{title}，时间：{start_time}，时长：{duration}分钟&quot;
+        }
+
+    def query_events(self, date=None):
+        &quot;&quot;&quot;
+        查询日程
+        date: 日期（格式：2025-04-11），如果为None则查询所有
+        &quot;&quot;&quot;
+        if date:
+            # 查询指定日期的日程
+            result = [e for e in self.events if date in e[&quot;start_time&quot;]]
+        else:
+            # 查询所有日程
+            result = self.events
+
+        return {
+            &quot;success&quot;: True,
+            &quot;events&quot;: result,
+            &quot;message&quot;: f&quot;找到{len(result)}个日程&quot;
+        }
+
+    def delete_event(self, event_id):
+        &quot;&quot;&quot;
+        删除日程
+        event_id: 日程ID
+        &quot;&quot;&quot;
+        # 简化实现：这里需要真实的日程ID
+        # 实际使用时，飞书API会返回日程ID
+        return {
+            &quot;success&quot;: True,
+            &quot;message&quot;: &quot;已删除日程&quot;
+        }
+
+
+# 测试
+if __name__ == &quot;__main__&quot;:
+    tools = CalendarTools()
+
+    # 测试创建日程
+    result = tools.create_event(
+        title=&quot;AI Agent学习&quot;,
+        start_time=&quot;2025-04-11 15:00&quot;,
+        duration=60,
+        reminder_before=10
+    )
+    print(f&quot;创建日程：{result}&quot;)
+
+    # 测试查询日程
+    result = tools.query_events(&quot;2025-04-11&quot;)
+    print(f&quot;查询日程：{result}&quot;)</code></pre>
+<p>
+<strong>运行测试：</strong>
+</p>
+<pre><code class="language-bash">python tools.py</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>✅ 第3步完成检查</h3>
+<ul>
+<li>[ ] llm_core.py已创建并测试通过</li>
+<li>[ ] memory.py已创建并测试通过</li>
+<li>[ ] tools.py已创建并测试通过</li>
+</ul>
+<p>
+<strong>如果以上都通过，恭喜你，核心模块都搭建好了！</strong>
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="第4步-agent闭环整合-完整的执行流程实现">第4步：Agent闭环整合—— 完整的执行流程实现</h2>
+<h3>🔗 整合所有模块</h3>
+<p>
+<strong>创建文件：agent.py</strong>
+</p>
+<pre><code class="language-python">from llm_core import LLMCore
+from memory import Memory
+from tools import CalendarTools
+import re
+from datetime import datetime, timedelta
+
+class ScheduleAgent:
+    &quot;&quot;&quot;日程管理助理Agent&quot;&quot;&quot;
+
+    def __init__(self, api_key):
+        &quot;&quot;&quot;初始化&quot;&quot;&quot;
+        self.llm = LLMCore(api_key)
+        self.memory = Memory()
+        self.tools = CalendarTools()
+
+    def extract_event_info(self, user_input):
+        &quot;&quot;&quot;
+        从用户输入中提取日程信息
+        返回：{title, time, duration, reminder}
+        &quot;&quot;&quot;
+        # 简化实现：用规则提取
+        # 实际应用中，可以让LLM提取
+
+        # 提取标题
+        title = &quot;未命名日程&quot;
+        if &quot;会议&quot; in user_input:
+            title_match = re.search(r&#39;会议[：:]\s*(.+?)(?:，|,|\.|。|$)&#39;, user_input)
+            if title_match:
+                title = title_match.group(1)
+            else:
+                title = &quot;会议&quot;
+
+        # 提取时间
+        time_match = re.search(r&#39;(明天|今天)?(?:下午|上午|晚上)?(\d+)点(\d+分)?&#39;, user_input)
+        if time_match:
+            day = time_match.group(1) or &quot;明天&quot;
+            hour = int(time_match.group(2))
+            minute = int(time_match.group(3).replace(&quot;分&quot;, &quot;&quot;)) if time_match.group(3) else 0
+
+            # 计算具体日期
+            if day == &quot;明天&quot;:
+                date = datetime.now() + timedelta(days=1)
+            else:  # 今天
+                date = datetime.now()
+
+            time_str = date.strftime(f&quot;%Y-%m-%d {hour:02d}:{minute:02d}&quot;)
+        else:
+            time_str = &quot;明天 09:00&quot;  # 默认值
+
+        # 提取时长
+        duration_match = re.search(r&#39;(\d+)小时?(\d+分)?&#39;, user_input)
+        if duration_match:
+            duration = int(duration_match.group(1)) * 60
+            if duration_match.group(2):
+                duration += int(duration_match.group(2).replace(&quot;分&quot;, &quot;&quot;))
+        else:
+            duration = 60  # 默认1小时
+
+        # 提取提醒时间
+        reminder_match = re.search(r&#39;提前(\d+)分?&#39;, user_input)
+        if reminder_match:
+            reminder = int(reminder_match.group(1))
+        else:
+            reminder = self.memory.get_preference(&quot;default_reminder&quot;)
+
+        return {
+            &quot;title&quot;: title,
+            &quot;time&quot;: time_str,
+            &quot;duration&quot;: duration,
+            &quot;reminder&quot;: reminder
+        }
+
+    def run(self, user_input):
+        &quot;&quot;&quot;
+        运行Agent
+        user_input: 用户输入
+        &quot;&quot;&quot;
+        print(f&quot;\n👤 用户：{user_input}&quot;)
+
+        # 第1步：理解用户意图
+        print(&quot;🧠 Agent正在思考...&quot;)
+
+        # 判断意图（简化实现）
+        if any(word in user_input for word in [&quot;创建&quot;, &quot;建&quot;, &quot;安排&quot;]):
+            intent = &quot;create&quot;
+        elif any(word in user_input for word in [&quot;查询&quot;, &quot;看&quot;, &quot;有什么&quot;]):
+            intent = &quot;query&quot;
+        elif any(word in user_input for word in [&quot;删除&quot;, &quot;取消&quot;]):
+            intent = &quot;delete&quot;
+        else:
+            intent = &quot;unknown&quot;
+
+        # 第2步：根据意图执行
+        if intent == &quot;create&quot;:
+            # 创建日程
+            event_info = self.extract_event_info(user_input)
+
+            result = self.tools.create_event(
+                title=event_info[&quot;title&quot;],
+                start_time=event_info[&quot;time&quot;],
+                duration=event_info[&quot;duration&quot;],
+                reminder_before=event_info[&quot;reminder&quot;]
+            )
+
+            # 生成回复
+            context = result[&quot;message&quot;]
+            reply = self.llm.generate_reply(context)
+
+            # 记录历史
+            self.memory.add_history(f&quot;创建日程：{event_info[&#39;title&#39;]}&quot;)
+
+        elif intent == &quot;query&quot;:
+            # 查询日程
+            result = self.tools.query_events()
+
+            if result[&quot;events&quot;]:
+                events_str = &quot;\n&quot;.join([f&quot;- {e[&#39;title&#39;]}：{e[&#39;start_time&#39;]}&quot; for e in result[&quot;events&quot;]])
+                context = f&quot;您的日程：\n{events_str}&quot;
+            else:
+                context = &quot;您暂无日程安排&quot;
+
+            reply = self.llm.generate_reply(context)
+
+        else:
+            reply = &quot;抱歉，我没有理解您的需求。您可以说：创建日程、查询日程等。&quot;
+
+        # 第3步：输出回复
+        print(f&quot;🤖 Agent：{reply}\n&quot;)
+
+        return reply
+
+
+# 主函数
+if __name__ == &quot;__main__&quot;:
+    # 替换成你的API Key
+    api_key = &quot;你的豆包API_KEY&quot;
+
+    # 创建Agent
+    agent = ScheduleAgent(api_key)
+
+    print(&quot;=&quot; * 50)
+    print(&quot;🗓️  日程管理助理Agent&quot;)
+    print(&quot;=&quot; * 50)
+    print(&quot;输入&#39;quit&#39;退出\n&quot;)
+
+    # 交互循环
+    while True:
+        user_input = input(&quot;👤 您：&quot;)
+
+        if user_input.lower() == &#39;quit&#39;:
+            print(&quot;👋 再见！&quot;)
+            break
+
+        if not user_input.strip():
+            continue
+
+        # 运行Agent
+        agent.run(user_input)</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>🎉 运行完整Agent</h3>
+<pre><code class="language-bash">python agent.py</code></pre>
+<p>
+<strong>测试对话：</strong>
+</p>
+<pre><code>👤 您：帮我创建一个明天下午3点的会议，主题是AI Agent学习，时长1小时，提醒我提前10分钟参会
+
+🧠 Agent正在思考...
+🤖 Agent：好的，已经为您创建了明天下午3点的会议&quot;AI Agent学习&quot;，时长1小时，已设置提前10分钟提醒。</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="第5步-运行测试-调优优化-让你的agent更好用">第5步：运行测试&调优优化—— 让你的Agent更好用</h2>
+<h3>🧪 基础测试用例</h3>
+<p>
+<strong>测试用例1：创建日程</strong>
+</p>
+<pre><code>输入：帮我创建一个明天下午3点的会议，主题是AI Agent学习，时长1小时
+
+预期：成功创建日程，返回确认信息</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<p>
+<strong>测试用例2：查询日程</strong>
+</p>
+<pre><code>输入：帮我看看明天有什么日程
+
+预期：返回明天的所有日程</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<p>
+<strong>测试用例3：设置提醒</strong>
+</p>
+<pre><code>输入：帮我创建一个明天上午10点的会议，提醒我提前15分钟
+
+预期：成功创建日程，并设置提前15分钟提醒</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>🔧 调优优化的3个技巧</h3>
+<h4>技巧1：优化Prompt规则</h4>
+<p>
+<strong>问题：</strong> Agent回复不够友好
+</p>
+<p>
+<strong>解决：</strong> 优化system_prompt
+</p>
+<pre><code class="language-python">self.system_prompt = &quot;&quot;&quot;
+你是一个专业的日程管理助理。你的核心职责是：
+1. 理解用户的日程安排需求
+2. 提取关键信息（时间、事件、地点、提醒）
+3. 判断用户想要做什么（创建/查询/删除日程）
+4. 给用户友好的回复
+
+回复要求：
+- 简洁明了，不说废话
+- 语气友好，像朋友一样
+- 如果成功，明确告知结果
+- 如果失败，说明原因并提供建议
+&quot;&quot;&quot;</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h4>技巧2：优化工具定义</h4>
+<p>
+<strong>问题：</strong> 提取日程信息不准确
+</p>
+<p>
+<strong>解决：</strong> 改进extract_event_info方法，或让LLM提取
+</p>
+<pre><code class="language-python">def extract_event_info_with_llm(self, user_input):
+    &quot;&quot;&quot;用LLM提取日程信息&quot;&quot;&quot;
+    prompt = f&quot;&quot;&quot;
+请从以下用户输入中提取日程信息，输出JSON格式：
+{user_input}
+
+输出格式：
+{{
+    &quot;title&quot;: &quot;日程标题&quot;,
+    &quot;time&quot;: &quot;开始时间（格式：2025-04-11 15:00）&quot;,
+    &quot;duration&quot;: 时长（分钟），
+    &quot;reminder&quot;: 提前提醒时间（分钟）
+}}
+&quot;&quot;&quot;
+
+    result = self.llm.generate_reply(prompt)
+    # 解析LLM返回的JSON
+    # ...</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h4>技巧3：优化记忆存储</h4>
+<p>
+<strong>问题：</strong> 记忆没有发挥作用
+</p>
+<p>
+<strong>解决：</strong>
+</p>
+<ol>
+<li>记住用户常用的提醒时间</li>
+<li>记住用户的工作时间</li>
+<li>根据历史记录，主动建议</li>
+</ol>
+<pre><code class="language-python">def smart_suggest(self):
+    &quot;&quot;&quot;根据历史记录，智能建议&quot;&quot;&quot;
+    # 统计用户最常用的日程类型
+    # 建议最佳日程时间
+    # ...</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="新手90-常见踩坑排查指南">新手90%常见踩坑排查指南</h2>
+<h3>🚨 坑1：API Key错误/无效</h3>
+<p>
+<strong>症状：</strong>
+</p>
+<pre><code>dashscope.common.error.InvalidParameter: api_key not valid</code></pre>
+<p>
+<strong>原因：</strong>
+</p>
+<ul>
+<li>API Key错误</li>
+<li>API Key未激活</li>
+</ul>
+<p>
+<strong>解决：</strong>
+</p>
+<ol>
+<li>检查API Key是否正确复制</li>
+<li>确认API Key已激活</li>
+<li>重新获取API Key</li>
+</ol>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>🚨 坑2：Agent不调用工具，只回答问题</h3>
+<p>
+<strong>症状：</strong>
+</p>
+<pre><code>用户：帮我创建日程
+Agent：好的，我来帮您创建日程。（但实际没有创建）</code></pre>
+<p>
+<strong>原因：</strong>
+</p>
+<ul>
+<li>工具调用逻辑有问题</li>
+<li>意图识别不准确</li>
+</ul>
+<p>
+<strong>解决：</strong>
+</p>
+<ol>
+<li>检查intent判断逻辑</li>
+<li>确认tools模块正常工作</li>
+<li>添加调试日志，查看执行流程</li>
+</ol>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>🚨 坑3：代码运行报错，依赖缺失</h3>
+<p>
+<strong>症状：</strong>
+</p>
+<pre><code>ModuleNotFoundError: No module named &#39;dashscope&#39;</code></pre>
+<p>
+<strong>原因：</strong>
+</p>
+<ul>
+<li>依赖包未安装</li>
+<li>Python环境不对</li>
+</ul>
+<p>
+<strong>解决：</strong>
+</p>
+<pre><code class="language-bash">pip install dashscope feishu</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>🚨 坑4：Agent陷入无限循环</h3>
+<p>
+<strong>症状：</strong> Agent一直输出同样的内容，不停止
+</p>
+<p>
+<strong>原因：</strong>
+</p>
+<ul>
+<li>对话循环没有退出条件</li>
+<li>LLM返回格式错误</li>
+</ul>
+<p>
+<strong>解决：</strong>
+</p>
+<ol>
+<li>添加退出条件（如输入'quit'）</li>
+<li>验证LLM返回格式</li>
+<li>添加最大轮次限制</li>
+</ol>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>🚨 坑5：Agent忘记之前的对话内容</h3>
+<p>
+<strong>症状：</strong>
+</p>
+<ul>
+<li>Agent记不住上下文</li>
+<li>每次对话都重新开始</li>
+</ul>
+<p>
+<strong>原因：</strong>
+</p>
+<ul>
+<li>没有使用记忆系统</li>
+<li>对话历史没有传递给LLM</li>
+</ul>
+<p>
+<strong>解决：</strong>
+</p>
+<pre><code class="language-python"># 在messages中添加历史对话
+messages = [
+    {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: system_prompt},
+    # 添加历史对话
+    *history_messages,
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: user_input}
+]</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="进阶扩展方向">进阶扩展方向</h2>
+<p>
+<strong>完成了基础Agent后，你可以尝试：</strong>
+</p>
+<h3>🚀 扩展1：增加更多工具</h3>
+<ul>
+<li>天气查询：查询天气，智能建议日程时间</li>
+<li>邮件发送：日程创建后，发送邮件通知</li>
+<li>待办事项：集成待办事项管理</li>
+</ul>
+<h3>🚀 扩展2：优化记忆系统</h3>
+<ul>
+<li>接入向量数据库：实现更强大的长期记忆</li>
+<li>学习用户习惯：智能推荐最佳日程时间</li>
+<li>跨设备同步：手机、电脑都能访问</li>
+</ul>
+<h3>🚀 扩展3：升级多Agent</h3>
+<ul>
+<li>增加日程规划Agent：智能规划最佳时间</li>
+<li>增加提醒Agent：多渠道提醒（微信、短信、邮件）</li>
+<li>实现多Agent协作</li>
+</ul>
+<h3>🚀 扩展4：接入前端界面</h3>
+<ul>
+<li>做一个简单的网页界面</li>
+<li>更方便使用</li>
+<li>支持跨平台访问</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="本章核心小结">本章核心小结</h2>
+<h3>✅ 核心结论</h3>
+<ol>
+<li><strong>5步搭建第一个Agent</strong>：</li>
+</ol>
+<ul>
+<li>第1步：环境准备（Python、API Key、VS Code）</li>
+<li>第2步：依赖安装（dashscope、feishu，仅2个包）</li>
+<li>第3步：核心组件搭建（LLM核心、记忆模块、工具调用模块）</li>
+<li>第4步：Agent闭环整合（完整的执行流程）</li>
+<li>第5步：运行测试&调优优化</li>
+</ul>
+<ol>
+<li><strong>最小可行Agent架构 = 3个核心组件</strong>：</li>
+</ol>
+<ul>
+<li>LLM核心（决策大脑）</li>
+<li>记忆模块（数据底座）</li>
+<li>工具调用模块（行动能力）</li>
+</ul>
+<ol>
+<li><strong>新手90%的踩坑</strong>：</li>
+</ol>
+<ul>
+<li>API Key错误/无效</li>
+<li>Agent不调用工具</li>
+<li>代码运行报错，依赖缺失</li>
+<li>Agent陷入无限循环</li>
+<li>Agent忘记对话内容</li>
+</ul>
+<ol>
+<li><strong>进阶扩展方向</strong>：</li>
+</ol>
+<ul>
+<li>增加更多工具</li>
+<li>优化记忆系统</li>
+<li>升级多Agent</li>
+<li>接入前端界面</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="下章预告">下章预告</h2>
+<p>
+<strong>前十章，我们从理论到实战，完整搭建了第一个Agent。</strong>
+</p>
+<p>
+<strong>但还有核心问题：</strong>
+</p>
+<ul>
+<li>Agent有什么"雷区"和风险？</li>
+<li>怎么避免踩坑？</li>
+<li>怎么确保Agent安全、稳定？</li>
+<li>有哪些伦理和合规问题？</li>
+</ul>
+<p>
+<strong>下一章，我们会拆解Agent的"雷区"与边界，从幻觉、工程化坑，到安全、伦理挑战，每个问题都给你可落地的解决方案。</strong>
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="配图说明">📊 配图说明</h2>
+<p>
+<strong>图1：5步实战流程路径图</strong>
+</p>
+<div class="mermaid">flowchart LR
+    A[1. 环境准备<br/>Environment Setup<br/>安装Python 配置API Key<br/>📄 文档] -->|5分钟| B[2. 创建Agent<br/>Create Agent<br/>定义角色 设定目标<br/>💻 代码]
+    B -->|5分钟| C[3. 添加记忆<br/>Add Memory<br/>配置向量数据库 启用RAG<br/>🗄️ 数据库]
+    C -->|5分钟| D[4. 集成工具<br/>Integrate Tools<br/>配置Function Call 调用API<br/>🔧 工具]
+    D -->|5分钟| E[5. 测试运行<br/>Test & Run<br/>发送指令 验证效果<br/>✅ 对勾]
+
+    style A fill:#4CAF50,stroke:#2E7D32,stroke-width:2px,color:#FFFFFF
+    style B fill:#81C784,stroke:#4CAF50,stroke-width:2px,color:#FFFFFF
+    style C fill:#FFEB3B,stroke:#FBC02D,stroke-width:2px,color:#333333
+    style D fill:#FF9800,stroke:#F57C00,stroke-width:2px,color:#FFFFFF
+    style E fill:#F44336,stroke:#C62828,stroke-width:2px,color:#FFFFFF
+
+    F[总时长：约25分钟] -.-> E</div>
+<p>
+<em>线性流程图，标注每一步的核心目标</em>
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<blockquote>
+<p><strong>💡 学习小贴士</strong></p>
+<p></p>
+<p>- 这一章的核心是<strong>动手实践</strong>，一定要跟着步骤操作</p>
+<p>- 遇到问题不要慌，对照"常见踩坑排查指南"</p>
+<p>- 先跑通基础版本，再尝试扩展功能</p>
+<p>- 完成后，你会对Agent有更深的理解</p>
+<p></p>
+<p><strong>下一章：<a href="./11-第十一章-Agent的雷区与边界.html">Agent的"雷区"与边界—— 幻觉、安全、工程化与伦理挑战</a></strong></p>
+</blockquote>
+            </section>
+        </main>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top" onclick="scrollToTop()">↑</div>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 返回顶部
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 返回顶部按钮显示/隐藏
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        // 活动导航链接
+        window.addEventListener('scroll', () => {
+            const headings = document.querySelectorAll('h2[id]');
+            const scrollPosition = window.pageYOffset + 100;
+
+            headings.forEach(heading => {
+                const headingTop = heading.offsetTop;
+                const headingId = heading.getAttribute('id');
+
+                if (scrollPosition >= headingTop - 50) {
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + headingId) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

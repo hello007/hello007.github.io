@@ -42,7 +42,26 @@ blockquote strong {
 }
 """
 
-    return css + blockquote_css
+    # Mermaid diagram styles
+    mermaid_css = """
+/* Mermaid diagrams */
+.mermaid {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+pre code.language-mermaid {
+    background: white;
+    color: #1f2937;
+    padding: 0;
+    border-radius: 8px;
+}
+"""
+
+    return css + blockquote_css + mermaid_css
 
 def generate_html_from_markdown(md_content, title, css):
     """Convert markdown content to HTML with full styling"""
@@ -234,7 +253,19 @@ def generate_html_from_markdown(md_content, title, css):
     # Inline code
     html_content = re.sub(r'`([^`]+?)`', r'<code>\1</code>', html_content)
 
-    # Links - convert .md to .html in href
+    # Images - convert markdown image syntax to HTML (must be before links)
+    def convert_image(match):
+        alt = match.group(1)
+        src = match.group(2)
+        # Convert .md extension to .html in src
+        if src.endswith('.md'):
+            src = src[:-3] + '.html'
+        # Return image tag (will be treated as block-level element in wrap_paragraphs)
+        return f'<img src="{src}" alt="{alt}" style="max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">'
+
+    html_content = re.sub(r'!\[([^\]]+?)\]\(([^\)]+?)\)', convert_image, html_content)
+
+    # Links - convert .md to .html in href (after images to avoid conflict)
     def convert_link(match):
         text = match.group(1)
         url = match.group(2)
@@ -423,10 +454,30 @@ def generate_html_from_markdown(md_content, title, css):
                 continue
 
             if stripped.startswith('<'):
-                if in_paragraph:
-                    result.append('</p>')
-                    in_paragraph = False
-                result.append(line)
+                # Check if this is a block-level tag or inline tag
+                block_tags = ['</p>', '<p', '<h1', '<h2', '<h3', '<h4', '<h5', '<h6',
+                             '</h1>', '</h2>', '</h3>', '</h4>', '</h5>', '</h6>',
+                             '<ul', '</ul>', '<ol', '</ol>', '<li', '</li>',
+                             '<table', '</table>', '<thead', '</thead>', '<tbody', '</tbody>',
+                             '<tr', '</tr>', '<th', '</th>', '<td', '</td>',
+                             '<pre', '</pre>', '<blockquote', '</blockquote>',
+                             '<div', '</div>', '<section', '</section>',
+                             '<main', '</main>', '<aside', '</aside>', '<nav', '</nav>',
+                             '<img', '<hr']  # Add img and hr as block-level elements
+                is_block_tag = any(stripped.startswith(tag) for tag in block_tags)
+
+                if is_block_tag:
+                    # This is a block-level tag, close current paragraph
+                    if in_paragraph:
+                        result.append('</p>')
+                        in_paragraph = False
+                    result.append(line)
+                else:
+                    # This is an inline tag (like <strong>, <a>, etc.), wrap in paragraph
+                    if not in_paragraph:
+                        result.append('<p>')
+                        in_paragraph = True
+                    result.append(line)
             elif stripped.startswith('___CODE_BLOCK_'):
                 # Code block placeholder - don't wrap in p
                 if in_paragraph:
@@ -470,9 +521,16 @@ def generate_html_from_markdown(md_content, title, css):
     # Restore code blocks
     for i, (language, code) in enumerate(code_blocks):
         placeholder = placeholder_template.format(i)
-        lang_class = f' class="language-{language}"' if language else ''
-        escaped_code = escape_html(code)
-        code_html = f'<pre><code{lang_class}>{escaped_code}</code></pre>'
+
+        # Special handling for mermaid diagrams
+        if language and language.lower() == 'mermaid':
+            # Mermaid needs plain text in a div, not in pre/code tags
+            code_html = f'<div class="mermaid">{code}</div>'
+        else:
+            lang_class = f' class="language-{language}"' if language else ''
+            escaped_code = escape_html(code)
+            code_html = f'<pre><code{lang_class}>{escaped_code}</code></pre>'
+
         html_content = html_content.replace(placeholder, code_html)
 
     # Handle horizontal rules
@@ -487,6 +545,13 @@ def generate_html_from_markdown(md_content, title, css):
     <title>{main_title}</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
     <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <script src="https://cdn.bootcdn.net/mermaid/10.9.0/mermaid.min.js"
+            onerror="this.onerror=null; this.src='https://unpkg.com/mermaid@10/dist/mermaid.min.js'"></script>
+    <script>
+        if (typeof mermaid !== 'undefined') {{
+            mermaid.initialize({{ startOnLoad: true, theme: 'default', securityLevel: 'loose' }});
+        }}
+    </script>
     <style>
         {css}
     </style>

@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent科普技术博客：写给每一个想搞懂AI Agent的普通人</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <script src="https://cdn.bootcdn.net/mermaid/10.9.0/mermaid.min.js"
+            onerror="this.onerror=null; this.src='https://unpkg.com/mermaid@10/dist/mermaid.min.js'"></script>
+    <script>
+        if (typeof mermaid !== 'undefined') {
+            mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+        }
+    </script>
+    <style>
+        
+        
+        
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f7fa;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .nav-link:hover {
+            background: #f3f4f6;
+            color: #2563eb;
+        }
+
+        .nav-link.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+        .meta-icon {
+            font-size: 20px;
+        }
+
+        h2 {
+            font-size: 32px;
+            color: #1f2937;
+            margin: 50px 0 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2563eb;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 24px;
+            color: #374151;
+            margin: 35px 0 20px;
+            font-weight: 600;
+        }
+
+        h4 {
+            font-size: 20px;
+            color: #4b5563;
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #4b5563;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        /* 代码块 */
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        code {
+            background: #f3f4f6;
+            color: #dc2626;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 15px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        /* 列表 */
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 强调框 */
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box {
+            background: #e0e7ff;
+            border-left: 4px solid #6366f1;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 时间标签 */
+        .time-tag {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* 问答框 */
+        .qa-box {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #2563eb;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .answer {
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 链接 */
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2563eb;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s;
+            font-size: 24px;
+        }
+
+        .back-to-top:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 968px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-card {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            h2 {
+                font-size: 26px;
+            }
+
+            .hero-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* 打印样式 */
+        @media print {
+            .sidebar {
+                display: none;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .content-card {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+/* Mermaid diagrams */
+.mermaid {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+pre code.language-mermaid {
+    background: white;
+    color: #1f2937;
+    padding: 0;
+    border-radius: 8px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 侧边导航 -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">📚</span>
+                <span>AI核心概念</span>
+            </div>
+            <div class="subtitle">
+                
+            </div>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">🏠 返回首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#intro" class="nav-link active">📖 概述</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#一-这个系列-写给谁看" class="nav-link">📚 一、这个系列，写给谁看？</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#二-读完这个系列-你能收获什么" class="nav-link">📚 二、读完这个系列，你能收获什么？</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#三-最佳阅读指南" class="nav-link">📚 三、最佳阅读指南</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#四-这个系列有什么不一样" class="nav-link">📚 四、这个系列有什么不一样？</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#五-这个系列不适合谁" class="nav-link">📚 五、这个系列不适合谁？</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#六-最后的邀请" class="nav-link">📚 六、最后的邀请</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#章节导航" class="nav-link">📚 📖 章节导航</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 英雄区域 -->
+            <section class="hero-section">
+                <h1>AI Agent科普技术博客：写给每一个想搞懂AI Agent的普通人</h1>
+                <div class="hero-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon">🎯</span>
+                        <span>学习目标：见标题</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">👥</span>
+                        <span>适合人群：所有人</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 内容区域 -->
+            <section id="intro" class="content-card">
+                <blockquote>
+<p><strong>这是写给谁的？</strong></p>
+<p></p>
+<p>如果你曾经刷到过"AI Agent"、"智能体"这些词，但完全不知道是什么；</p>
+<p>如果你对ChatGPT很熟悉，但不知道它和Agent有什么区别；</p>
+<p>如果你是产品经理、开发者，想搞懂Agent能做什么、怎么落地；</p>
+<p><strong>那么，这个系列就是为你准备的。</strong></p>
+</blockquote>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="一-这个系列-写给谁看">一、这个系列，写给谁看？</h2>
+<p>
+让我先猜猜你可能遇到的情况：
+</p>
+<p>
+<strong>场景1：完全的小白</strong> 你看到网上铺天盖地的"AI Agent"、"智能体"、"AI助手"，点进去看全是技术术语，什么"LLM"、"RAG"、"Function Call"，看了半天还是一头雾水。你想：<strong>有没有人能用大白话给我讲讲，这玩意儿到底是个啥？</strong>
+</p>
+<p>
+<strong>场景2：大模型爱好者</strong> 你天天用ChatGPT、豆包、文心一言，觉得它们很厉害，但你发现一个问题：它们只能陪你聊天、帮你写文案，但没法帮你"做事情"。你想：<strong>有没有AI能真正帮我干活，而不只是陪聊？</strong>
+</p>
+<p>
+<strong>场景3：产品经理/业务人员</strong> 你听说Agent是"下一代AI的核心形态"，公司也在讨论要不要落地Agent应用，但你不知道：<strong>Agent到底能做什么业务？能解决什么问题？投入产出比怎么样？</strong>
+</p>
+<p>
+<strong>场景4：零基础开发者</strong> 你想学Agent开发，但网上资料要么太浅（只会调API），要么太深（上来就讲源码架构），你想：<strong>有没有一套从零到一、能跟着动手的教程？</strong>
+</p>
+<p>
+<strong>如果你符合以上任何一个场景，那么恭喜你，这个系列就是为你量身定制的。</strong>
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="二-读完这个系列-你能收获什么">二、读完这个系列，你能收获什么？</h2>
+<p>
+我先给你一个"学习地图"，让你明确知道读完这个系列后，你能获得什么：
+</p>
+<h3>✅ 收获1：彻底搞懂Agent和LLM的核心区别</h3>
+<p>
+不再混淆"ChatGPT"和"AI Agent"的概念，你能在任何场合清晰地解释：<strong>LLM是Agent的"大脑"，但LLM≠Agent；Agent是包含"LLM(大脑)+记忆+手脚（工具）+感官（感知）"的完整智能体。</strong>
+</p>
+<h3>✅ 收获2：能独立搭建一个可运行的专属Agent</h3>
+<p>
+不需要深厚的编程基础，跟着我们的第十章，你能从零开始，搭建一个<strong>个人日程管理助理Agent</strong>，它能帮你：
+</p>
+<ul>
+<li>接收你的日程安排需求</li>
+<li>同步到飞书/企业微信日历</li>
+<li>设置提醒、查询日程</li>
+<li>给你做日程规划建议</li>
+</ul>
+<p>
+<strong>这是一个真正能用的Agent，不是Demo。</strong>
+</p>
+<h3>✅ 收获3：看懂所有Agent落地场景，能举一反三</h3>
+<p>
+我们精选了6个真实案例，从个人效率到企业级商用：
+</p>
+<ul>
+<li>个人生活助理Agent</li>
+<li>个人知识管理Agent</li>
+<li>AI编程助手Agent</li>
+<li>自动化测试Agent</li>
+<li>全链路智能客服Agent</li>
+<li>智能家居中控Agent</li>
+</ul>
+<p>
+每个案例都拆解<strong>核心工作流</strong>和<strong>可量化价值</strong>，看完后你能立刻想到：<strong>"我身边这个场景，也能用Agent优化！"</strong>
+</p>
+<h3>✅ 收获4：避开90%的新手踩坑，建立系统的Agent知识体系</h3>
+<p>
+很多人学Agent，最大的问题是：<strong>知识点碎片化，不知道从何入手，踩了一堆坑才走出来。</strong>
+</p>
+<p>
+这个系列从零开始，帮你建立<strong>完整的知识体系</strong>：
+</p>
+<ul>
+<li>Agent的本质是什么（第一章）</li>
+<li>它是怎么进化来的（第二章）</li>
+<li>核心组件有哪些（第三章）</li>
+<li>完整架构长什么样（第四章）</li>
+<li>LLM怎么当它的"大脑"（第五章）</li>
+<li>记忆系统怎么设计（第六章）</li>
+<li>工具调用怎么实现（第七章）</li>
+<li>多个Agent怎么协作（第八章）</li>
+<li>实战案例有哪些（第九章）</li>
+<li>怎么从零搭建一个Agent（第十章）</li>
+<li>有哪些"雷区"要避开（第十一章）</li>
+<li>未来怎么发展、怎么系统学习（第十二章）</li>
+</ul>
+<p>
+<strong>每章都遵循"大白话比喻→理论定义→具象案例→避坑提示"的科普逻辑，让你既懂原理，又能落地。</strong>
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="三-最佳阅读指南">三、最佳阅读指南</h2>
+<p>
+不同基础的同学，阅读路径不一样，我给你准备了<strong>定制化阅读路线</strong>：
+</p>
+<h3>📚 路线1：零基础小白（推荐顺读）</h3>
+<ul>
+<li><strong>适合人群</strong>：完全不了解AI/Agent，想从零开始系统学习</li>
+<li><strong>阅读路径</strong>：第一章→第二章→第三章→第四章→第五章→第六章→第七章→第八章→第九章→第十章→第十一章→第十二章</li>
+<li><strong>预计时间</strong>：每天1-2章，7-10天读完</li>
+</ul>
+<h3>📚 路线2：有LLM基础，想快速理解Agent</h3>
+<ul>
+<li><strong>适合人群</strong>：了解ChatGPT等大模型，想快速搞懂Agent是什么、怎么落地</li>
+<li><strong>阅读路径</strong>：第一章（核心概念）→第三章（工作原理）→第七章（工具调用）→第十章（动手实战）→第九章（案例参考）</li>
+<li><strong>预计时间</strong>：3-5天快速上手</li>
+</ul>
+<h3>📚 路线3：业务/产品人员，想了解落地场景</h3>
+<ul>
+<li><strong>适合人群</strong>：产品经理、业务负责人，想评估Agent在业务中的价值</li>
+<li><strong>阅读路径</strong>：第一章（核心概念）→第九章（6大实战案例）→第十一章（风险与边界）→第十二章（未来趋势）</li>
+<li><strong>预计时间</strong>：2-3天全面了解</li>
+</ul>
+<h3>📚 路线4：开发者，想快速动手</h3>
+<ul>
+<li><strong>适合人群</strong>：有编程基础，想快速搭建第一个Agent</li>
+<li><strong>阅读路径</strong>：第四章（架构设计）→第七章（工具调用）→第十章（完整实战）→第十一章（避坑指南）</li>
+<li><strong>预计时间</strong>：2天跑通第一个Agent</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="四-这个系列有什么不一样">四、这个系列有什么不一样？</h2>
+<p>
+市面上关于Agent的内容很多，但大多数要么太技术化，要么太浅显。<strong>这个系列的特点是：</strong>
+</p>
+<h3>✨ 特点1：全程大白话，不堆黑话</h3>
+<p>
+所有专业术语第一次出现时，都会配生活化的比喻解释。比如：
+</p>
+<ul>
+<li><strong>传统程序 = 自动售货机</strong>（固定规则，超出规则完全无法工作）</li>
+<li><strong>纯LLM = 万能顾问</strong>（能回答问题，但不会主动做事）</li>
+<li><strong>AI Agent = 专属私人助理</strong>（目标驱动、自主闭环、环境交互、持续迭代）</li>
+</ul>
+<h3>✨ 特点2：从理论到实战，无断层</h3>
+<p>
+很多教程要么只讲概念，要么只给代码，中间断层严重。这个系列<strong>从核心原理讲起，到架构设计，再到完整实战，每个环节都串起来，没有任何黑箱。</strong>
+</p>
+<h3>✨ 特点3：案例真实可落地，不画大饼</h3>
+<p>
+所有案例都是<strong>真实落地的场景</strong>，每个案例都提供<strong>可量化的价值数据</strong>，比如：
+</p>
+<ul>
+<li>某企业用Agent替代人工做数据报表，原本需要2人每天做4小时的工作，Agent 10分钟就能完成，准确率100%</li>
+<li>某电商品牌用多Agent系统，大促筹备周期从15天缩短到3天，人工成本下降70%，投放ROI提升35%</li>
+</ul>
+<h3>✨ 特点4：新手友好，零门槛</h3>
+<p>
+第十章的实战教程，<strong>全程无跳步、无代理、无依赖地狱</strong>，复制粘贴就能跑。每个常见报错都给出解决方案，确保新手能真正跑通。
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="五-这个系列不适合谁">五、这个系列不适合谁？</h2>
+<p>
+为了保证内容质量，我也要诚实地告诉你：<strong>这个系列可能不适合以下人群：</strong>
+</p>
+<ul>
+<li>❌ <strong>想学习Agent底层源码实现的同学</strong>：这个系列聚焦科普和入门，不会深入到源码级别</li>
+<li>❌ <strong>已经是Agent专家的同学</strong>：内容对你来说可能太基础</li>
+<li>❌ <strong>只想快速抄代码、不想理解原理的同学</strong>：这个系列强调建立系统认知，不是代码复制粘贴工具</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="六-最后的邀请">六、最后的邀请</h2>
+<p>
+AI Agent正在改变AI的未来，<strong>它让AI从"对话工具"变成了"行动主体"，真正实现了用AI替代重复、复杂的全流程工作。</strong>
+</p>
+<p>
+无论你是完全的小白，还是有一定基础的开发者，这个系列都会帮你：
+</p>
+<ul>
+<li>✅ 建立系统的Agent知识体系</li>
+<li>✅ 搭建属于自己的第一个Agent</li>
+<li>✅ 找到身边可以落地的应用场景</li>
+<li>✅ 避开90%的新手踩坑</li>
+</ul>
+<p>
+<strong>接下来，让我们从最核心的问题开始：到底什么是AI Agent？</strong>
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="章节导航">📖 章节导航</h2>
+<table>
+<thead>
+<tr>
+<th>章节</th>
+<th>标题</th>
+<th>核心内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>第一章</strong></td>
+<td><a href="./01-第一章-什么是AI-Agent.html">什么是AI Agent？</a></td>
+<td>核心定义、4大特征、和LLM的区别</td>
+</tr>
+<tr>
+<td><strong>第二章</strong></td>
+<td><a href="./02-第二章-Agent的大脑从何而来.html">Agent的"大脑"从何而来？</a></td>
+<td>技术演进史、LLM给Agent带来的突破</td>
+</tr>
+<tr>
+<td><strong>第三章</strong></td>
+<td><a href="./03-第三章-Agent的三大核心支柱.html">Agent的三大核心支柱</a></td>
+<td>感知、决策、行动的完整工作闭环</td>
+</tr>
+<tr>
+<td><strong>第四章</strong></td>
+<td><a href="./04-第四章-Agent架构全景图.html">Agent架构全景图</a></td>
+<td>从最小可行架构到企业级分层设计</td>
+</tr>
+<tr>
+<td><strong>第五章</strong></td>
+<td><a href="./05-第五章-LLM如何当Agent的决策大脑.html">LLM如何当Agent的"决策大脑"？</a></td>
+<td>Prompt、CoT、ReAct、反思机制</td>
+</tr>
+<tr>
+<td><strong>第六章</strong></td>
+<td><a href="./06-第六章-Agent的记忆秘密.html">Agent的"记忆"秘密</a></td>
+<td>三类记忆体系、向量数据库、RAG</td>
+</tr>
+<tr>
+<td><strong>第七章</strong></td>
+<td><a href="./07-第七章-Agent的手脚怎么长.html">Agent的"手脚"怎么长？</a></td>
+<td>工具调用、Function Call、API集成</td>
+</tr>
+<tr>
+<td><strong>第八章</strong></td>
+<td><a href="./08-第八章-多Agent系统.html">多Agent系统</a></td>
+<td>4种协作范式、角色设计、框架选型</td>
+</tr>
+<tr>
+<td><strong>第九章</strong></td>
+<td><a href="./09-第九章-Agent实战案例库.html">Agent实战案例库</a></td>
+<td>6大真实落地场景拆解</td>
+</tr>
+<tr>
+<td><strong>第十章</strong></td>
+<td><a href="./10-第十章-构建你的第一个Agent.html">构建你的第一个Agent</a></td>
+<td>5步零门槛上手指南</td>
+</tr>
+<tr>
+<td><strong>第十一章</strong></td>
+<td><a href="./11-第十一章-Agent的雷区与边界.html">Agent的"雷区"与边界</a></td>
+<td>幻觉、安全、工程化与伦理挑战</td>
+</tr>
+<tr>
+<td><strong>第十二章</strong></td>
+<td><a href="./12-第十二章-未来已来.html">未来已来</a></td>
+<td>核心趋势、系统学习路线、资源清单</td>
+</tr>
+<tr>
+<td><strong>附录</strong></td>
+<td><a href="./A-附录-术语对照表.html">术语对照表</a></td>
+<td>全系列术语大白话解释</td>
+</tr>
+</tbody>
+</table>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<blockquote>
+<p><strong>💡 阅读小贴士</strong></p>
+<p></p>
+<p>- 这个系列的所有内容都是<strong>独立章节</strong>，你可以按顺序阅读，也可以跳读感兴趣的部分</p>
+<p>- 文末有<strong>术语对照表</strong>，遇到不熟悉的术语可以随时查阅</p>
+<p>- 第十章的<strong>实战代码</strong>有完整的GitHub仓库，复制粘贴就能跑</p>
+<p>- 阅读过程中有任何问题，欢迎在评论区讨论交流</p>
+</blockquote>
+<p>
+<strong>🚀 让我们开始这段AI Agent的学习之旅吧！</strong>
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+            </section>
+        </main>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top" onclick="scrollToTop()">↑</div>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 返回顶部
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 返回顶部按钮显示/隐藏
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        // 活动导航链接
+        window.addEventListener('scroll', () => {
+            const headings = document.querySelectorAll('h2[id]');
+            const scrollPosition = window.pageYOffset + 100;
+
+            headings.forEach(heading => {
+                const headingTop = heading.offsetTop;
+                const headingId = heading.getAttribute('id');
+
+                if (scrollPosition >= headingTop - 50) {
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + headingId) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

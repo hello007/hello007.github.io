@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent科普全系列术语对照表</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <script src="https://cdn.bootcdn.net/mermaid/10.9.0/mermaid.min.js"
+            onerror="this.onerror=null; this.src='https://unpkg.com/mermaid@10/dist/mermaid.min.js'"></script>
+    <script>
+        if (typeof mermaid !== 'undefined') {
+            mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+        }
+    </script>
+    <style>
+        
+        
+        
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f7fa;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .nav-link:hover {
+            background: #f3f4f6;
+            color: #2563eb;
+        }
+
+        .nav-link.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+        .meta-icon {
+            font-size: 20px;
+        }
+
+        h2 {
+            font-size: 32px;
+            color: #1f2937;
+            margin: 50px 0 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2563eb;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 24px;
+            color: #374151;
+            margin: 35px 0 20px;
+            font-weight: 600;
+        }
+
+        h4 {
+            font-size: 20px;
+            color: #4b5563;
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #4b5563;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        /* 代码块 */
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        code {
+            background: #f3f4f6;
+            color: #dc2626;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 15px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        /* 列表 */
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 强调框 */
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box {
+            background: #e0e7ff;
+            border-left: 4px solid #6366f1;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 时间标签 */
+        .time-tag {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* 问答框 */
+        .qa-box {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #2563eb;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .answer {
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 链接 */
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2563eb;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s;
+            font-size: 24px;
+        }
+
+        .back-to-top:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 968px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-card {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            h2 {
+                font-size: 26px;
+            }
+
+            .hero-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* 打印样式 */
+        @media print {
+            .sidebar {
+                display: none;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .content-card {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+/* Mermaid diagrams */
+.mermaid {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+pre code.language-mermaid {
+    background: white;
+    color: #1f2937;
+    padding: 0;
+    border-radius: 8px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 侧边导航 -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">📚</span>
+                <span>AI核心概念</span>
+            </div>
+            <div class="subtitle">
+                
+            </div>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">🏠 返回首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#intro" class="nav-link active">📖 概述</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#a" class="nav-link">📚 A</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#b" class="nav-link">📚 B</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#c" class="nav-link">📚 C</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#d" class="nav-link">📚 D</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#f" class="nav-link">📚 F</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#h" class="nav-link">📚 H</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#l" class="nav-link">📚 L</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#m" class="nav-link">📚 M</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#p" class="nav-link">📚 P</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#r" class="nav-link">📚 R</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#s" class="nav-link">📚 S</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#v" class="nav-link">📚 V</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#其他术语" class="nav-link">📚 其他术语</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#术语使用指南" class="nav-link">📚 📖 术语使用指南</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#术语表完成" class="nav-link">📚 ✅ 术语表完成</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 英雄区域 -->
+            <section class="hero-section">
+                <h1>AI Agent科普全系列术语对照表</h1>
+                <div class="hero-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon">🎯</span>
+                        <span>学习目标：见标题</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">👥</span>
+                        <span>适合人群：所有人</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 内容区域 -->
+            <section id="intro" class="content-card">
+                <blockquote>
+<p><strong>使用说明</strong></p>
+<p></p>
+<p>本术语表收录了全系列出现的所有专业术语，提供大白话解释，方便随时查阅。</p>
+</blockquote>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="a">A</h2>
+<h3>AI Agent（智能体）</h3>
+<p>
+<strong>大白话解释：</strong> 以大模型为核心大脑，能自主理解目标、拆解任务、调用工具、执行操作、根据反馈优化迭代的完整智能体，相当于你的专属私人助理
+</p>
+<p>
+<strong>相关章节：</strong> 第一章
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="b">B</h2>
+<h3>BDI Agent</h3>
+<p>
+<strong>大白话解释：</strong> 一种经典Agent理论框架，包含Belief（信念）、Desire（愿望）、Intention（意图）三个核心要素
+</p>
+<p>
+<strong>相关章节：</strong> 第二章
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="c">C</h2>
+<h3>CoT（Chain of Thought，思维链）</h3>
+<p>
+<strong>大白话解释：</strong> 让LLM把思考过程一步步写出来，而不是直接给答案，大幅提升推理准确率，就像人做数学题写解题步骤
+</p>
+<p>
+<strong>相关章节：</strong> 第五章
+</p>
+<h3>Context Window（上下文窗口）</h3>
+<p>
+<strong>大白话解释：</strong> LLM能一次性记住的对话内容长度，超过这个长度，前面的内容就会被LLM忘记
+</p>
+<p>
+<strong>相关章节：</strong> 第六章
+</p>
+<h3>CrewAI</h3>
+<p>
+<strong>大白话解释：</strong> 一个多Agent开发框架，角色分工明确，上手简单，适合新手入门
+</p>
+<p>
+<strong>相关章节：</strong> 第四章、第八章
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="d">D</h2>
+<h3>决策系统</h3>
+<p>
+<strong>大白话解释：</strong> Agent的"大脑"，负责理解目标、拆解任务、制定计划、调度工具、优化策略，是Agent的核心中枢
+</p>
+<p>
+<strong>相关章节：</strong> 第三章
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="f">F</h2>
+<h3>Feedback Layer（反馈层）</h3>
+<p>
+<strong>大白话解释：</strong> 企业级Agent架构的第5层，负责校验执行结果、评估任务完成度、给决策层返回优化建议
+</p>
+<p>
+<strong>相关章节：</strong> 第四章
+</p>
+<h3>Function Call（函数调用）</h3>
+<p>
+<strong>大白话解释：</strong> 工具调用的底层核心，你给LLM定义好工具的信息，LLM按照固定格式输出要调用的工具和参数，程序执行后把结果返回给LLM，LLM再做下一步决策
+</p>
+<p>
+<strong>相关章节：</strong> 第七章
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="h">H</h2>
+<h3>幻觉（Hallucination）</h3>
+<p>
+<strong>大白话解释：</strong> LLM/Agent编造虚假信息、错误内容，但是表现得非常自信，一本正经地胡说八道
+</p>
+<p>
+<strong>相关章节：</strong> 第十一章
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="l">L</h2>
+<h3>LangChain</h3>
+<p>
+<strong>大白话解释：</strong> 最流行的单Agent开发框架，生态最完善、文档最全，新手入门首选
+</p>
+<p>
+<strong>相关章节：</strong> 第四章
+</p>
+<h3>LLM（Large Language Model，大语言模型）</h3>
+<p>
+<strong>大白话解释：</strong> 能理解、生成人类语言的AI模型，比如GPT、豆包、通义千问，是Agent的"大脑"，但LLM≠Agent
+</p>
+<p>
+<strong>相关章节：</strong> 第一章
+</p>
+<h3>Long-term Memory（长期记忆）</h3>
+<p>
+<strong>大白话解释：</strong> 对应向量数据库，永久存储核心数据，比如用户偏好、专属知识库，随时可调取
+</p>
+<p>
+<strong>相关章节：</strong> 第六章
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="m">M</h2>
+<h3>记忆系统</h3>
+<p>
+<strong>大白话解释：</strong> Agent的"数据仓库"，存储用户偏好、历史数据、中间结果，是三大核心支柱的底层底座
+</p>
+<p>
+<strong>相关章节：</strong> 第三章
+</p>
+<h3>Multi-Agent System（多Agent系统）</h3>
+<p>
+<strong>大白话解释：</strong> 多个不同角色的智能体，分工协作，共同完成复杂任务，模拟真实的团队协作，适合复杂的企业级场景
+</p>
+<p>
+<strong>相关章节：</strong> 第八章
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="p">P</h2>
+<h3>Perception Layer（感知层）</h3>
+<p>
+<strong>大白话解释：</strong> 企业级Agent架构的第1层，对应感知系统，核心作用是信息输入与预处理
+</p>
+<p>
+<strong>相关章节：</strong> 第四章
+</p>
+<h3>Perception System（感知系统）</h3>
+<p>
+<strong>大白话解释：</strong> Agent的"五官"，负责接收用户指令、获取外部信息、收集执行反馈，是Agent和世界交互的入口
+</p>
+<p>
+<strong>相关章节：</strong> 第三章
+</p>
+<h3>Prompt Engineering（提示词工程）</h3>
+<p>
+<strong>大白话解释：</strong> 给LLM写提示词，定好角色、规则、输出格式、限制条件，让LLM按照你的要求做事，是Agent决策的基础
+</p>
+<p>
+<strong>相关章节：</strong> 第五章
+</p>
+<h3>Prompt Injection（Prompt注入）</h3>
+<p>
+<strong>大白话解释：</strong> 用户通过恶意的提示词，诱导Agent绕过限制，调用危险工具、泄露敏感信息，是Agent的核心安全风险之一
+</p>
+<p>
+<strong>相关章节：</strong> 第七章、第十一章
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="r">R</h2>
+<h3>RAG（Retrieval-Augmented Generation，检索增强生成）</h3>
+<p>
+<strong>大白话解释：</strong> 把外部知识库存入向量数据库，需要的时候检索相关内容，注入到LLM的上下文里，让LLM能用到专属知识，解决幻觉、知识过时的问题，是Agent长期记忆的核心实现方式
+</p>
+<p>
+<strong>相关章节：</strong> 第六章
+</p>
+<h3>Reasoning（推理）</h3>
+<p>
+<strong>大白话解释：</strong> Agent理解目标、拆解任务、逻辑推理的过程
+</p>
+<p>
+<strong>相关章节：</strong> 第五章
+</p>
+<h3>ReAct框架</h3>
+<p>
+<strong>大白话解释：</strong> 当前Agent最主流的决策范式，核心是"推理→行动"的循环，先想清楚要做什么，再执行动作，拿到结果后再思考下一步，直到完成目标
+</p>
+<p>
+<strong>相关章节：</strong> 第五章
+</p>
+<h3>Reflexion机制</h3>
+<p>
+<strong>大白话解释：</strong> 让Agent完成一轮行动后，自主复盘哪里做得不好、怎么优化，让Agent能持续迭代自己的决策
+</p>
+<p>
+<strong>相关章节：</strong> 第五章
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="s">S</h2>
+<h3>Working Memory（工作记忆）</h3>
+<p>
+<strong>大白话解释：</strong> 存储当前任务的中间步骤、临时数据，任务完成后可清理，相当于你工作时的临时记事本
+</p>
+<p>
+<strong>相关章节：</strong> 第六章
+</p>
+<h3>Sensory Memory（瞬时记忆）</h3>
+<p>
+<strong>大白话解释：</strong> 对应LLM的上下文窗口，存储本轮对话的临时内容，对话太长就会被"忘记"
+</p>
+<p>
+<strong>相关章节：</strong> 第六章
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="v">V</h2>
+<h3>Vector Database（向量数据库）</h3>
+<p>
+<strong>大白话解释：</strong> 专门用来存储向量（文本转成的数字编码）的数据库，能快速检索相关的内容，是Agent长期记忆的核心载体
+</p>
+<p>
+<strong>相关章节：</strong> 第六章
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="其他术语">其他术语</h2>
+<h3>闭环工作流</h3>
+<p>
+<strong>大白话解释：</strong> Agent的核心工作逻辑：感知→决策→行动→反馈→再感知→再优化的循环流程，而不是单次的线性执行
+</p>
+<p>
+<strong>相关章节：</strong> 第三章
+</p>
+<h3>工具调用</h3>
+<p>
+<strong>大白话解释：</strong> Agent调用外部API和工具的能力，是Agent突破LLM能力边界的核心
+</p>
+<p>
+<strong>相关章节：</strong> 第七章
+</p>
+<h3>行动系统</h3>
+<p>
+<strong>大白话解释：</strong> Agent的"手脚"，负责执行具体的操作，调用工具和API，把决策变成真实的行动，是Agent突破LLM边界的核心
+</p>
+<p>
+<strong>相关章节：</strong> 第三章
+</p>
+<h3>最小可行Agent架构</h3>
+<p>
+<strong>大白话解释：</strong> 包含3个核心组件的最简单Agent架构：LLM核心（决策大脑）、记忆模块（数据底座）、工具调用模块（行动能力）
+</p>
+<p>
+<strong>相关章节：</strong> 第四章
+</p>
+<h3>企业级Agent架构</h3>
+<p>
+<strong>大白话解释：</strong> 包含5层的完整架构：感知层、记忆层、决策层、执行层、反馈层
+</p>
+<p>
+<strong>相关章节：</strong> 第四章
+</p>
+<h3>端侧Agent</h3>
+<p>
+<strong>大白话解释：</strong> 运行在本地设备（手机、电脑、智能音箱）上的Agent，数据不出端，隐私安全，延迟极低
+</p>
+<p>
+<strong>相关章节：</strong> 第十二章
+</p>
+<h3>多模态Agent</h3>
+<p>
+<strong>大白话解释：</strong> 能处理文本、图片、语音、视频等多种模态信息的Agent
+</p>
+<p>
+<strong>相关章节：</strong> 第十二章
+</p>
+<h3>具身智能Agent</h3>
+<p>
+<strong>大白话解释：</strong> 能和物理世界交互的Agent，比如机器人、自动驾驶汽车
+</p>
+<p>
+<strong>相关章节：</strong> 第十二章
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="术语使用指南">📖 术语使用指南</h2>
+<p>
+<strong>建议1：遇到不懂的术语，先查这个表</strong>
+</p>
+<p>
+<strong>建议2：重点掌握以下核心术语（按重要性排序）：</strong>
+</p>
+<ol>
+<li>AI Agent、LLM、Agent vs LLM的区别</li>
+<li>三大核心支柱：感知、决策、行动</li>
+<li>三类记忆：瞬时、工作、长期</li>
+<li>ReAct框架、CoT、Function Call</li>
+<li>RAG、向量数据库</li>
+</ol>
+<p>
+<strong>建议3：不要纠结术语，重点是理解原理</strong>
+</p>
+<ul>
+<li>术语是为了方便交流</li>
+<li>核心是理解背后的原理</li>
+<li>能用自己的话解释就行</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="术语表完成">✅ 术语表完成</h2>
+<p>
+<strong>本术语表收录了全系列的核心术语，共计30+个。</strong>
+</p>
+<p>
+<strong>如果你发现有不理解的术语，欢迎回顾对应章节，或者在网络搜索相关资料。</strong>
+</p>
+<p>
+<strong>祝你学习顺利！</strong>
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<p>
+<strong>附录完结！</strong>
+<strong>全系列完成！</strong>
+</p>
+            </section>
+        </main>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top" onclick="scrollToTop()">↑</div>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 返回顶部
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 返回顶部按钮显示/隐藏
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        // 活动导航链接
+        window.addEventListener('scroll', () => {
+            const headings = document.querySelectorAll('h2[id]');
+            const scrollPosition = window.pageYOffset + 100;
+
+            headings.forEach(heading => {
+                const headingTop = heading.offsetTop;
+                const headingId = heading.getAttribute('id');
+
+                if (scrollPosition >= headingTop - 50) {
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + headingId) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
