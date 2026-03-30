@@ -17,83 +17,171 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
             line-height: 1.8;
             color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            background: #f5f7fa;
+        }
+
+        .app-container {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            min-height: 100vh;
         }
 
-        .container {
-            max-width: 1400px;
-            width: 100%;
-        }
-
-        .header {
-            text-align: center;
+        /* 左侧边栏 */
+        .sidebar {
+            width: 220px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
             color: white;
-            margin-bottom: 40px;
-            animation: fadeInDown 0.8s ease-out;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s;
         }
 
-        .header h1 {
-            font-size: 3rem;
-            margin-bottom: 15px;
+        .sidebar-header {
+            padding: 20px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.4rem;
+            margin-bottom: 6px;
             font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
-        .header p {
-            font-size: 1.3rem;
-            opacity: 0.95;
+        .sidebar-header p {
+            font-size: 0.8rem;
+            opacity: 0.9;
             font-weight: 300;
         }
 
-        /* 分类区块 */
-        .section {
-            margin-bottom: 40px;
-            animation: fadeInUp 0.8s ease-out;
-            animation-fill-mode: both;
+        .nav-section {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .section:nth-child(1) { animation-delay: 0.1s; }
-        .section:nth-child(2) { animation-delay: 0.2s; }
-        .section:nth-child(3) { animation-delay: 0.3s; }
-        .section:nth-child(4) { animation-delay: 0.4s; }
-        .section:nth-child(5) { animation-delay: 0.5s; }
-        .section:nth-child(6) { animation-delay: 0.6s; }
-        .section:nth-child(7) { animation-delay: 0.7s; }
-        .section:nth-child(5) { animation-delay: 0.5s; }
+        .nav-section-title {
+            padding: 0 16px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.7;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
 
-        .section-title {
-            color: white;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
+        .nav-item {
             display: flex;
             align-items: center;
-            gap: 10px;
+            padding: 8px 16px;
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(255,255,255,0.15);
+            border-left-color: white;
+            color: white;
             font-weight: 600;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
 
-        .section-icon {
+        .nav-icon {
+            width: 20px;
+            font-size: 1rem;
+            margin-right: 8px;
+            text-align: center;
+        }
+
+        .nav-text {
+            flex: 1;
+            font-size: 0.85rem;
+        }
+
+        .nav-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+        }
+
+        .sidebar-footer {
+            padding: 12px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.75rem;
+            opacity: 0.8;
+            text-align: center;
+        }
+
+        .sidebar-footer a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            margin-left: 220px;
+            padding: 30px;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.4s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
             font-size: 1.8rem;
+            color: #1f2937;
+            margin-bottom: 8px;
+            font-weight: 700;
         }
 
-        .cards {
+        .section-subtitle {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+
+        /* 卡片网格 */
+        .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
         }
 
-        /* 标准卡片 */
         .card {
             background: white;
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: all 0.3s;
             cursor: pointer;
             text-decoration: none;
             color: inherit;
@@ -101,712 +189,781 @@
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 50px rgba(0,0,0,0.25);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+        }
+
+        .card-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: relative;
         }
 
         .card-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            display: block;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
         }
 
         .card-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #2d3748;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .card-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .card-body {
+            padding: 20px;
         }
 
         .card-desc {
-            color: #718096;
+            color: #4a5568;
             font-size: 0.95rem;
-            line-height: 1.6;
+            line-height: 1.7;
             margin-bottom: 15px;
         }
 
         .card-meta {
             display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: #718096;
         }
 
-        .tag {
-            background: #e2e8f0;
-            color: #4a5568;
-            padding: 4px 10px;
-            border-radius: 16px;
-            font-size: 0.8rem;
-            font-weight: 500;
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
-        .tag.highlight {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .tag.success {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .tag.info {
-            background: #e0e7ff;
-            color: #4338ca;
-        }
-
-        /* 紧凑卡片 - 用于模块列表 */
-        .card-compact {
+        /* 简洁卡片 */
+        .simple-card {
             background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            border-radius: 10px;
+            padding: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: all 0.3s;
             cursor: pointer;
             text-decoration: none;
             color: inherit;
+            display: block;
+            border-left: 4px solid transparent;
+        }
+
+        .simple-card:hover {
+            border-left-color: #667eea;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .simple-card-header {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
+            margin-bottom: 10px;
         }
 
-        .card-compact:hover {
-            transform: translateX(5px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-        }
-
-        .card-compact-icon {
-            font-size: 2rem;
-            width: 50px;
-            height: 50px;
+        .simple-card-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
+            font-size: 1.3rem;
             flex-shrink: 0;
         }
 
-        .card-compact-content {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .card-compact-title {
-            font-size: 1.1rem;
+        .simple-card-title {
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 5px;
-            color: #2d3748;
+            color: #1f2937;
+            flex: 1;
         }
 
-        .card-compact-desc {
+        .simple-card-desc {
             color: #718096;
             font-size: 0.85rem;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
-        /* 大卡片 - 用于总览 */
-        .card-large {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 15px 50px rgba(102, 126, 234, 0.3);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            text-decoration: none;
-            display: block;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card-large::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s;
-        }
-
-        .card-large:hover::before {
-            transform: translateX(100%);
-        }
-
-        .card-large:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4);
-        }
-
-        .card-large-icon {
-            font-size: 3.5rem;
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        .card-large-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            position: relative;
-        }
-
-        .card-large-desc {
-            font-size: 1rem;
-            line-height: 1.6;
-            opacity: 0.95;
-            margin-bottom: 20px;
-        }
-
-        .card-large-meta {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .card-large .tag {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            backdrop-filter: blur(10px);
-        }
-
-        /* 模块网格 - 7列一行布局 */
-        .modules-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 12px;
-        }
-
-        .module-card {
+        /* 列表卡片 */
+        .list-card {
             background: white;
             border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .module-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 3px;
-            height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .module-number {
-            display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
-            text-align: center;
-            line-height: 24px;
-            font-weight: 700;
-            font-size: 0.75rem;
-            margin-bottom: 10px;
-        }
-
-        .module-title {
-            font-size: 0.95rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: #2d3748;
-            line-height: 1.3;
-        }
-
-        .module-desc {
-            color: #718096;
-            font-size: 0.75rem;
-            line-height: 1.3;
-            margin-bottom: 10px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .module-meta {
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
             display: flex;
             align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .module-meta .tag {
-            font-size: 0.7rem;
-            padding: 3px 8px;
-        }
-
-        .footer {
-            text-align: center;
-            color: white;
-            opacity: 0.9;
-            margin-top: 40px;
-            animation: fadeIn 1s ease-out;
-            animation-delay: 0.5s;
-            animation-fill-mode: both;
-        }
-
-        .footer a {
-            color: white;
-            text-decoration: underline;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-
-        .footer-link {
-            color: rgba(255,255,255,0.8);
+            gap: 16px;
             text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s;
+            color: inherit;
+            transition: all 0.3s;
+            border-left: 4px solid #e5e7eb;
         }
 
-        .footer-link:hover {
+        .list-card:hover {
+            border-left-color: #667eea;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+            transform: translateX(4px);
+        }
+
+        .list-card-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .list-card-content {
+            flex: 1;
+        }
+
+        .list-card-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .list-card-desc {
+            font-size: 0.8rem;
+            color: #718096;
+        }
+
+        /* 统计卡片 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            color: #718096;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* 移动端菜单按钮 */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 101;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            text-decoration: underline;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
+        /* 响应式 */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 240px;
             }
 
-            .header p {
-                font-size: 1.1rem;
+            .sidebar.open {
+                transform: translateX(0);
             }
 
-            .cards {
+            .main-content {
+                margin-left: 0;
+                padding: 70px 20px 20px;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .card-grid {
                 grid-template-columns: 1fr;
             }
+        }
 
-            .modules-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-
-            .card {
-                padding: 25px;
-            }
-
-            .card-large {
-                padding: 30px;
-            }
-
+        @media (max-width: 640px) {
             .section-title {
-                font-size: 1.3rem;
+                font-size: 1.5rem;
             }
 
-            .module-title {
-                font-size: 0.85rem;
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
             }
 
-            .module-desc {
-                font-size: 0.7rem;
-                -webkit-line-clamp: 3;
+            .main-content {
+                padding: 60px 16px 16px;
+            }
+
+            .welcome-banner {
+                padding: 24px 20px;
+            }
+
+            .welcome-banner h2 {
+                font-size: 1.5rem;
+            }
+
+            .welcome-banner .banner-emoji {
+                font-size: 3rem;
             }
         }
 
-        @media (max-width: 480px) {
-            .modules-grid {
-                grid-template-columns: 1fr;
-            }
+        /* 欢迎横幅 */
+        .welcome-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .welcome-banner h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .welcome-banner p {
+            font-size: 1rem;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .welcome-banner .banner-emoji {
+            font-size: 3.5rem;
+            margin-bottom: 16px;
+            display: block;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>All In AI</h1>
-            <p>AI 转型实践指南与资源分享</p>
-        </div>
+    <!-- 移动端菜单按钮 -->
+    <button class="mobile-menu-btn" id="menuBtn">☰</button>
 
-        <!-- 团队转型指南 -->
-        <div class="section">
-            <div class="section-title">
-                <span class="section-icon">🎯</span>
-                <span>团队转型指南</span>
+    <div class="app-container">
+        <!-- 左侧边栏 -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1>All In AI</h1>
+                <p>AI 转型实践指南</p>
             </div>
-            <div class="cards">
-                <a href="./ai/AI转型启动会.html" class="card">
-                    <span class="card-icon">🚀</span>
-                    <h2 class="card-title">AI 转型启动会</h2>
-                    <p class="card-desc">
-                        AI 转型项目的启动会议材料，用于团队宣贯和目标对齐，包含转型背景、目标设定和实施计划。
-                    </p>
-                    <div class="card-meta">
-                        <span class="tag highlight">启动材料</span>
-                        <span class="tag">团队宣贯</span>
-                        <span class="tag">目标对齐</span>
-                    </div>
-                </a>
 
-                <a href="./ai/团队向AI方向转型实操指南.html" class="card">
-                    <span class="card-icon">📋</span>
-                    <h2 class="card-title">团队向 AI 方向转型实操指南</h2>
-                    <p class="card-desc">
-                        详细的团队 AI 转型实施指南，包含转型策略、实施步骤、最佳实践等内容。
-                    </p>
-                    <div class="card-meta">
-                        <span class="tag highlight">转型规划</span>
-                        <span class="tag">实施指南</span>
-                        <span class="tag">最佳实践</span>
-                    </div>
+            <div class="nav-section">
+                <div class="nav-section-title">概览</div>
+                <a class="nav-item active" data-section="overview">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-text">首页总览</span>
                 </a>
             </div>
-        </div>
 
-        <!-- VibeCoding 学习资源 -->
-        <div class="section">
-            <div class="section-title">
-                <span class="section-icon">🎮</span>
-                <span>VibeCoding 学习资源</span>
-            </div>
-            <div class="cards">
-                <a href="./ai/11.VibeCoding/link.html" class="card">
-                    <span class="card-icon">🎮</span>
-                    <h2 class="card-title">VibeCoding 项目链接汇总</h2>
-                    <p class="card-desc">
-                        汇总 5 个核心 VibeCoding 开源项目，按难度从易到难排序：easy-vibe、AICodingGuide、awesome-vibe-coding、vibe-coding-cn、aicodeguide。提供完整学习路径推荐。
-                    </p>
-                    <div class="card-meta">
-                        <span class="tag highlight">5个项目</span>
-                        <span class="tag">学习路径</span>
-                        <span class="tag">资源汇总</span>
-                        <span class="tag">难度递进</span>
-                    </div>
+            <div class="nav-section">
+                <div class="nav-section-title">转型指南</div>
+                <a class="nav-item" data-section="guide">
+                    <span class="nav-icon">🎯</span>
+                    <span class="nav-text">团队转型指南</span>
+                    <span class="nav-badge">2</span>
                 </a>
             </div>
-        </div>
 
-        <!-- 核心概念知识体系 - 总览卡片 -->
-        <div class="section">
-            <div class="section-title">
-                <span class="section-icon">📚</span>
-                <span>核心概念知识体系</span>
-            </div>
-            <div class="cards">
-                <a href="./ai/03.核心概念知识体系/README.html" class="card">
-                    <span class="card-icon">📖</span>
-                    <h2 class="card-title">核心概念知识体系总览</h2>
-                    <p class="card-desc">
-                        从基础到应用、从理论到实践的完整 AI 知识体系，涵盖 7 个核心模块，系统化学习 AI 应用开发所需的核心概念。3个月学习计划，适合 3-10 人 Java 技术团队。
-                    </p>
-                    <div class="card-meta">
-                        <span class="tag">系统学习</span>
-                        <span class="tag">7大模块</span>
-                        <span class="tag">3个月计划</span>
-                    </div>
+            <div class="nav-section">
+                <div class="nav-section-title">知识体系</div>
+                <a class="nav-item" data-section="knowledge">
+                    <span class="nav-icon">📚</span>
+                    <span class="nav-text">核心知识体系</span>
+                    <span class="nav-badge">7</span>
                 </a>
             </div>
-        </div>
 
-        <!-- 7个核心模块 - 紧凑网格布局 -->
-        <div class="section">
-            <div class="section-title">
-                <span class="section-icon">🎓</span>
-                <span>七大核心模块</span>
-            </div>
-            <div class="modules-grid">
-                <a href="./ai/03.核心概念知识体系/01.AI基础层概念详解.html" class="module-card">
-                    <span class="module-number">1</span>
-                    <h3 class="module-title">AI 基础层概念详解</h3>
-                    <p class="module-desc">
-                        建立 AI 基础认知：LLM、Prompt、Token、Embedding 等核心概念。
-                    </p>
-                    <div class="module-meta">
-                        <span class="tag highlight">Week 1-2</span>
-                        <span class="tag">基础必学</span>
-                    </div>
+            <div class="nav-section">
+                <div class="nav-section-title">教程</div>
+                <a class="nav-item" data-section="agent">
+                    <span class="nav-icon">🤖</span>
+                    <span class="nav-text">Agent 教程</span>
+                    <span class="nav-badge">14</span>
                 </a>
-
-                <a href="./ai/03.核心概念知识体系/02.AI应用层核心技术详解.html" class="module-card">
-                    <span class="module-number">2</span>
-                    <h3 class="module-title">AI 应用层核心技术详解</h3>
-                    <p class="module-desc">
-                        RAG、向量数据库、Agent、Function Calling 等实战必备技能。
-                    </p>
-                    <div class="module-meta">
-                        <span class="tag highlight">Week 3-6</span>
-                        <span class="tag">核心技能</span>
-                    </div>
-                </a>
-
-                <a href="./ai/03.核心概念知识体系/03.工程架构层概念详解.html" class="module-card">
-                    <span class="module-number">3</span>
-                    <h3 class="module-title">工程架构层概念详解</h3>
-                    <p class="module-desc">
-                        LangChain4j、Spring AI、性能优化、流式响应等生产级开发技能。
-                    </p>
-                    <div class="module-meta">
-                        <span class="tag">Week 5-8</span>
-                        <span class="tag">工程实践</span>
-                    </div>
-                </a>
-
-                <a href="./ai/03.核心概念知识体系/04.数据与知识层概念详解.html" class="module-card">
-                    <span class="module-number">4</span>
-                    <h3 class="module-title">数据与知识层概念详解</h3>
-                    <p class="module-desc">
-                        文档分块、数据清洗、元数据管理、知识库构建等核心技术。
-                    </p>
-                    <div class="module-meta">
-                        <span class="tag">Week 5-8</span>
-                        <span class="tag">RAG核心</span>
-                    </div>
-                </a>
-
-                <a href="./ai/03.核心概念知识体系/05.安全与合规层概念详解.html" class="module-card">
-                    <span class="module-number">5</span>
-                    <h3 class="module-title">安全与合规层概念详解</h3>
-                    <p class="module-desc">
-                        Prompt Injection 防护、数据隐私、内容审核、审计日志等安全实践。
-                    </p>
-                    <div class="module-meta">
-                        <span class="tag highlight">Week 9-10</span>
-                        <span class="tag">生产必备</span>
-                    </div>
-                </a>
-
-                <a href="./ai/03.核心概念知识体系/06.工作方法论与工具链详解.html" class="module-card">
-                    <span class="module-number">6</span>
-                    <h3 class="module-title">工作方法论与工具链详解</h3>
-                    <p class="module-desc">
-                        Prompt-First 开发、Cursor 使用、AI 编程方法论等实用技能。
-                    </p>
-                    <div class="module-meta">
-                        <span class="tag">贯穿始终</span>
-                        <span class="tag">工具推荐</span>
-                    </div>
-                </a>
-
-                <a href="./ai/03.核心概念知识体系/07.前沿AI概念详解.html" class="module-card">
-                    <span class="module-number">7</span>
-                    <h3 class="module-title">前沿 AI 概念详解</h3>
-                    <p class="module-desc">
-                        Prompt Engineering、Context Engineering、Agentic Engineering、MCP 协议等。
-                    </p>
-                    <div class="module-meta">
-                        <span class="tag info">Week 5-12</span>
-                        <span class="tag">进阶学习</span>
-                    </div>
+                <a class="nav-item" data-section="vibecoding">
+                    <span class="nav-icon">🎮</span>
+                    <span class="nav-text">VibeCoding</span>
+                    <span class="nav-badge">5</span>
                 </a>
             </div>
-        </div>
 
-        <!-- AI Agent 科普技术博客 -->
-        <div class="section">
-            <div class="section-title">
-                <span class="section-icon">🤖</span>
-                <span>AI Agent 科普技术博客</span>
-            </div>
-            <div class="cards">
-                <a href="./ai/21.agent/00-开篇词.html" class="card">
-                    <span class="card-icon">📖</span>
-                    <h2 class="card-title">AI Agent 科普技术博客：写给每一个想搞懂 AI Agent 的普通人</h2>
-                    <p class="card-desc">
-                        从零开始理解 AI Agent：12章完整教程 + 术语对照表。适合完全零基础的读者，用通俗易懂的语言解释 AI Agent 的核心概念、技术原理和实际应用。
-                    </p>
-                    <div class="card-meta">
-                        <span class="tag highlight">科普系列</span>
-                        <span class="tag">零基础友好</span>
-                        <span class="tag">12个章节</span>
-                        <span class="tag">术语对照</span>
-                    </div>
+            <div class="nav-section">
+                <div class="nav-section-title">经验</div>
+                <a class="nav-item" data-section="experience">
+                    <span class="nav-icon">💡</span>
+                    <span class="nav-text">转型经验分享</span>
                 </a>
             </div>
-        </div>
 
-        <!-- AI Agent 章节列表 -->
-        <div class="section">
-            <div class="section-title">
-                <span class="section-icon">📚</span>
-                <span>完整章节列表</span>
+            <div class="sidebar-footer">
+                <a href="https://github.com/hello007/hello007.github.io">GitHub 仓库</a>
             </div>
-            <div class="cards">
-                <a href="./ai/21.agent/01-第一章-什么是AI-Agent.html" class="card-compact">
-                    <div class="card-compact-icon">🤖</div>
-                    <div class="card-compact-content">
-                        <h3 class="card-compact-title">第一章：什么是 AI Agent</h3>
-                        <p class="card-compact-desc">理解 AI Agent 的基本概念和定义</p>
-                    </div>
-                </a>
+        </aside>
 
-                <a href="./ai/21.agent/02-第二章-Agent的大脑从何而来.html" class="card-compact">
-                    <div class="card-compact-icon">🧠</div>
-                    <div class="card-compact-content">
-                        <h3 class="card-compact-title">第二章：Agent 的大脑从何而来</h3>
-                        <p class="card-compact-desc">探索 LLM 如何成为 Agent 的决策核心</p>
-                    </div>
-                </a>
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 首页总览 -->
+            <div class="content-section active" id="overview">
+                <div class="welcome-banner">
+                    <span class="banner-emoji">🤖</span>
+                    <h2>欢迎来到 All In AI</h2>
+                    <p>为团队 AI 转型提供的完整指南与资源库</p>
+                </div>
 
-                <a href="./ai/21.agent/03-第三章-Agent的三大核心支柱.html" class="card-compact">
-                    <div class="card-compact-icon">🏗️</div>
-                    <div class="card-compact-content">
-                        <h3 class="card-compact-title">第三章：Agent 的三大核心支柱</h3>
-                        <p class="card-compact-desc">感知、规划、行动：Agent 的核心能力</p>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">7</div>
+                        <div class="stat-label">核心知识模块</div>
                     </div>
-                </a>
-
-                <a href="./ai/21.agent/04-第四章-Agent架构全景图.html" class="card-compact">
-                    <div class="card-compact-icon">📊</div>
-                    <div class="card-compact-content">
-                        <h3 class="card-compact-title">第四章：Agent 架构全景图</h3>
-                        <p class="card-compact-desc">全面了解 Agent 的系统架构设计</p>
+                    <div class="stat-card">
+                        <div class="stat-number">14</div>
+                        <div class="stat-label">Agent 章节教程</div>
                     </div>
-                </a>
-
-                <a href="./ai/21.agent/05-第五章-LLM如何当Agent的决策大脑.html" class="card-compact">
-                    <div class="card-compact-icon">🎯</div>
-                    <div class="card-compact-content">
-                        <h3 class="card-compact-title">第五章：LLM 如何当 Agent 的决策大脑</h3>
-                        <p class="card-compact-desc">深入理解 LLM 在 Agent 中的决策机制</p>
+                    <div class="stat-card">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">VibeCoding 项目</div>
                     </div>
-                </a>
-
-                <a href="./ai/21.agent/06-第六章-Agent的记忆秘密.html" class="card-compact">
-                    <div class="card-compact-icon">💾</div>
-                    <div class="card-compact-content">
-                        <h3 class="card-compact-title">第六章：Agent 的记忆秘密</h3>
-                        <p class="card-compact-desc">短期记忆与长期记忆的实现方式</p>
+                    <div class="stat-card">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">转型指导文档</div>
                     </div>
-                </a>
+                </div>
 
-                <a href="./ai/21.agent/07-第七章-Agent的手脚怎么长.html" class="card-compact">
-                    <div class="card-compact-icon">🛠️</div>
-                    <div class="card-compact-content">
-                        <h3 class="card-compact-title">第七章：Agent 的手脚怎么长</h3>
-                        <p class="card-compact-desc">工具调用与执行能力的实现</p>
-                    </div>
-                </a>
+                <div class="section-header">
+                    <h2 class="section-title">快速导航</h2>
+                    <p class="section-subtitle">选择您感兴趣的内容类别</p>
+                </div>
 
-                <a href="./ai/21.agent/08-第八章-多Agent系统.html" class="card-compact">
-                    <div class="card-compact-icon">🤝</div>
-                    <div class="card-compact-content">
-                        <h3 class="card-compact-title">第八章：多 Agent 系统</h3>
-                        <p class="card-compact-desc">多个 Agent 协作工作的机制</p>
-                    </div>
-                </a>
+                <div class="card-grid">
+                    <a href="./ai/AI转型启动会.html" class="card">
+                        <div class="card-header">
+                            <span class="card-icon">🚀</span>
+                            <h3 class="card-title">AI 转型启动会</h3>
+                            <span class="card-tag">启动材料</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-desc">团队宣贯和目标对齐的启动材料，包含转型背景、目标设定和实施计划。</p>
+                            <div class="card-meta">
+                                <span class="meta-item">📄 文档</span>
+                                <span class="meta-item">👥 团队建设</span>
+                            </div>
+                        </div>
+                    </a>
 
-                <a href="./ai/21.agent/09-第九章-Agent实战案例库.html" class="card-compact">
-                    <div class="card-compact-icon">🎬</div>
-                    <div class="card-compact-content">
-                        <h3 class="card-compact-title">第九章：Agent 实战案例库</h3>
-                        <p class="card-compact-desc">真实世界的 Agent 应用案例解析</p>
-                    </div>
-                </a>
+                    <a href="./ai/团队向AI方向转型实操指南.html" class="card">
+                        <div class="card-header">
+                            <span class="card-icon">📋</span>
+                            <h3 class="card-title">团队转型实操指南</h3>
+                            <span class="card-tag">完整指南</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-desc">详细的转型实施指南，包含转型策略、实施步骤、最佳实践等内容。</p>
+                            <div class="card-meta">
+                                <span class="meta-item">📘 系统化</span>
+                                <span class="meta-item">✅ 最佳实践</span>
+                            </div>
+                        </div>
+                    </a>
 
-                <a href="./ai/21.agent/10-第十章-构建你的第一个Agent.html" class="card-compact">
-                    <div class="card-compact-icon">⚡</div>
-                    <div class="card-compact-content">
-                        <h3 class="card-compact-title">第十章：构建你的第一个 Agent</h3>
-                        <p class="card-compact-desc">动手实践：从零构建一个 AI Agent</p>
-                    </div>
-                </a>
+                    <a href="./ai/03.核心概念知识体系/README.html" class="card">
+                        <div class="card-header">
+                            <span class="card-icon">📚</span>
+                            <h3 class="card-title">核心知识体系</h3>
+                            <span class="card-tag">7大模块</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-desc">7个核心模块的完整 AI 知识体系，适合3-10人Java技术团队的3个月学习计划。</p>
+                            <div class="card-meta">
+                                <span class="meta-item">🎓 系统学习</span>
+                                <span class="meta-item">⏱️ 3个月</span>
+                            </div>
+                        </div>
+                    </a>
 
-                <a href="./ai/21.agent/11-第十一章-Agent的雷区与边界.html" class="card-compact">
-                    <div class="card-compact-icon">⚠️</div>
-                    <div class="card-compact-content">
-                        <h3 class="card-compact-title">第十一章：Agent 的雷区与边界</h3>
-                        <p class="card-compact-desc">了解 Agent 的局限性和注意事项</p>
-                    </div>
-                </a>
+                    <a href="./ai/21.agent/00-开篇词.html" class="card">
+                        <div class="card-header">
+                            <span class="card-icon">🤖</span>
+                            <h3 class="card-title">Agent 科普教程</h3>
+                            <span class="card-tag">12章节</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-desc">从零开始理解 AI Agent，12章完整教程 + 术语对照表，适合完全零基础的读者。</p>
+                            <div class="card-meta">
+                                <span class="meta-item">🌟 零基础</span>
+                                <span class="meta-item">📖 完整教程</span>
+                            </div>
+                        </div>
+                    </a>
 
-                <a href="./ai/21.agent/12-第十二章-未来已来.html" class="card-compact">
-                    <div class="card-compact-icon">🚀</div>
-                    <div class="card-compact-content">
-                        <h3 class="card-compact-title">第十二章：未来已来</h3>
-                        <p class="card-compact-desc">AI Agent 的发展趋势与未来展望</p>
-                    </div>
-                </a>
+                    <a href="./ai/11.VibeCoding/link.html" class="card">
+                        <div class="card-header">
+                            <span class="card-icon">🎮</span>
+                            <h3 class="card-title">VibeCoding 资源</h3>
+                            <span class="card-tag">资源汇总</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-desc">5个核心开源项目汇总，按难度排序，提供完整学习路径推荐。</p>
+                            <div class="card-meta">
+                                <span class="meta-item">🔧 工具集</span>
+                                <span class="meta-item">🗺️ 学习路径</span>
+                            </div>
+                        </div>
+                    </a>
 
-                <a href="./ai/21.agent/A-附录-术语对照表.html" class="card-compact">
-                    <div class="card-compact-icon">📋</div>
-                    <div class="card-compact-content">
-                        <h3 class="card-compact-title">附录：术语对照表</h3>
-                        <p class="card-compact-desc">AI Agent 相关术语的中英文对照</p>
+                    <a href="./ai/AI转型之路.html" class="card">
+                        <div class="card-header">
+                            <span class="card-icon">🎓</span>
+                            <h3 class="card-title">转型经验分享</h3>
+                            <span class="card-tag">实战案例</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-desc">18个月从 Java 架构师到 AI 技术专家的完整转型历程记录。</p>
+                            <div class="card-meta">
+                                <span class="meta-item">💼 真实经历</span>
+                                <span class="meta-item">📝 9章节</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 团队转型指南 -->
+            <div class="content-section" id="guide">
+                <div class="section-header">
+                    <h2 class="section-title">团队转型指南</h2>
+                    <p class="section-subtitle">帮助团队顺利实现 AI 方向的转型</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <a href="./ai/AI转型启动会.html" class="list-card">
+                        <span class="list-card-icon">🚀</span>
+                        <div class="list-card-content">
+                            <h3 class="list-card-title">AI 转型启动会</h3>
+                            <p class="list-card-desc">转型背景、目标设定、实施计划、团队协作与分工</p>
+                        </div>
+                    </a>
+
+                    <a href="./ai/团队向AI方向转型实操指南.html" class="list-card">
+                        <span class="list-card-icon">📋</span>
+                        <div class="list-card-content">
+                            <h3 class="list-card-title">团队向 AI 方向转型实操指南</h3>
+                            <p class="list-card-desc">转型规划、团队能力建设、技术选型、工具推荐、注意事项</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 核心知识体系 -->
+            <div class="content-section" id="knowledge">
+                <div class="section-header">
+                    <h2 class="section-title">核心知识体系</h2>
+                    <p class="section-subtitle">7个核心模块的完整 AI 知识体系</p>
+                </div>
+
+                <div class="card-grid">
+                    <a href="./ai/03.核心概念知识体系/01.AI基础层概念详解.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">1</span>
+                            <h3 class="simple-card-title">AI 基础层概念详解</h3>
+                        </div>
+                        <p class="simple-card-desc">LLM、Prompt、Token、Embedding 等核心概念</p>
+                    </a>
+
+                    <a href="./ai/03.核心概念知识体系/02.AI应用层核心技术详解.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">2</span>
+                            <h3 class="simple-card-title">AI 应用层核心技术详解</h3>
+                        </div>
+                        <p class="simple-card-desc">RAG、向量数据库、Agent、Function Calling</p>
+                    </a>
+
+                    <a href="./ai/03.核心概念知识体系/03.工程架构层概念详解.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">3</span>
+                            <h3 class="simple-card-title">工程架构层概念详解</h3>
+                        </div>
+                        <p class="simple-card-desc">LangChain4j、Spring AI、性能优化</p>
+                    </a>
+
+                    <a href="./ai/03.核心概念知识体系/04.数据与知识层概念详解.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">4</span>
+                            <h3 class="simple-card-title">数据与知识层概念详解</h3>
+                        </div>
+                        <p class="simple-card-desc">文档分块、数据清洗、知识库构建</p>
+                    </a>
+
+                    <a href="./ai/03.核心概念知识体系/05.安全与合规层概念详解.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">5</span>
+                            <h3 class="simple-card-title">安全与合规层概念详解</h3>
+                        </div>
+                        <p class="simple-card-desc">Prompt Injection 防护、数据隐私、内容审核</p>
+                    </a>
+
+                    <a href="./ai/03.核心概念知识体系/06.工作方法论与工具链详解.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">6</span>
+                            <h3 class="simple-card-title">工作方法论与工具链详解</h3>
+                        </div>
+                        <p class="simple-card-desc">Prompt-First 开发、Cursor 使用、AI 编程方法论</p>
+                    </a>
+
+                    <a href="./ai/03.核心概念知识体系/07.前沿AI概念详解.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">7</span>
+                            <h3 class="simple-card-title">前沿 AI 概念详解</h3>
+                        </div>
+                        <p class="simple-card-desc">Prompt Engineering、Context Engineering、MCP 协议</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Agent 教程 -->
+            <div class="content-section" id="agent">
+                <div class="section-header">
+                    <h2 class="section-title">Agent 教程</h2>
+                    <p class="section-subtitle">从零开始理解 AI Agent</p>
+                </div>
+
+                <div class="card-grid">
+                    <a href="./ai/21.agent/00-开篇词.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">📖</span>
+                            <h3 class="simple-card-title">开篇词</h3>
+                        </div>
+                        <p class="simple-card-desc">AI Agent 科普技术博客的介绍和定位说明</p>
+                    </a>
+
+                    <a href="./ai/21.agent/01-第一章-什么是AI-Agent.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">🤖</span>
+                            <h3 class="simple-card-title">第一章：什么是 AI Agent</h3>
+                        </div>
+                        <p class="simple-card-desc">理解 AI Agent 的基本概念、定义和核心特征</p>
+                    </a>
+
+                    <a href="./ai/21.agent/02-第二章-Agent的大脑从何而来.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">🧠</span>
+                            <h3 class="simple-card-title">第二章：Agent 的大脑从何而来</h3>
+                        </div>
+                        <p class="simple-card-desc">探索 LLM 如何成为 Agent 的决策核心</p>
+                    </a>
+
+                    <a href="./ai/21.agent/03-第三章-Agent的三大核心支柱.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">🏗️</span>
+                            <h3 class="simple-card-title">第三章：Agent 的三大核心支柱</h3>
+                        </div>
+                        <p class="simple-card-desc">深入理解感知、决策、行动三大支柱的协作机制</p>
+                    </a>
+
+                    <a href="./ai/21.agent/04-第四章-Agent架构全景图.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">📊</span>
+                            <h3 class="simple-card-title">第四章：Agent 架构全景图</h3>
+                        </div>
+                        <p class="simple-card-desc">从最小可行体到完整分层设计的架构演进</p>
+                    </a>
+
+                    <a href="./ai/21.agent/05-第五章-LLM如何当Agent的决策大脑.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">🎯</span>
+                            <h3 class="simple-card-title">第五章：LLM 如何当 Agent 的决策大脑</h3>
+                        </div>
+                        <p class="simple-card-desc">深入理解 LLM 在 Agent 中的决策机制</p>
+                    </a>
+
+                    <a href="./ai/21.agent/06-第六章-Agent的记忆秘密.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">💾</span>
+                            <h3 class="simple-card-title">第六章：Agent 的记忆秘密</h3>
+                        </div>
+                        <p class="simple-card-desc">短期记忆与长期记忆的实现方式</p>
+                    </a>
+
+                    <a href="./ai/21.agent/07-第七章-Agent的手脚怎么长.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">🛠️</span>
+                            <h3 class="simple-card-title">第七章：Agent 的手脚怎么长</h3>
+                        </div>
+                        <p class="simple-card-desc">工具调用与执行能力的实现</p>
+                    </a>
+
+                    <a href="./ai/21.agent/08-第八章-多Agent系统.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">🤝</span>
+                            <h3 class="simple-card-title">第八章：多 Agent 系统</h3>
+                        </div>
+                        <p class="simple-card-desc">多个 Agent 协作工作的机制</p>
+                    </a>
+
+                    <a href="./ai/21.agent/09-第九章-Agent实战案例库.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">🎬</span>
+                            <h3 class="simple-card-title">第九章：Agent 实战案例库</h3>
+                        </div>
+                        <p class="simple-card-desc">真实世界的 Agent 应用案例解析</p>
+                    </a>
+
+                    <a href="./ai/21.agent/10-第十章-构建你的第一个Agent.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">⚡</span>
+                            <h3 class="simple-card-title">第十章：构建你的第一个 Agent</h3>
+                        </div>
+                        <p class="simple-card-desc">动手实践：从零构建一个 AI Agent</p>
+                    </a>
+
+                    <a href="./ai/21.agent/11-第十一章-Agent的雷区与边界.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">⚠️</span>
+                            <h3 class="simple-card-title">第十一章：Agent 的雷区与边界</h3>
+                        </div>
+                        <p class="simple-card-desc">了解 Agent 的局限性和注意事项</p>
+                    </a>
+
+                    <a href="./ai/21.agent/12-第十二章-未来已来.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">🚀</span>
+                            <h3 class="simple-card-title">第十二章：未来已来</h3>
+                        </div>
+                        <p class="simple-card-desc">AI Agent 的发展趋势与未来展望</p>
+                    </a>
+
+                    <a href="./ai/21.agent/A-附录-术语对照表.html" class="simple-card">
+                        <div class="simple-card-header">
+                            <span class="simple-card-icon">📋</span>
+                            <h3 class="simple-card-title">附录：术语对照表</h3>
+                        </div>
+                        <p class="simple-card-desc">AI Agent 相关术语的中英文对照</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- VibeCoding -->
+            <div class="content-section" id="vibecoding">
+                <div class="section-header">
+                    <h2 class="section-title">VibeCoding 资源</h2>
+                    <p class="section-subtitle">AI 编程工具与学习资源</p>
+                </div>
+
+                <a href="./ai/11.VibeCoding/link.html" class="list-card">
+                    <span class="list-card-icon">🎮</span>
+                    <div class="list-card-content">
+                        <h3 class="list-card-title">VibeCoding 项目链接汇总</h3>
+                        <p class="list-card-desc">汇总 5 个核心 VibeCoding 开源项目，按难度从易到难排序，提供完整学习路径推荐。</p>
                     </div>
                 </a>
             </div>
-        </div>
 
-        <!-- 转型经验分享 -->
-        <div class="section">
-            <div class="section-title">
-                <span class="section-icon">💡</span>
-                <span>转型经验分享</span>
-            </div>
-            <div class="cards">
-                <a href="./ai/AI转型之路.html" class="card">
-                    <span class="card-icon">🎓</span>
-                    <h2 class="card-title">从 Java 架构师到 AI 技术专家：我的转型之路（虚构版）</h2>
-                    <p class="card-desc">
-                        一线架构师的真实转型历程记录：18个月从传统 Java 开发到 AI 技术专家的完整心路历程、学习路径和实战经验。
-                    </p>
-                    <div class="card-meta">
-                        <span class="tag">个人经历</span>
-                        <span class="tag">实战案例</span>
-                        <span class="tag">学习路径</span>
-                        <span class="tag">9个章节</span>
+            <!-- 经验分享 -->
+            <div class="content-section" id="experience">
+                <div class="section-header">
+                    <h2 class="section-title">转型经验分享</h2>
+                    <p class="section-subtitle">真实的转型历程记录</p>
+                </div>
+
+                <a href="./ai/AI转型之路.html" class="list-card">
+                    <span class="list-card-icon">🎓</span>
+                    <div class="list-card-content">
+                        <h3 class="list-card-title">从 Java 架构师到 AI 技术专家：我的转型之路</h3>
+                        <p class="list-card-desc">一线架构师的真实转型历程记录：18个月从传统 Java 开发到 AI 技术专家的完整心路历程、学习路径和实战经验。</p>
                     </div>
                 </a>
             </div>
-        </div>
-
-        <div class="footer">
-            <p>基于 <a href="https://pages.github.com/">GitHub Pages</a> 托管 | 使用 Jekyll 构建</p>
-            <div class="footer-links">
-                <a href="https://github.com/hello007/hello007.github.io" class="footer-link">GitHub 仓库</a>
-                <span class="footer-link">|</span>
-                <a href="https://hello007.github.io" class="footer-link">在线访问</a>
-            </div>
-        </div>
+        </main>
     </div>
+
+    <script>
+        // 导航切换功能
+        const navItems = document.querySelectorAll('.nav-item');
+        const contentSections = document.querySelectorAll('.content-section');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                // 移除所有 active 类
+                navItems.forEach(nav => nav.classList.remove('active'));
+                contentSections.forEach(section => section.classList.remove('active'));
+
+                // 添加 active 类到当前项
+                item.classList.add('active');
+                const sectionId = item.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active');
+
+                // 移动端点击后关闭侧边栏
+                if (window.innerWidth <= 1024) {
+                    sidebar.classList.remove('open');
+                }
+
+                // 滚动到顶部
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // 移动端菜单切换
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        // 点击内容区域关闭移动端侧边栏
+        document.querySelector('.main-content').addEventListener('click', () => {
+            if (window.innerWidth <= 1024 && sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        });
+    </script>
 </body>
 </html>
