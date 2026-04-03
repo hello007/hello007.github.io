@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第三章：Agent的三大核心支柱—— 感知、决策、行动</title>
+    <title>第2章：正名｜什么是Harness Engineering？——定义、边界与常见误区</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
     <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>"""
     <!-- Load Mermaid from local assets folder -->
@@ -572,34 +572,34 @@ pre code.language-mermaid {
                     </li>
 
                     <li class="nav-item">
-                        <a href="#开篇思考-agent是怎么-思考-和-做事-的" class="nav-link">📚 开篇思考:Agent是怎么"思考"和"做事"的?</a>
+                        <a href="#开篇思考-为什么需要-正名" class="nav-link">📚 开篇思考：为什么需要"正名"?</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#一-先破后立-agent不是-线性执行-而是-闭环迭代" class="nav-link">📚 一、先破后立:Agent不是"线性执行",而是"闭环迭代"</a>
+                        <a href="#本章核心定位" class="nav-link">⭐ 本章核心定位</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#二-底层底座-记忆系统-三大支柱的-数据中枢" class="nav-link">🏗️ 二、底层底座:记忆系统—— 三大支柱的"数据中枢"</a>
+                        <a href="#1-精准权威定义" class="nav-link">📚 1. 精准权威定义</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#三-支柱一-感知系统-agent的-五官" class="nav-link">🏗️ 三、支柱一:感知系统—— Agent的"五官"</a>
+                        <a href="#2-核心要素拆解" class="nav-link">⭐ 2. 核心要素拆解</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#四-支柱二-决策系统-agent的-大脑" class="nav-link">🏗️ 四、支柱二:决策系统—— Agent的"大脑"</a>
+                        <a href="#3-最小可行harness-mvh-新手入门最低门槛" class="nav-link">💡 3. 最小可行Harness（MVH）：新手入门最低门槛</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#五-支柱三-行动系统-agent的-手脚" class="nav-link">🏗️ 五、支柱三:行动系统—— Agent的"手脚"</a>
+                        <a href="#4-与相关概念的边界辨析" class="nav-link">💡 4. 与相关概念的边界辨析</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#六-一个完整案例-串起agent的全闭环工作流" class="nav-link">🎬 六、一个完整案例,串起Agent的全闭环工作流</a>
+                        <a href="#5-3个最常见的认知误区澄清" class="nav-link">📚 5. 3个最常见的认知误区澄清</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#七-本章核心小结" class="nav-link">⭐ 七、本章核心小结</a>
+                        <a href="#6-概念关系可视化" class="nav-link">💡 6. 概念关系可视化</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#八-下章预告" class="nav-link">📚 八、下章预告</a>
+                        <a href="#7-章末互动" class="nav-link">📚 7. 章末互动</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#配图说明" class="nav-link">📖 📊 配图说明</a>
+                        <a href="#本章要点回顾" class="nav-link">📝 本章要点回顾</a>
                     </li>
                 </ul>
             </nav>
@@ -609,7 +609,7 @@ pre code.language-mermaid {
         <main class="main-content">
             <!-- 英雄区域 -->
             <section class="hero-section">
-                <h1>第三章：Agent的三大核心支柱—— 感知、决策、行动</h1>
+                <h1>第2章：正名｜什么是Harness Engineering？——定义、边界与常见误区</h1>
                 <div class="hero-meta">
                     <div class="meta-item">
                         <span class="meta-icon">🎯</span>
@@ -625,562 +625,556 @@ pre code.language-mermaid {
             <!-- 内容区域 -->
             <section id="intro" class="content-card">
                 <blockquote>
-<p><strong>章节核心目标</strong></p>
-<p></p>
-<p>彻底搞懂Agent的完整工作闭环,建立Agent的核心认知框架,理解感知、决策、行动三大支柱的协作机制。</p>
+<p>给Harness Engineering下精准、无歧义的定义，划清与相关概念的边界，纠正常见认知误区</p>
 </blockquote>
 <p>
 <hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
 </p>
-<h2 id="开篇思考-agent是怎么-思考-和-做事-的">开篇思考:Agent是怎么"思考"和"做事"的?</h2>
+<h2 id="开篇思考-为什么需要-正名">开篇思考：为什么需要"正名"?</h2>
 <p>
-在第一章,我们讲了Agent的核心特征:<strong>目标驱动的自主闭环智能体</strong>。
+在第1章中，我们看到了AI模型"走出实验室"后频频"掉链子"的三大痛点。
 </p>
 <p>
-但你可能还有疑问:<strong>"这个'闭环'具体是怎么运转的?Agent内部有哪些核心组件?这些组件是怎么协作的?"</strong>
+但你可能会问：
+</p>
+<ul>
+<li>"这听起来像MLOps啊？有什么区别？"</li>
+<li>"是不是就是给模型写个API接口？"</li>
+<li>"我们小团队用得上吗？这感觉是大厂的专属"</li>
+</ul>
+<p>
+这些问题，都源于对Harness Engineering的<strong>定义不清、边界不明、认知有误区</strong>。
 </p>
 <p>
-<strong>这一章,我们会彻底拆解Agent的"黑箱",让你看清它的完整工作流程。</strong>
+本章的目标，就是给Harness Engineering下一个<strong>精准、无歧义的定义</strong>，划清它与相关概念的边界，纠正最常见的认知误区，给新手一个<strong>最低门槛的入门抓手</strong>。
 </p>
 <p>
 <hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
 </p>
-<h2 id="一-先破后立-agent不是-线性执行-而是-闭环迭代">一、先破后立:Agent不是"线性执行",而是"闭环迭代"</h2>
+<h2 id="本章核心定位">本章核心定位</h2>
 <p>
-这是新手最容易犯的认知错误:<strong>认为Agent的工作逻辑是线性的。</strong>
-</p>
-<h3>❌ 错误认知:线性执行</h3>
-<pre><code>用户输入 → Agent处理 → 输出结果</code></pre>
-<p>
-<strong>这种认知的问题?</strong>
-</p>
-<ul>
-<li>认为Agent只会"一次性"完成任务</li>
-<li>没有考虑"失败重试"、"优化迭代"的情况</li>
-<li><strong>这是传统程序的思维,不是Agent的思维</strong></li>
-</ul>
-<h3>✅ 正确认知:闭环迭代</h3>
-<pre><code>感知 → 决策 → 行动 → 反馈 → 再感知 → 再决策 → 再行动 → ...直到完成目标</code></pre>
-<p>
-<strong>Agent的核心逻辑是"循环",不是"线性"。</strong>
-</p>
-<h3>📊 具象案例:帮用户点咖啡</h3>
-<p>
-<strong>线性执行(错误):</strong>
-</p>
-<ol>
-<li>用户说:"帮我点一杯冰美式"</li>
-<li>Agent调用XX咖啡店API下单</li>
-<li>API返回:"该店铺已闭店"</li>
-<li><strong>Agent停止,任务失败</strong></li>
-</ol>
-<p>
-<strong>闭环迭代(正确):</strong>
-</p>
-<ol>
-<li>用户说:"帮我点一杯冰美式"</li>
-<li>Agent调用XX咖啡店API下单</li>
-<li>API返回:"该店铺已闭店"</li>
-<li><strong>Agent感知到失败</strong></li>
-<li><strong>Agent重新决策</strong>:换一家同品类的咖啡店</li>
-<li>Agent调用YY咖啡店API下单</li>
-<li>API返回:"下单成功"</li>
-<li><strong>Agent通知用户:"已经帮你下单了,预计20分钟送达"</strong></li>
-</ol>
-<p>
-<strong>核心区别:闭环迭代让Agent能"自主优化",直到完成目标。</strong>
+给Harness Engineering下精准、无歧义的定义，划清与相关概念的边界，纠正常见认知误区，给读者建立清晰的认知框架，同时给新手最低门槛的入门抓手。
 </p>
 <p>
 <hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
 </p>
-<h2 id="二-底层底座-记忆系统-三大支柱的-数据中枢">二、底层底座:记忆系统—— 三大支柱的"数据中枢"</h2>
-<p>
-在拆解三大支柱之前,我必须先讲一个<strong>容易被忽视但极其重要的组件</strong>:<strong>记忆系统</strong>。
-</p>
-<h3>🎯 记忆系统的核心作用</h3>
-<p>
-<strong>记忆系统是三大支柱的"数据中枢":</strong>
-</p>
-<ul>
-<li><strong>感知的内容</strong> → 存入记忆系统</li>
-<li><strong>决策时</strong> → 调取记忆系统里的内容</li>
-<li><strong>行动的结果</strong> → 回写记忆系统</li>
-<li><strong>下一次感知</strong> → 基于更新后的记忆</li>
-</ul>
-<p>
-<strong>没有记忆系统,Agent就"活不过第一轮"。</strong>
-</p>
-<h3>📋 案例:点咖啡的记忆系统</h3>
-<p>
-<strong>Agent的记忆系统存储了什么?</strong>
-</p>
-<ul>
-<li>用户的口味偏好:"无糖、冰的、浓度偏淡"</li>
-<li>用户的地址:"XX公司XX楼XX前台"</li>
-<li>用户的预算:"不超过30元"</li>
-<li>用户的历史订单:"上次在YY咖啡店点过,评价不错"</li>
-<li>用户不喜欢:"XX咖啡店的咖啡太苦,不要点"</li>
-</ul>
-<p>
-<strong>这些记忆,让Agent能做出"正确"的决策:</strong>
-</p>
-<ul>
-<li>✅ 调用XX外卖API(而不是其他平台)</li>
-<li>✅ 选择YY咖啡店(而不是用户不喜欢的XX咖啡店)</li>
-<li>✅ 点"无糖冰美式,浓度偏淡"(而不是默认配方)</li>
-</ul>
-<p>
-<strong>没有记忆系统,Agent每次都是"第一次见面",无法提供个性化服务。</strong>
-</p>
-<p>
-<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
-</p>
-<h2 id="三-支柱一-感知系统-agent的-五官">三、支柱一:感知系统—— Agent的"五官"</h2>
-<h3>🎯 核心作用</h3>
-<p>
-<strong>感知系统是Agent和世界交互的入口,负责"接收信息":</strong>
-</p>
-<ol>
-<li>接收用户的目标指令</li>
-<li>获取外部环境的信息</li>
-<li>收集行动后的反馈结果</li>
-</ol>
-<h3>📋 感知的4种核心类型</h3>
-<table>
-<thead>
-<tr>
-<th>感知类型</th>
-<th>核心作用</th>
-<th>具象案例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>1. 用户自然语言输入</strong></td>
-<td>接收用户的目标、需求、反馈</td>
-<td>"帮我安排下周去上海的差旅"</td>
-</tr>
-<tr>
-<td><strong>2. 工具返回的结果数据</strong></td>
-<td>接收API、工具的执行结果</td>
-<td>机票API返回:"已找到3个航班,价格如下..."</td>
-</tr>
-<tr>
-<td><strong>3. 多模态信息</strong></td>
-<td>接收图片、语音、视频等信息</td>
-<td>用户发送一张餐厅图片,Agent识别出餐厅信息</td>
-</tr>
-<tr>
-<td><strong>4. 环境状态变化</strong></td>
-<td>感知环境的变化,优化决策</td>
-<td>Agent感知到"现在是晚上10点",决策"不再打电话打扰用户"</td>
-</tr>
-</tbody>
-</table>
-<h3>🌟 案例:差旅Agent的感知</h3>
-<p>
-<strong>它感知了什么?</strong>
-</p>
-<ol>
-<li><strong>用户输入</strong>:"帮我安排下周去上海的差旅,预算3000以内"</li>
-<li><strong>外部信息</strong>:</li>
-</ol>
-<ul>
-<li>机票API:查询到下周去上海的机票价格</li>
-<li>酒店API:查询到会场附近的酒店列表</li>
-<li>天气API:查询到上海下周的天气情况</li>
-</ul>
-<ol>
-<li><strong>反馈信息</strong>:</li>
-</ol>
-<ul>
-<li>酒店预订API:"XX酒店已满房"</li>
-<li>飞机票预订API:"已成功出票"</li>
-</ul>
-<ol>
-<li><strong>环境状态</strong>:</li>
-</ol>
-<ul>
-<li>当前时间:2025年4月1日</li>
-<li>用户位置:北京</li>
-<li>会议时间:4月10日-12日</li>
-</ul>
-<p>
-<strong>所有这些信息,都通过"感知系统"进入Agent。</strong>
-</p>
-<p>
-<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
-</p>
-<h2 id="四-支柱二-决策系统-agent的-大脑">四、支柱二:决策系统—— Agent的"大脑"</h2>
-<h3>🎯 核心作用</h3>
-<p>
-<strong>决策系统是Agent的核心中枢,负责"思考":</strong>
-</p>
-<ol>
-<li>理解目标</li>
-<li>拆解任务</li>
-<li>制定执行计划</li>
-<li>选择要调用的工具</li>
-<li>判断任务是否完成</li>
-<li>优化后续的行动策略</li>
-</ol>
-<h3>📋 决策的核心流程</h3>
-<pre><code>理解目标 → 拆解任务步骤 → 制定执行计划 → 选择工具 → 执行 → 验证结果 → 判断是否完成 → 优化下一步动作</code></pre>
-<h3>🌟 案例:差旅Agent的决策</h3>
-<p>
-<strong>用户说:"帮我安排下周去上海的差旅,预算3000以内,要靠近会场。"</strong>
-</p>
-<p>
-<strong>Agent的决策过程:</strong>
-</p>
-<p>
-<strong>第1步:理解目标</strong>
-</p>
-<ul>
-<li>目标:安排上海差旅</li>
-<li>约束条件:预算3000以内,靠近会场</li>
-</ul>
-<p>
-<strong>第2步:拆解任务</strong>
-</p>
-<ol>
-<li>查会场地址</li>
-<li>查附近酒店(筛选符合预算的)</li>
-<li>查往返机票</li>
-<li>核算总费用</li>
-<li>下单预订</li>
-<li>同步日历</li>
-<li>设置出行提醒</li>
-</ol>
-<p>
-<strong>第3步:制定执行计划</strong>
-</p>
-<ul>
-<li>先查会场地址 → 再查酒店 → 再查机票 → 核算预算 → 预订 → 同步日历 → 设置提醒</li>
-</ul>
-<p>
-<strong>第4步:选择工具</strong>
-</p>
-<ul>
-<li>查会场:调用搜索引擎</li>
-<li>查酒店:调用携程API</li>
-<li>查机票:调用飞猪API</li>
-<li>同步日历:调用飞书日历API</li>
-</ul>
-<p>
-<strong>第5步:执行并验证</strong>
-</p>
-<ul>
-<li>调用携程API,查到3家酒店,价格分别是500、800、1200元</li>
-<li>选择500元的酒店(符合预算)</li>
-<li>调用飞猪API,查到机票1200元</li>
-<li>核算总费用:500×2晚+1200=2200元,符合预算</li>
-</ul>
-<p>
-<strong>第6步:判断是否完成</strong>
-</p>
-<ul>
-<li>酒店和机票都预订成功 → 任务完成</li>
-</ul>
-<p>
-<strong>第7步:通知用户</strong>
-</p>
-<ul>
-<li>"已经帮你订好了上海XX酒店(离会场1公里)和往返机票,总费用2200元,已同步到你的日历。"</li>
-</ul>
-<p>
-<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
-</p>
-<h2 id="五-支柱三-行动系统-agent的-手脚">五、支柱三:行动系统—— Agent的"手脚"</h2>
-<h3>🎯 核心作用</h3>
-<p>
-<strong>行动系统是Agent突破LLM边界的核心,负责"执行":</strong>
-</p>
-<ol>
-<li>调用外部工具和API</li>
-<li>生成内容</li>
-<li>执行代码</li>
-<li>操作文件</li>
-<li>发送信息</li>
-<li>和其他系统交互</li>
-</ol>
-<h3>📋 行动的5种核心类型</h3>
-<table>
-<thead>
-<tr>
-<th>行动类型</th>
-<th>核心作用</th>
-<th>具象案例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>1. 调用外部工具/API</strong></td>
-<td>和真实世界交互</td>
-<td>调用天气API、外卖API、日历API</td>
-</tr>
-<tr>
-<td><strong>2. 生成内容</strong></td>
-<td>创造新内容</td>
-<td>写文案、写代码、生成报告</td>
-</tr>
-<tr>
-<td><strong>3. 执行代码</strong></td>
-<td>运行代码</td>
-<td>执行Python代码做数据分析</td>
-</tr>
-<tr>
-<td><strong>4. 操作文件</strong></td>
-<td>读写文件</td>
-<td>读取Excel文件、生成PDF报告</td>
-</tr>
-<tr>
-<td><strong>5. 发送信息</strong></td>
-<td>和用户/系统通信</td>
-<td>发送邮件、发送微信消息、推送通知</td>
-</tr>
-</tbody>
-</table>
-<h3>🌟 案例:差旅Agent的行动</h3>
-<p>
-<strong>它执行了哪些行动?</strong>
-</p>
-<ol>
-<li><strong>调用搜索引擎</strong>:查找会场地址</li>
-<li><strong>调用携程API</strong>:</li>
-</ol>
-<ul>
-<li>查询会场附近的酒店</li>
-<li>预订酒店</li>
-</ul>
-<ol>
-<li><strong>调用飞猪API</strong>:</li>
-</ol>
-<ul>
-<li>查询往返机票</li>
-<li>预订机票</li>
-</ul>
-<ol>
-<li><strong>调用飞书日历API</strong>:</li>
-</ol>
-<ul>
-<li>创建差旅行程</li>
-<li>设置出发提醒</li>
-</ul>
-<ol>
-<li><strong>发送通知</strong>:</li>
-</ol>
-<ul>
-<li>给用户发送预订成功的消息</li>
-</ul>
-<p>
-<strong>所有这些行动,都是通过"行动系统"完成的。</strong>
-</p>
-<p>
-<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
-</p>
-<h2 id="六-一个完整案例-串起agent的全闭环工作流">六、一个完整案例,串起Agent的全闭环工作流</h2>
-<p>
-为了让你彻底理解三大支柱和记忆系统的协作,我用一个完整的案例来串起来:
-</p>
-<h3>🎯 案例:帮你做销售数据报表</h3>
-<p>
-<strong>你的需求:</strong>"帮我做一份本月的销售数据报表,发给部门全员,同步核心问题给领导。"
-</p>
-<p>
-<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
-</p>
-<h3><strong>第1轮:感知 → 决策 → 行动 → 反馈</strong></h3>
-<p>
-<strong>👁️ 感知:</strong>
-</p>
-<ul>
-<li>用户输入:"帮我做一份本月的销售数据报表,发给部门全员,同步核心问题给领导。"</li>
-<li>记忆系统调取:</li>
-<li>部门成员列表</li>
-<li>领导联系方式</li>
-<li>报表模板偏好(用户喜欢用Excel表格+图表)</li>
-</ul>
-<p>
-<strong>🧠 决策:</strong>
-</p>
-<ul>
-<li>理解目标:做报表 → 发全员 → 同步问题给领导</li>
-<li>拆解任务:</li>
-</ul>
-<ol>
-<li>从销售系统API获取本月数据</li>
-<li>数据分析(计算增长率、识别异常)</li>
-<li>生成报表(Excel+图表)</li>
-<li>识别核心问题</li>
-<li>发邮件给部门全员</li>
-<li>单独发消息给领导,同步核心问题</li>
-</ol>
-<p>
-<strong>🦶 行动:</strong>
-</p>
-<ul>
-<li>调用销售系统API,获取本月销售数据</li>
-<li>执行Python代码,做数据分析</li>
-<li>生成Excel报表和图表</li>
-</ul>
-<p>
-<strong>🔄 反馈:</strong>
-</p>
-<ul>
-<li>数据分析完成,发现本月销售额比上月下降15%</li>
-<li>核心问题:华东区销售额下降30%</li>
-</ul>
-<p>
-<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
-</p>
-<h3><strong>第2轮:感知 → 决策 → 行动 → 反馈</strong></h3>
-<p>
-<strong>👁️ 感知:</strong>
-</p>
-<ul>
-<li>收到上一步的反馈:销售额下降15%,华东区下降30%</li>
-</ul>
-<p>
-<strong>🧠 决策:</strong>
-</p>
-<ul>
-<li>优化决策:在报表中重点标注华东区的问题</li>
-<li>继续执行:生成报表,发送邮件</li>
-</ul>
-<p>
-<strong>🦶 行动:</strong>
-</p>
-<ul>
-<li>生成Excel报表(重点标注华东区问题)</li>
-<li>生成图表(可视化下降趋势)</li>
-<li>调用邮件API,发送给部门全员(附件:报表)</li>
-<li>发送消息给领导:"本月销售额下降15%,核心问题是华东区下降30%,详细报表已发送到您的邮箱。"</li>
-</ul>
-<p>
-<strong>🔄 反馈:</strong>
-</p>
-<ul>
-<li>邮件发送成功</li>
-<li>领导消息发送成功</li>
-</ul>
-<p>
-<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
-</p>
-<h3><strong>第3轮:感知 → 决策 → 行动 → 完成</strong></h3>
-<p>
-<strong>👁️ 感知:</strong>
-</p>
-<ul>
-<li>收到反馈:所有任务都已完成</li>
-</ul>
-<p>
-<strong>🧠 决策:</strong>
-</p>
-<ul>
-<li>判断任务完成,通知用户</li>
-</ul>
-<p>
-<strong>🦶 行动:</strong>
-</p>
-<ul>
-<li>通知用户:"已经帮你完成了本月的销售数据报表,已发送给部门全员,核心问题已同步给领导。报表亮点:本月销售额下降15%,核心问题是华东区下降30%。"</li>
-</ul>
-<p>
-<strong>✅ 任务完成!</strong>
-</p>
-<p>
-<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
-</p>
-<h2 id="七-本章核心小结">七、本章核心小结</h2>
-<h3>✅ 核心结论</h3>
-<ol>
-<li><strong>Agent的工作逻辑是"闭环迭代",不是"线性执行"</strong>:感知 → 决策 → 行动 → 反馈 → 再感知 → 再优化,循环直到完成目标</li>
-</ol>
-<ol>
-<li><strong>记忆系统是三大支柱的"数据中枢"</strong>:感知的内容存入记忆,决策调取记忆,行动的结果回写记忆,是整个闭环能持续运转的核心底座</li>
-</ol>
-<ol>
-<li><strong>三大支柱各司其职</strong>:</li>
-</ol>
-<ul>
-<li><strong>感知系统</strong>(五官):接收用户指令、获取外部信息、收集执行反馈</li>
-<li><strong>决策系统</strong>(大脑):理解目标、拆解任务、制定计划、选择工具、优化策略</li>
-<li><strong>行动系统</strong>(手脚):调用工具、生成内容、执行代码、操作文件、发送信息</li>
-</ul>
-<ol>
-<li><strong>Agent的完整工作流是"循环迭代"</strong>:每一步都基于上一步的反馈,持续优化,直到完成最终目标</li>
-</ol>
-<p>
-<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
-</p>
-<h2 id="八-下章预告">八、下章预告</h2>
-<p>
-<strong>这一章,我们拆解了Agent的三大核心支柱,理解了它的完整工作闭环。</strong>
-</p>
-<p>
-<strong>但还有一个问题:</strong>这些组件是怎么"拼起来"的?Agent的完整架构长什么样?从最小可行架构到企业级完整架构,有什么区别?**
-</p>
-<p>
-<strong>下一章,我们会看Agent的架构全景图,搞懂从3个组件就能搭的极简Agent,到5层的完整分层架构,同时对比主流的Agent框架,让你知道该怎么选。</strong>
-</p>
-<p>
-<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
-</p>
-<h2 id="配图说明">📊 配图说明</h2>
-<p>
-<strong>图1:Agent闭环工作流环形图</strong>
-</p>
-<img src="./image/03-Agent闭环工作流环形图.png" alt="image" style="max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">
-<p>
-<strong>图2:销售报表案例完整流程图</strong>
-</p>
-<div class="mermaid">flowchart TD
-    subgraph Round1["第1轮"]
-        direction TB
-        R1A[用户: 查询Q1销售额] --> R1B[Agent: 感知需求<br/>需要查询销售额]
-        R1B --> R1C[Agent: 决策<br/>需要查询数据库]
-        R1C --> R1D[Agent: 行动<br/>查询销售数据库]
-        R1D --> R1E[返回: Q1销售额100万]
-        R1E --> R1F[Agent: 反馈<br/>记录到记忆]
-    end
-
-    subgraph Round2["第2轮"]
-        direction TB
-        R2A[用户: 与Q2对比] --> R2B[Agent: 感知需求<br/>需要Q2数据]
-        R2B --> R2C[Agent: 决策<br/>从记忆获取Q1数据]
-        R2C --> R2D[Agent: 行动<br/>查询Q2并对比]
-        R2D --> R2E[返回: Q2增长20%]
-        R2E --> R2F[Agent: 反馈<br/>更新记忆]
-    end
-
-    subgraph Round3["第3轮"]
-        direction TB
-        R3A[用户: 查询原因] --> R3B[Agent: 感知需求<br/>需要分析原因]
-        R3B --> R3C[Agent: 决策<br/>结合记忆分析]
-        R3C --> R3D[Agent: 行动<br/>生成分析报告]
-        R3D --> R3E[返回: 原因分析报告]
-        R3E --> R3F[完成]
-    end
-
-    Round1 --> Round2
-    Round2 --> Round3
-
-    style Round1 fill:#E3F2FD,stroke:#2196F3,stroke-width:2px
-    style Round2 fill:#BBDEFB,stroke:#1976D2,stroke-width:2px
-    style Round3 fill:#90CAF9,stroke:#1565C0,stroke-width:2px</div>
-<p>
-<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
-</p>
+<h2 id="1-精准权威定义">1. 精准权威定义</h2>
+<h3>什么是 Harness Engineering？</h3>
 <blockquote>
-<p><strong>💡 学习小贴士</strong></p>
-<p></p>
-<p>- 这一章是<strong>核心认知框架</strong>,后面所有章节都会基于这个框架展开,一定要理解"三大支柱+记忆系统"的协作机制</p>
-<p>- 重点理解:为什么Agent是"闭环迭代"而不是"线性执行"?</p>
-<p>- 如果你对"决策系统"的细节还有疑问,没关系,第五章会详细讲LLM怎么当Agent的"决策大脑"</p>
-<p></p>
-<p><strong>下一章:<a href="./04-第四章-Agent架构全景图.html">Agent架构全景图—— 从最小可行体到完整分层设计</a></strong></p>
+<p><strong>Harness Engineering</strong>：通过标准化的工程化手段，将AI/ML模型封装为<strong>高可用、可监控、可迭代、高安全</strong>的生产级服务，覆盖<strong>模型推理服务化、数据治理、可观测、风险管控</strong>的全链路实践体系。</p>
 </blockquote>
+<h3>大白话解读</h3>
+<p>
+它不是让模型变得更准，而是让<strong>准的模型能稳定、安全、低成本地给用户用</strong>，不会半路"掉链子"。
+</p>
+<p>
+打个比方：
+</p>
+<ul>
+<li><strong>模型训练</strong>：把菜做好（味道好）</li>
+<li><strong>Harness Engineering</strong>：把菜送到客户手中（送得快、不洒、保温、可追溯、能退货）</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="2-核心要素拆解">2. 核心要素拆解</h2>
+<p>
+让我们拆解这个定义中的4个核心要素：
+</p>
+<h3>要素1：高可用（High Availability）</h3>
+<p>
+<strong>是什么</strong>：服务7×24小时稳定运行，故障率极低。
+</p>
+<p>
+<strong>为什么重要</strong>：
+</p>
+<ul>
+<li>用户不会因为服务故障而流失</li>
+<li>业务不会因为服务中断而损失</li>
+</ul>
+<p>
+<strong>怎么做</strong>：
+</p>
+<ul>
+<li>容错设计：单点故障不影响整体服务</li>
+<li>自动扩缩容：流量高峰时自动增加资源</li>
+<li>多可用区部署：避免单区域故障导致服务全挂</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>要素2：可监控（Observability）</h3>
+<p>
+<strong>是什么</strong>：能实时看到服务的运行状态，出了问题能快速定位。
+</p>
+<p>
+<strong>为什么重要</strong>：
+</p>
+<ul>
+<li>黑盒运行是最大的风险</li>
+<li>出了问题找不到原因是最大的痛苦</li>
+</ul>
+<p>
+<strong>怎么做</strong>：
+</p>
+<ul>
+<li>指标监控：QPS、延迟、错误率、GPU利用率</li>
+<li>日志追踪：每一次请求的完整链路</li>
+<li>异常告警：指标异常时自动通知</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>要素3：可迭代（Iterability）</h3>
+<p>
+<strong>是什么</strong>：能快速、安全地更新模型版本，出问题能快速回滚。
+</p>
+<p>
+<strong>为什么重要</strong>：
+</p>
+<ul>
+<li>模型需要持续优化才能保持效果</li>
+<li>线上出问题需要快速恢复</li>
+</ul>
+<p>
+<strong>怎么做</strong>：
+</p>
+<ul>
+<li>版本管理：每个模型版本都有唯一的标识</li>
+<li>灰度发布：先给小流量用户测试，验证通过后再全量</li>
+<li>一键回滚：出问题后快速切回上一个稳定版本</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>要素4：高安全（Security）</h3>
+<p>
+<strong>是什么</strong>：防止恶意攻击、数据泄露、合规风险。
+</p>
+<p>
+<strong>为什么重要</strong>：
+</p>
+<ul>
+<li>AI服务往往涉及敏感数据</li>
+<li>恶意攻击可能导致服务瘫痪或数据泄露</li>
+</ul>
+<p>
+<strong>怎么做</strong>：
+</p>
+<ul>
+<li>输入校验：防止Prompt注入、恶意输入</li>
+<li>权限管控：API鉴权、角色权限隔离</li>
+<li>合规审计：操作日志留存、数据隐私保护</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="3-最小可行harness-mvh-新手入门最低门槛">3. 最小可行Harness（MVH）：新手入门最低门槛</h2>
+<p>
+看到这里，你可能会想："这也太复杂了吧？我们小团队哪有资源做全链路？"
+</p>
+<p>
+别担心，你不需要一步到位做全链路。我们定义了一个<strong>最小可行Harness（Minimum Viable Harness, MVH）</strong>，让个人和小团队也能快速上手。
+</p>
+<h3>最小可行Harness：3步就能搭建</h3>
+<p>
+针对个人/小团队，3步就能搭建的最小可用体系：
+</p>
+<h4>第一步：API封装 + 基础防护</h4>
+<p>
+用FastAPI给模型做标准化API封装，加入：
+</p>
+<ul>
+<li>输入校验：防止异常输入导致服务崩溃</li>
+<li>基础限流：防止流量打垮服务</li>
+<li>错误处理：统一的错误返回格式</li>
+</ul>
+<p>
+<strong>代码示例</strong>：
+</p>
+<pre><code class="language-python">from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+
+app = FastAPI()
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+class PredictionRequest(BaseModel):
+    text: str
+    max_length: int = 100
+
+@app.post(&quot;/predict&quot;)
+@limiter.limit(&quot;10/minute&quot;)  # 限流：每分钟10次
+async def predict(request: PredictionRequest):
+    try:
+        # 输入校验
+        if not request.text or len(request.text) &gt; 1000:
+            raise HTTPException(status_code=400, detail=&quot;Invalid input&quot;)
+
+        # 模型推理
+        result = model.predict(request.text)
+
+        return {&quot;result&quot;: result}
+    except Exception as e:
+        # 统一错误处理
+        raise HTTPException(status_code=500, detail=str(e))</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h4>第二步：核心监控</h4>
+<p>
+用Prometheus接入核心监控指标：
+</p>
+<ul>
+<li>QPS：每秒请求数</li>
+<li>延迟：P95/P99响应时间</li>
+<li>错误率：请求失败的比例</li>
+</ul>
+<p>
+<strong>代码示例</strong>：
+</p>
+<pre><code class="language-python">from prometheus_fastapi_instrumentator import Instrumentator
+
+# 暴露Prometheus指标
+Instrumentator().instrument(app).expose(app)</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h4>第三步：版本管理 + 回滚脚本</h4>
+<p>
+编写模型版本快照与一键回滚脚本：
+</p>
+<p>
+<strong>脚本示例</strong>：
+</p>
+<pre><code class="language-bash">#!/bin/bash
+# rollback.sh - 一键回滚到上一个版本
+
+CURRENT_VERSION=$(cat current_version.txt)
+PREVIOUS_VERSION=$(cat previous_version.txt)
+
+echo &quot;Rolling back from $CURRENT_VERSION to $PREVIOUS_VERSION&quot;
+
+# 切换模型版本
+ln -sf /models/$PREVIOUS_VERSION /models/current
+
+# 更新版本文件
+echo $PREVIOUS_VERSION &gt; current_version.txt
+
+# 重启服务
+systemctl restart model-service
+
+echo &quot;Rollback completed!&quot;</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>MVH总结</h3>
+<p>
+这3步，1-2天就能完成，能覆盖80%的核心需求：
+</p>
+<ul>
+<li>✅ 服务不会因为异常输入崩溃</li>
+<li>✅ 流量不会打垮服务</li>
+<li>✅ 出了问题能看到监控指标</li>
+<li>✅ 新模型出问题能快速回滚</li>
+</ul>
+<p>
+这就是最小可行Harness，<strong>不用一步到位做全链路，先解决最核心的问题</strong>。
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="4-与相关概念的边界辨析">4. 与相关概念的边界辨析</h2>
+<h3>概念辨析表格</h3>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>核心角色</th>
+<th>与Harness Engineering的关系</th>
+<th>核心差异关键词</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MLOps</strong></td>
+<td>AI工程化的顶层方法论框架</td>
+<td>Harness是MLOps在「部署-运维-服务化」环节的具象化落地实践</td>
+<td><strong>框架 vs 落地执行</strong></td>
+</tr>
+<tr>
+<td><strong>DevOps</strong></td>
+<td>通用软件工程的基础体系</td>
+<td>Harness是DevOps在AI领域的垂直深化，叠加了模型、特征、推理的专属特性</td>
+<td><strong>通用软件工程 vs AI专属工程化</strong></td>
+</tr>
+<tr>
+<td><strong>ModelOps</strong></td>
+<td>模型全生命周期管理体系</td>
+<td>Harness侧重模型的「服务化落地」环节，是ModelOps的核心子集</td>
+<td><strong>全生命周期管理 vs 生产服务化</strong></td>
+</tr>
+</tbody>
+</table>
+<p>
+让我们逐个分析：
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>4.1 Harness Engineering vs MLOps</h3>
+<h4>MLOps是什么？</h4>
+<p>
+MLOps（Machine Learning Operations）是<strong>AI工程化的顶层方法论框架</strong>，覆盖：
+</p>
+<ul>
+<li>数据工程</li>
+<li>模型训练</li>
+<li>模型部署</li>
+<li>监控与治理</li>
+<li>持续集成与交付</li>
+</ul>
+<h4>Harness Engineering是什么？</h4>
+<p>
+Harness Engineering是<strong>MLOps在「部署-运维-服务化」环节的具象化落地实践</strong>，专注于：
+</p>
+<ul>
+<li>模型推理服务化</li>
+<li>运行时监控与治理</li>
+<li>故障容错与恢复</li>
+<li>安全与合规</li>
+</ul>
+<h4>关系比喻</h4>
+<ul>
+<li><strong>MLOps</strong>：就像盖房子的"建筑设计规范"</li>
+<li><strong>Harness Engineering</strong>：就像盖房子时的"具体施工工艺"</li>
+</ul>
+<p>
+MLOps是宏观的方法论，Harness Engineering是微观的落地执行。
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>4.2 Harness Engineering vs DevOps</h3>
+<h4>DevOps是什么？</h4>
+<p>
+DevOps是<strong>通用软件工程的基础体系</strong>，覆盖：
+</p>
+<ul>
+<li>持续集成（CI）</li>
+<li>持续交付（CD）</li>
+<li>基础设施即代码（IaC）</li>
+<li>监控与日志</li>
+</ul>
+<h4>Harness Engineering有什么不同？</h4>
+<p>
+Harness Engineering是<strong>DevOps在AI领域的垂直深化</strong>，叠加了AI专属的特性：
+</p>
+<ul>
+<li>模型版本管理（不是代码版本）</li>
+<li>特征一致性保证（训练 vs 推理）</li>
+<li>数据漂移检测（输入分布变化）</li>
+<li>模型性能监控（准确率、召回率等）</li>
+</ul>
+<h4>关系比喻</h4>
+<ul>
+<li><strong>DevOps</strong>：就像通用的"汽车驾驶手册"</li>
+<li><strong>Harness Engineering</strong>：就像"F1赛车的专属驾驶手册"</li>
+</ul>
+<p>
+DevOps适用于所有软件，Harness Engineering专门针对AI/ML系统的特殊需求。
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>4.3 Harness Engineering vs ModelOps</h3>
+<h4>ModelOps是什么？</h4>
+<p>
+ModelOps是<strong>模型全生命周期管理体系</strong>，覆盖：
+</p>
+<ul>
+<li>模型开发</li>
+<li>模型训练</li>
+<li>模型验证</li>
+<li>模型部署</li>
+<li>模型监控</li>
+<li>模型退役</li>
+</ul>
+<h4>Harness Engineering有什么不同？</h4>
+<p>
+Harness Engineering<strong>侧重模型的「服务化落地」环节</strong>，专注于：
+</p>
+<ul>
+<li>模型推理服务的高可用</li>
+<li>运行时监控与故障恢复</li>
+<li>安全防护与合规审计</li>
+</ul>
+<h4>关系</h4>
+<p>
+Harness Engineering是ModelOps的核心子集，专注于生产运行环节。
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="5-3个最常见的认知误区澄清">5. 3个最常见的认知误区澄清</h2>
+<h3>❌ 误区1：Harness Engineering = 给模型写个Flask/FastAPI接口</h3>
+<p>
+<strong>纠正</strong>：API封装只是其中1%的工作。
+</p>
+<p>
+缺少以下能力的接口，上线后必然出问题：
+</p>
+<ul>
+<li>❌ 没有监控 → 出了问题找不到原因</li>
+<li>❌ 没有限流 → 流量打垮服务</li>
+<li>❌ 没有熔断 → 下游故障导致整个系统瘫痪</li>
+<li>❌ 没有回滚 → 新模型出问题无法快速恢复</li>
+<li>❌ 没有数据校验 → 脏数据导致服务崩溃</li>
+</ul>
+<p>
+<strong>正确理解</strong>：API封装只是第一步，更重要的是背后的监控、容错、安全体系。
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>❌ 误区2：Harness Engineering是大厂专属，小团队/个人用不上</h3>
+<p>
+<strong>纠正</strong>：小团队更需要——没有大厂的运维资源，更要靠标准化工程化避免线上故障。
+</p>
+<p>
+<strong>为什么小团队更需要</strong>：
+</p>
+<ul>
+<li>大厂：有专门的SRE团队、完善的监控体系、充足的资源</li>
+<li>小团队：没有专职运维，出问题就是全团队的灾难</li>
+</ul>
+<p>
+<strong>最小可行Harness的优势</strong>：
+</p>
+<ul>
+<li>✅ 成本低：开源工具就能搞定，不需要昂贵的商业平台</li>
+<li>✅ 见效快：3步就能搭建，1-2天就能上线</li>
+<li>✅ 价值大：避免90%的常见故障，节省大量救火时间</li>
+</ul>
+<p>
+<strong>正确理解</strong>：Harness Engineering不是大厂专属，小团队用它反而能获得更高的投入产出比。
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>❌ 误区3：Harness Engineering和AI Agent是对立的，二选一即可</h3>
+<p>
+<strong>纠正</strong>：二者是互补的支撑关系，没有Harness的底座，Agent就是"空中楼阁"。
+</p>
+<p>
+<strong>关系</strong>：
+</p>
+<ul>
+<li><strong>AI Agent</strong>：决定"做什么"（决策中枢）</li>
+<li><strong>Harness Engineering</strong>：保障"怎么做"（工程底座）</li>
+</ul>
+<p>
+<strong>没有Harness的Agent问题</strong>：
+</p>
+<ul>
+<li>翻译工具超时 → Agent阻塞瘫痪</li>
+<li>向量库故障 → Agent无法检索</li>
+<li>流量暴涨 → Agent服务崩溃</li>
+</ul>
+<p>
+<strong>正确理解</strong>：Agent决定了AI服务的「上限」，而Harness Engineering决定了AI服务的「下限」。没有稳定的工程底座，再聪明的Agent也无法落地商用。
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="6-概念关系可视化">6. 概念关系可视化</h2>
+<div class="mermaid">graph TB
+    subgraph "AI工程化全景"
+        MLOps[MLOps<br/>AI工程化顶层框架]
+
+        subgraph "MLOps的核心环节"
+            Data[数据工程]
+            Training[模型训练]
+            Deployment[部署与服务化<br/>⬇️ Harness Engineering]
+            Monitoring[监控与治理]
+        end
+
+        DevOps[DevOps<br/>通用软件工程基础]
+
+        ModelOps[ModelOps<br/>模型全生命周期管理]
+
+        Harness[Harness Engineering<br/>模型服务化落地]
+
+        AI[AI Agent<br/>决策中枢]
+    end
+
+    MLOps -.包含.-> Deployment
+    DevOps --> Harness
+    ModelOps --> Harness
+
+    Harness -.支撑.-> AI
+
+    style Harness fill:#ff9999
+    style AI fill:#99ccff
+    style MLOps fill:#ffcc99</div>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="7-章末互动">7. 章末互动</h2>
+<h3>思考题</h3>
+<p>
+看完定义，你觉得你的项目当前最需要Harness解决的问题是什么？
+</p>
+<ul>
+<li>A. 服务频繁崩溃，需要高可用</li>
+<li>B. 出了问题找不到原因，需要可观测</li>
+<li>C. 模型迭代太慢，需要快速回滚</li>
+<li>D. 害怕被攻击，需要安全防护</li>
+</ul>
+<p>
+欢迎在评论区分享你的想法！👇
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="本章要点回顾">本章要点回顾</h2>
+<div class="mermaid">mindmap
+  root((Harness Engineering))
+    核心定义
+      高可用
+      可监控
+      可迭代
+      高安全
+    最小可行方案
+      API封装+基础防护
+      核心监控Prometheus
+      版本管理+回滚脚本
+    与MLOps关系
+      MLOps=顶层框架
+      Harness=落地实践
+    与DevOps关系
+      DevOps=通用基础
+      Harness=AI专属深化
+    与ModelOps关系
+      ModelOps=全生命周期
+      Harness=服务化环节
+    常见误区
+      ≠写个API
+      不是大厂专属
+      与Agent互补不对立</div>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<p>
+<strong>下一章</strong>：<a href="./03-第三章-核心辨析.html">第3章：核心辨析｜Harness Engineering vs AI Agent：谁在"开车"，谁在"修路"？</a>
+</p>
+<p>
+我们将彻底讲清当下最容易混淆的两个概念的本质区别与协作关系，纠正"做Agent就不用做工程化"的错误认知。
+</p>
             </section>
         </main>
     </div>

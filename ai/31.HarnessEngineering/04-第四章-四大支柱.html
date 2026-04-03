@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第4章：四大支柱｜构建可靠AI服务的核心工程模块</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>"""
+    <!-- Load Mermaid from local assets folder -->
+    <script src="./assets/mermaid.min.js"></script>
+    <script>
+        // Initialize Mermaid when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.querySelectorAll('.mermaid').length === 0) {
+                console.log('No mermaid diagrams found');
+                return;
+            }
+            console.log('Initializing mermaid from local file...');
+
+            if (typeof mermaid !== 'undefined') {
+                mermaid.initialize({
+                    startOnLoad: true,
+                    theme: 'default',
+                    securityLevel: 'loose',
+                    mindmap: {
+                        padding: 10,
+                        useMaxWidth: true
+                    },
+                    logLevel: 'debug'
+                });
+                console.log('Mermaid initialized successfully from local file');
+            } else {
+                console.error('Local mermaid.js failed to load');
+                document.querySelectorAll('.mermaid').forEach(function(el) {
+                    el.style.border = '2px solid #f59e0b';
+                    el.style.padding = '20px';
+                    el.style.background = '#fef3c7';
+                    el.innerHTML = '<p style="color: #92400e; margin: 0;"><strong>⚠️ Mermaid 图表加载失败</strong><br>本地文件 ./assets/mermaid.min.js 未找到。</p>';
+                });
+            }
+        });
+    </script>
+    <style>
+        
+        
+        
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f7fa;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .nav-link:hover {
+            background: #f3f4f6;
+            color: #2563eb;
+        }
+
+        .nav-link.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+        .meta-icon {
+            font-size: 20px;
+        }
+
+        h2 {
+            font-size: 32px;
+            color: #1f2937;
+            margin: 50px 0 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2563eb;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 24px;
+            color: #374151;
+            margin: 35px 0 20px;
+            font-weight: 600;
+        }
+
+        h4 {
+            font-size: 20px;
+            color: #4b5563;
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #4b5563;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        /* 代码块 */
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        code {
+            background: #f3f4f6;
+            color: #dc2626;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 15px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        /* 列表 */
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 强调框 */
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box {
+            background: #e0e7ff;
+            border-left: 4px solid #6366f1;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 时间标签 */
+        .time-tag {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* 问答框 */
+        .qa-box {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #2563eb;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .answer {
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 链接 */
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2563eb;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s;
+            font-size: 24px;
+        }
+
+        .back-to-top:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 968px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-card {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            h2 {
+                font-size: 26px;
+            }
+
+            .hero-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* 打印样式 */
+        @media print {
+            .sidebar {
+                display: none;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .content-card {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+/* Mermaid diagrams */
+.mermaid {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Mindmap specific styles */
+.mermaid .mindmap-node {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+pre code.language-mermaid {
+    background: white;
+    color: #1f2937;
+    padding: 0;
+    border-radius: 8px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 侧边导航 -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">📚</span>
+                <span>AI核心概念</span>
+            </div>
+            <div class="subtitle">
+                
+            </div>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">🏠 返回首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#intro" class="nav-link active">📖 概述</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#开篇总述-一套完整的体系由4个不可缺少的核心模块组成" class="nav-link">⭐ 开篇总述：一套完整的体系由4个不可缺少的核心模块组成</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#本章核心定位" class="nav-link">⭐ 本章核心定位</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#第一支柱-智能服务化" class="nav-link">🤖 第一支柱：智能服务化</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#给模型装一个-稳定可控的接口" class="nav-link">🤖 ——给模型装一个"稳定可控的接口"</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#第二支柱-数据生命线" class="nav-link">📊 第二支柱：数据生命线</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#守住模型效果的-底层防线" class="nav-link">🤖 ——守住模型效果的"底层防线"</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#第三支柱-全链路可观测" class="nav-link">📚 第三支柱：全链路可观测</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#给服务装一个-全景监控仪表盘" class="nav-link">📚 ——给服务装一个"全景监控仪表盘"</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#第四支柱-安全与韧性" class="nav-link">🔒 第四支柱：安全与韧性</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#给服务加一个-安全气囊与刹车系统" class="nav-link">🏗️ ——给服务加一个"安全气囊与刹车系统"</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#四大支柱关系图" class="nav-link">📚 四大支柱关系图</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#章末互动" class="nav-link">📚 章末互动</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#本章要点回顾" class="nav-link">📝 本章要点回顾</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 英雄区域 -->
+            <section class="hero-section">
+                <h1>第4章：四大支柱｜构建可靠AI服务的核心工程模块</h1>
+                <div class="hero-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon">🎯</span>
+                        <span>学习目标：见标题</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">👥</span>
+                        <span>适合人群：所有人</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 内容区域 -->
+            <section id="intro" class="content-card">
+                <blockquote>
+<p>拆解Harness Engineering的核心架构，每个模块都配套大白话解读、核心动作、新手入门任务</p>
+</blockquote>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="开篇总述-一套完整的体系由4个不可缺少的核心模块组成">开篇总述：一套完整的体系由4个不可缺少的核心模块组成</h2>
+<p>
+一套完整的Harness Engineering体系，由<strong>4个不可缺少的核心模块</strong>组成，缺一不可。
+</p>
+<p>
+这就像桌子的四条腿，少一条就会不稳：
+</p>
+<ul>
+<li>缺少服务化 → 模型只是一个脚本，不是服务</li>
+<li>缺少数据治理 → 模型效果悄悄下降，找不到原因</li>
+<li>缺少可观测 → 出了问题瞎猜，无法快速定位</li>
+<li>缺少安全韧性 → 一次故障就彻底瘫痪</li>
+</ul>
+<p>
+<strong>本章核心定位</strong>：拆解Harness Engineering的核心架构，让读者明白"一套完整的体系到底包含什么"，每个模块都配套大白话解读、核心动作、新手入门任务。
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="本章核心定位">本章核心定位</h2>
+<p>
+拆解Harness Engineering的核心架构，让读者明白"一套完整的体系到底包含什么"，每个模块都配套大白话解读、核心动作、新手入门任务，兼顾专业性与实操性。
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="第一支柱-智能服务化">第一支柱：智能服务化</h2>
+<h2 id="给模型装一个-稳定可控的接口">——给模型装一个"稳定可控的接口"</h2>
+<h3>大白话解读</h3>
+<p>
+把训练好的模型，打包成一个能扛流量、能升级、能灰度、能随时回滚的标准化服务，而不是一个跑一次就崩的脚本。
+</p>
+<p>
+<strong>打个比方</strong>：
+</p>
+<ul>
+<li><strong>没有服务化的模型</strong>：就像在路边摆摊，风吹日晒，想开就开，想关就关</li>
+<li><strong>有服务化的模型</strong>：就像在正规商场开门店，标准化装修，统一管理，可复制扩张</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>核心落地动作</h3>
+<h4>1. 标准化API封装</h4>
+<p>
+<strong>目标</strong>：提供统一的、标准的接口，让调用方方便使用
+</p>
+<p>
+<strong>实现要点</strong>：
+</p>
+<ul>
+<li>REST/gRPC双协议支持</li>
+<li>统一输入输出格式</li>
+<li>完善的接口文档</li>
+</ul>
+<p>
+<strong>代码示例（FastAPI）</strong>：
+</p>
+<pre><code class="language-python">from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+
+app = FastAPI(title=&quot;模型推理服务&quot;, version=&quot;1.0.0&quot;)
+
+class PredictionRequest(BaseModel):
+    text: str
+    max_length: int = 100
+
+class PredictionResponse(BaseModel):
+    result: str
+    confidence: float
+    model_version: str
+
+@app.post(&quot;/predict&quot;, response_model=PredictionResponse)
+async def predict(request: PredictionRequest):
+    &quot;&quot;&quot;模型推理接口&quot;&quot;&quot;
+    try:
+        # 模型推理
+        result = model.predict(request.text)
+
+        return PredictionResponse(
+            result=result.text,
+            confidence=result.confidence,
+            model_version=&quot;v1.0.0&quot;
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h4>2. 性能优化</h4>
+<p>
+<strong>目标</strong>：提升推理速度，降低延迟
+</p>
+<p>
+<strong>核心技巧</strong>：
+</p>
+<ul>
+<li><strong>动态批处理</strong>：把多个请求合并成一批，统一推理，提升GPU利用率</li>
+<li><strong>模型预热</strong>：服务启动时提前加载权重、跑一次测试请求，避免首请求慢</li>
+<li><strong>推理加速</strong>：使用TensorRT、ONNX等加速框架</li>
+</ul>
+<p>
+<strong>代码示例（动态批处理）</strong>：
+</p>
+<pre><code class="language-python">from asyncio import Queue
+
+class BatchProcessor:
+    def __init__(self, batch_size=8, timeout=0.1):
+        self.batch_size = batch_size
+        self.timeout = timeout
+        self.queue = Queue()
+
+    async def process(self, text):
+        &quot;&quot;&quot;将请求加入批处理队列&quot;&quot;&quot;
+        future = asyncio.Future()
+        await self.queue.put((text, future))
+        return await future
+
+    async def batch_loop(self):
+        &quot;&quot;&quot;批处理循环&quot;&quot;&quot;
+        while True:
+            batch = []
+            for _ in range(self.batch_size):
+                try:
+                    item = await asyncio.wait_for(
+                        self.queue.get(),
+                        timeout=self.timeout
+                    )
+                    batch.append(item)
+                except asyncio.TimeoutError:
+                    break
+
+            if batch:
+                texts, futures = zip(*batch)
+                results = model.predict_batch(texts)
+
+                for future, result in zip(futures, results):
+                    future.set_result(result)</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h4>3. 发布管控</h4>
+<p>
+<strong>目标</strong>：安全、可控地更新模型版本
+</p>
+<p>
+<strong>核心技巧</strong>：
+</p>
+<ul>
+<li><strong>模型版本管理</strong>：每个模型版本都有唯一的标识</li>
+<li><strong>A/B测试框架</strong>：同时运行多个模型版本，对比效果</li>
+<li><strong>灰度/金丝雀发布</strong>：先给1%用户流量，验证通过后再扩量</li>
+</ul>
+<p>
+<strong>架构图</strong>：
+</p>
+<div class="mermaid">graph LR
+    A[用户请求] --> B{流量分配}
+    B -->|1%| C[新版本v2.0<br/>金丝雀]
+    B -->|99%| D[旧版本v1.0<br/>稳定版]
+
+    C --> E{效果监控}
+    D --> E
+
+    E -->|效果好| F[逐步扩量<br/>10%→50%→100%]
+    E -->|效果差| G[快速回滚<br/>切回v1.0]
+
+    style C fill:#ffcccc
+    style D fill:#ccffcc</div>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h4>4. 流量管控</h4>
+<p>
+<strong>目标</strong>：避免服务被流量打垮
+</p>
+<p>
+<strong>核心技巧</strong>：
+</p>
+<ul>
+<li><strong>限流</strong>：按用户/IP/接口级别限制请求频率</li>
+<li><strong>熔断</strong>：下游服务故障时，快速失败，不阻塞主流程</li>
+<li><strong>降级</strong>：核心功能保障，非核心功能降级</li>
+</ul>
+<p>
+<strong>代码示例（熔断机制）</strong>：
+</p>
+<pre><code class="language-python">from circuitbreaker import circuit
+
+@circuit(failure_threshold=5, recovery_timeout=60)
+def call_external_api(text):
+    &quot;&quot;&quot;调用外部API，带熔断机制&quot;&quot;&quot;
+    try:
+        result = external_api.call(text, timeout=2)
+        return result
+    except Exception as e:
+        # 连续失败5次后，熔断器打开，直接抛异常
+        raise CircuitBreakerError(f&quot;API call failed: {e}&quot;)</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>新手入门小任务</h3>
+<p>
+<strong>任务</strong>：用FastAPI给你的文本分类模型做API封装
+</p>
+<p>
+<strong>要求</strong>：
+</p>
+<ol>
+<li>安装FastAPI：<code>pip install fastapi uvicorn</code></li>
+<li>创建接口：<code>POST /predict</code>，接收文本，返回分类结果</li>
+<li>加入输入合法性校验：文本不能为空，长度不超过1000</li>
+<li>用slowapi添加基础限流功能：每分钟10次</li>
+</ol>
+<p>
+<strong>预计时间</strong>：30分钟
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="第二支柱-数据生命线">第二支柱：数据生命线</h2>
+<h2 id="守住模型效果的-底层防线">——守住模型效果的"底层防线"</h2>
+<h3>大白话解读</h3>
+<p>
+模型的效果由数据决定，训练和推理用的数据逻辑不一致、数据分布变了，模型准确率必然暴跌，这是90%团队都踩过的坑。
+</p>
+<p>
+<strong>打个比方</strong>：
+</p>
+<ul>
+<li><strong>没有数据治理</strong>：就像厨师用的食材今天咸、明天淡，做出来的菜味道不稳定</li>
+<li><strong>有数据治理</strong>：就像标准化供应链，食材品质稳定，菜品质量可预期</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>核心落地动作</h3>
+<h4>1. 特征统一管理</h4>
+<p>
+<strong>目标</strong>：保证训练和推理的特征计算逻辑100%一致
+</p>
+<p>
+<strong>核心技巧</strong>：
+</p>
+<ul>
+<li><strong>搭建Feature Store</strong>：统一的特征存储和管理平台</li>
+<li><strong>训练和推理共用一套特征计算代码</strong>：避免逻辑不一致</li>
+</ul>
+<p>
+<strong>架构图</strong>：
+</p>
+<div class="mermaid">graph TB
+    subgraph "特征统一管理"
+        A[原始数据] --> B[特征计算逻辑<br/>训练和推理共用]
+        B --> C[Feature Store<br/>统一特征存储]
+
+        C --> D[训练时<br/>读取特征]
+        C --> E[推理时<br/>读取特征]
+
+        D --> F[模型训练]
+        E --> G[模型推理]
+
+        F --> H[模型效果稳定]
+        G --> H
+    end
+
+    style B fill:#ffcccc
+    style C fill:#ffcccc</div>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h4>2. 数据管道</h4>
+<p>
+<strong>目标</strong>：自动化数据清洗与标准化
+</p>
+<p>
+<strong>核心技巧</strong>：
+</p>
+<ul>
+<li><strong>实时特征管道</strong>：流式处理数据，实时计算特征</li>
+<li><strong>离线特征管道</strong>：批量处理数据，定期更新特征</li>
+</ul>
+<p>
+<strong>代码示例（特征管道）</strong>：
+</p>
+<pre><code class="language-python">from sklearn.preprocessing import StandardScaler
+import joblib
+
+class FeaturePipeline:
+    def __init__(self):
+        self.scaler = StandardScaler()
+
+    def fit(self, X_train):
+        &quot;&quot;&quot;在训练数据上拟合标准化参数&quot;&quot;&quot;
+        self.scaler.fit(X_train)
+        # 保存标准化参数，推理时复用
+        joblib.dump(self.scaler, &#39;scaler.pkl&#39;)
+
+    def transform(self, X):
+        &quot;&quot;&quot;特征变换&quot;&quot;&quot;
+        # 1. 缺失值填充
+        X = X.fillna(0)
+
+        # 2. 标准化
+        X = self.scaler.transform(X)
+
+        # 3. 特征交叉
+        X = self._feature_cross(X)
+
+        return X
+
+    def _feature_cross(self, X):
+        &quot;&quot;&quot;特征交叉&quot;&quot;&quot;
+        # 实现特征交叉逻辑
+        pass</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h4>3. 数据漂移检测</h4>
+<p>
+<strong>目标</strong>：实时监控输入数据的分布变化，提前发出告警
+</p>
+<p>
+<strong>核心技巧</strong>：
+</p>
+<ul>
+<li><strong>统计检验</strong>：KL散度、JS散度、Chi-square检验</li>
+<li><strong>监控指标</strong>：均值、方差、分位数的变化</li>
+<li><strong>自动化告警</strong>：指标异常时自动通知</li>
+</ul>
+<p>
+<strong>工具推荐</strong>：Evidently AI
+</p>
+<p>
+<strong>代码示例</strong>：
+</p>
+<pre><code class="language-python">from evidently import ColumnMapping
+from evidently.report import Report
+from evidently.metric_preset import DataDriftPreset
+
+# 定义列映射
+column_mapping = ColumnMapping()
+
+# 创建数据漂移检测报告
+drift_report = Report(metrics=[DataDriftPreset()])
+
+# 对比训练数据和当前数据
+drift_report.run(
+    reference_data=train_data,
+    current_data=production_data,
+    column_mapping=column_mapping
+)
+
+# 生成报告
+drift_report.save_html(&quot;data_drift_report.html&quot;)
+
+# 判断是否发生数据漂移
+if drift_report.as_dict()[&quot;metrics&quot;][0][&quot;result&quot;][&quot;dataset_drift&quot;]:
+    print(&quot;⚠️ 数据漂移检测到！模型效果可能下降！&quot;)
+    # 发送告警
+    send_alert(&quot;Data drift detected!&quot;)</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>新手入门小任务</h3>
+<p>
+<strong>任务</strong>：用Evidently AI给你的模型做数据漂移检测
+</p>
+<p>
+<strong>要求</strong>：
+</p>
+<ol>
+<li>安装Evidently AI：<code>pip install evidently</code></li>
+<li>准备训练数据和当前线上数据</li>
+<li>运行数据漂移检测，生成HTML报告</li>
+<li>查看报告，理解哪些特征发生了漂移</li>
+</ol>
+<p>
+<strong>预计时间</strong>：1小时
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="第三支柱-全链路可观测">第三支柱：全链路可观测</h2>
+<h2 id="给服务装一个-全景监控仪表盘">——给服务装一个"全景监控仪表盘"</h2>
+<h3>大白话解读</h3>
+<p>
+线上出了问题，你能在1分钟内找到问题出在哪，而不是对着黑屏瞎猜，这就是可观测的价值。
+</p>
+<p>
+<strong>打个比方</strong>：
+</p>
+<ul>
+<li><strong>没有可观测</strong>：就像开盲车，没有仪表盘，不知道车速、油量、引擎温度</li>
+<li><strong>有可观测</strong>：就像飞机驾驶舱，全景监控所有指标，异常一目了然</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>核心落地动作（三大核心维度）</h3>
+<h4>1. 指标Metrics</h4>
+<p>
+<strong>目标</strong>：量化服务的运行状态
+</p>
+<p>
+<strong>核心指标</strong>：
+</p>
+<ul>
+<li><strong>延迟</strong>：P95/P99响应时间</li>
+<li><strong>QPS</strong>：每秒请求数</li>
+<li><strong>错误率</strong>：请求失败的比例</li>
+<li><strong>GPU/CPU利用率</strong>：资源使用情况</li>
+<li><strong>模型准确率</strong>：业务效果指标</li>
+</ul>
+<p>
+<strong>代码示例（Prometheus监控）</strong>：
+</p>
+<pre><code class="language-python">from prometheus_client import Counter, Histogram, Gauge
+import time
+
+# 定义指标
+prediction_counter = Counter(&#39;predictions_total&#39;, &#39;Total predictions&#39;)
+prediction_duration = Histogram(&#39;prediction_duration_seconds&#39;, &#39;Prediction duration&#39;)
+gpu_utilization = Gauge(&#39;gpu_utilization_percent&#39;, &#39;GPU utilization&#39;)
+
+def predict(text):
+    &quot;&quot;&quot;带监控的模型推理&quot;&quot;&quot;
+    start_time = time.time()
+
+    try:
+        # 模型推理
+        result = model.predict(text)
+
+        # 记录指标
+        prediction_counter.inc()
+        prediction_duration.observe(time.time() - start_time)
+
+        return result
+    except Exception as e:
+        prediction_counter.labels(status=&#39;error&#39;).inc()
+        raise</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h4>2. 日志Logging</h4>
+<p>
+<strong>目标</strong>：记录每一次请求的完整链路
+</p>
+<p>
+<strong>核心要点</strong>：
+</p>
+<ul>
+<li>记录输入、输出、调用环节、耗时</li>
+<li>使用结构化日志（JSON格式）</li>
+<li>日志级别：DEBUG/INFO/WARNING/ERROR</li>
+</ul>
+<p>
+<strong>代码示例</strong>：
+</p>
+<pre><code class="language-python">import logging
+import json
+from datetime import datetime
+
+# 配置结构化日志
+logging.basicConfig(
+    level=logging.INFO,
+    format=&#39;%(message)s&#39;
+)
+logger = logging.getLogger(__name__)
+
+def predict(text):
+    &quot;&quot;&quot;带日志的模型推理&quot;&quot;&quot;
+    request_id = generate_request_id()
+
+    logger.info(json.dumps({
+        &quot;event&quot;: &quot;prediction_start&quot;,
+        &quot;request_id&quot;: request_id,
+        &quot;timestamp&quot;: datetime.now().isoformat(),
+        &quot;input&quot;: text
+    }))
+
+    try:
+        result = model.predict(text)
+
+        logger.info(json.dumps({
+            &quot;event&quot;: &quot;prediction_success&quot;,
+            &quot;request_id&quot;: request_id,
+            &quot;timestamp&quot;: datetime.now().isoformat(),
+            &quot;output&quot;: result,
+            &quot;duration&quot;: result.duration
+        }))
+
+        return result
+    except Exception as e:
+        logger.error(json.dumps({
+            &quot;event&quot;: &quot;prediction_error&quot;,
+            &quot;request_id&quot;: request_id,
+            &quot;timestamp&quot;: datetime.now().isoformat(),
+            &quot;error&quot;: str(e)
+        }))
+        raise</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h4>3. 追踪Tracing</h4>
+<p>
+<strong>目标</strong>：精准定位是哪个环节出了问题
+</p>
+<p>
+<strong>核心要点</strong>：
+</p>
+<ul>
+<li>分布式链路追踪（OpenTelemetry）</li>
+<li>记录每个环节的耗时和状态</li>
+<li>可视化调用链路</li>
+</ul>
+<p>
+<strong>代码示例（OpenTelemetry）</strong>：
+</p>
+<pre><code class="language-python">from opentelemetry import trace
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+
+# 初始化链路追踪
+tracer = trace.get_tracer(__name__)
+
+@app.post(&quot;/predict&quot;)
+async def predict(request: PredictionRequest):
+    with tracer.start_as_current_span(&quot;prediction&quot;) as span:
+        # 记录请求参数
+        span.set_attribute(&quot;input_length&quot;, len(request.text))
+
+        # 模型推理
+        with tracer.start_as_current_span(&quot;model_inference&quot;) as inference_span:
+            result = model.predict(request.text)
+            inference_span.set_attribute(&quot;model_version&quot;, &quot;v1.0.0&quot;)
+
+        # 后处理
+        with tracer.start_as_current_span(&quot;post_processing&quot;):
+            output = post_process(result)
+
+        return {&quot;result&quot;: output}</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h4>4. 配套能力</h4>
+<p>
+<strong>目标</strong>：自动化告警、异常检测、业务-技术双维度看板
+</p>
+<p>
+<strong>核心要点</strong>：
+</p>
+<ul>
+<li><strong>自动化告警</strong>：指标异常时自动发送通知（邮件、钉钉、Slack）</li>
+<li><strong>异常检测</strong>：基于历史数据，自动识别异常模式</li>
+<li><strong>双维度看板</strong>：技术指标（延迟、错误率）+ 业务指标（CTR、转化率）</li>
+</ul>
+<p>
+<strong>架构图</strong>：
+</p>
+<div class="mermaid">graph TB
+    A[AI服务] --> B[Metrics]
+    A --> C[Logs]
+    A --> D[Traces]
+
+    B --> E[Prometheus]
+    C --> F[ELK/Loki]
+    D --> G[Jaeger/Tempo]
+
+    E --> H[Grafana<br/>监控看板]
+    F --> H
+    G --> H
+
+    H --> I[告警系统<br/>邮件/钉钉/Slack]
+
+    style H fill:#ffcccc
+    style I fill:#ffcccc</div>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>新手入门小任务</h3>
+<p>
+<strong>任务</strong>：给你的FastAPI模型服务接入Prometheus+Grafana
+</p>
+<p>
+<strong>要求</strong>：
+</p>
+<ol>
+<li>安装依赖：<code>pip install prometheus-fastapi-instrumentator</code></li>
+<li>在FastAPI中启用Prometheus指标暴露</li>
+<li>安装Grafana，配置Prometheus数据源</li>
+<li>创建QPS、延迟、错误率的监控看板</li>
+</ol>
+<p>
+<strong>预计时间</strong>：2小时
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="第四支柱-安全与韧性">第四支柱：安全与韧性</h2>
+<h2 id="给服务加一个-安全气囊与刹车系统">——给服务加一个"安全气囊与刹车系统"</h2>
+<h3>大白话解读</h3>
+<p>
+避免服务被恶意攻击、出了故障能快速恢复、符合合规要求，不会因为一次故障就彻底瘫痪。
+</p>
+<p>
+<strong>打个比方</strong>：
+</p>
+<ul>
+<li><strong>没有安全与韧性</strong>：就像开车没有刹车、没有安全气囊，出事故就是大事故</li>
+<li><strong>有安全与韧性</strong>：就像现代汽车，有ABS、有安全气囊、有碰撞预警，安全可靠</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>核心落地动作</h3>
+<h4>1. 安全防护</h4>
+<p>
+<strong>目标</strong>：防止恶意攻击、数据泄露、合规风险
+</p>
+<p>
+<strong>核心要点</strong>：
+</p>
+<ul>
+<li><strong>输入校验</strong>：防止Prompt注入、恶意输入</li>
+<li><strong>输出内容审核</strong>：过滤敏感信息</li>
+<li><strong>权限隔离</strong>：不同角色有不同的访问权限</li>
+<li><strong>接口鉴权</strong>：API Key、OAuth2.0</li>
+</ul>
+<p>
+<strong>代码示例（接口鉴权）</strong>：
+</p>
+<pre><code class="language-python">from fastapi import Security, HTTPException
+from fastapi.security import APIKeyHeader
+
+API_KEY_NAME = &quot;X-API-Key&quot;
+api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
+
+async def get_api_key(api_key_header: str = Security(api_key_header)):
+    &quot;&quot;&quot;验证API Key&quot;&quot;&quot;
+    if api_key_header not in VALID_API_KEYS:
+        raise HTTPException(status_code=403, detail=&quot;Invalid API Key&quot;)
+    return api_key_header
+
+@app.post(&quot;/predict&quot;)
+async def predict(
+    request: PredictionRequest,
+    api_key: str = Security(get_api_key)
+):
+    &quot;&quot;&quot;带鉴权的预测接口&quot;&quot;&quot;
+    # 业务逻辑
+    pass</code></pre>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h4>2. 故障韧性</h4>
+<p>
+<strong>目标</strong>：出故障后能快速恢复
+</p>
+<p>
+<strong>核心要点</strong>：
+</p>
+<ul>
+<li><strong>一键回滚</strong>：新版本出问题，10秒内切回旧版本</li>
+<li><strong>自动扩缩容</strong>：流量高峰时自动增加资源</li>
+<li><strong>故障自愈</strong>：检测到故障自动重启服务</li>
+<li><strong>多可用区部署</strong>：避免单区域故障导致服务全挂</li>
+</ul>
+<p>
+<strong>架构图（多可用区部署）</strong>：
+</p>
+<div class="mermaid">graph TB
+    A[用户请求] --> B[负载均衡]
+
+    B --> C[可用区A<br/>模型服务实例1]
+    B --> D[可用区A<br/>模型服务实例2]
+    B --> E[可用区B<br/>模型服务实例3]
+    B --> F[可用区B<br/>模型服务实例4]
+
+    C --> G[故障自动切换]
+    D --> G
+    E --> G
+    F --> G
+
+    G --> H[服务始终可用]
+
+    style G fill:#ffcccc
+    style H fill:#ccffcc</div>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h4>3. 合规审计</h4>
+<p>
+<strong>目标</strong>：满足等保、GDPR等合规要求
+</p>
+<p>
+<strong>核心要点</strong>：
+</p>
+<ul>
+<li><strong>全操作日志留存</strong>：所有操作都有日志可查</li>
+<li><strong>数据隐私保护</strong>：敏感数据加密存储</li>
+<li><strong>权限审计</strong>：定期审计权限使用情况</li>
+<li><strong>合规报告</strong>：定期生成合规报告</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>新手入门小任务</h3>
+<p>
+<strong>任务</strong>：给你的模型API添加接口鉴权（API Key）
+</p>
+<p>
+<strong>要求</strong>：
+</p>
+<ol>
+<li>生成随机的API Key</li>
+<li>实现API Key验证逻辑</li>
+<li>在模型接口中加入鉴权</li>
+<li>测试：无效API Key返回403，有效API Key正常访问</li>
+</ol>
+<p>
+<strong>预计时间</strong>：30分钟
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="四大支柱关系图">四大支柱关系图</h2>
+<div class="mermaid">graph TB
+    subgraph "Harness Engineering 四大支柱"
+        A[第一支柱<br/>智能服务化]
+        B[第二支柱<br/>数据生命线]
+        C[第三支柱<br/>全链路可观测]
+        D[第四支柱<br/>安全与韧性]
+    end
+
+    A --> E[AI模型稳定运行]
+    B --> E
+    C --> E
+    D --> E
+
+    A -.支撑.-> C
+    A -.支撑.-> D
+    B -.支撑.-> C
+
+    style E fill:#ccffcc</div>
+<p>
+<strong>核心结论</strong>：
+</p>
+<ul>
+<li>四大支柱相互支撑，缺一不可</li>
+<li>服务化是基础，数据是保障，可观测是眼睛，安全是保险</li>
+<li>只有四大支柱齐全，AI模型才能稳定、安全、可持续地运行</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="章末互动">章末互动</h2>
+<h3>思考题</h3>
+<p>
+你的项目当前最缺失哪个支柱模块？打算先从哪个模块入手补全？
+</p>
+<ul>
+<li>A. 第一支柱：模型还没服务化，还是脚本</li>
+<li>B. 第二支柱：训练和推理特征不一致</li>
+<li>C. 第三支柱：没有监控，出了问题找不到原因</li>
+<li>D. 第四支柱：没有鉴权，担心被攻击</li>
+</ul>
+<p>
+欢迎在评论区分享你的情况！👇
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="本章要点回顾">本章要点回顾</h2>
+<div class="mermaid">mindmap
+  root((四大支柱))
+    第一支柱
+      智能服务化
+      API封装
+      性能优化
+      发布管控
+      流量管控
+    第二支柱
+      数据生命线
+      特征统一管理
+      数据管道
+      数据漂移检测
+    第三支柱
+      全链路可观测
+      指标Metrics
+      日志Logging
+      追踪Tracing
+      监控告警
+    第四支柱
+      安全与韧性
+      安全防护
+      故障韧性
+      合规审计</div>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<p>
+<strong>下一章</strong>：<a href="./05-第五章-工具全景图.html">第5章：工具全景图｜Harness Engineering落地工具选型指南（新手友好度评级）</a>
+</p>
+<p>
+我们将详细介绍每个模块的主流工具，按新手友好度评级，帮助你选择最适合的工具组合。
+</p>
+            </section>
+        </main>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top" onclick="scrollToTop()">↑</div>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 返回顶部
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 返回顶部按钮显示/隐藏
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        // 活动导航链接
+        window.addEventListener('scroll', () => {
+            const headings = document.querySelectorAll('h2[id]');
+            const scrollPosition = window.pageYOffset + 100;
+
+            headings.forEach(heading => {
+                const headingTop = heading.offsetTop;
+                const headingId = heading.getAttribute('id');
+
+                if (scrollPosition >= headingTop - 50) {
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + headingId) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

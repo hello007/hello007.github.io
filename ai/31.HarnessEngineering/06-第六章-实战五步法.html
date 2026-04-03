@@ -1,0 +1,1989 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第6章：实战五步法｜从0到1落地Harness Engineering全流程</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>"""
+    <!-- Load Mermaid from local assets folder -->
+    <script src="./assets/mermaid.min.js"></script>
+    <script>
+        // Initialize Mermaid when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.querySelectorAll('.mermaid').length === 0) {
+                console.log('No mermaid diagrams found');
+                return;
+            }
+            console.log('Initializing mermaid from local file...');
+
+            if (typeof mermaid !== 'undefined') {
+                mermaid.initialize({
+                    startOnLoad: true,
+                    theme: 'default',
+                    securityLevel: 'loose',
+                    mindmap: {
+                        padding: 10,
+                        useMaxWidth: true
+                    },
+                    logLevel: 'debug'
+                });
+                console.log('Mermaid initialized successfully from local file');
+            } else {
+                console.error('Local mermaid.js failed to load');
+                document.querySelectorAll('.mermaid').forEach(function(el) {
+                    el.style.border = '2px solid #f59e0b';
+                    el.style.padding = '20px';
+                    el.style.background = '#fef3c7';
+                    el.innerHTML = '<p style="color: #92400e; margin: 0;"><strong>⚠️ Mermaid 图表加载失败</strong><br>本地文件 ./assets/mermaid.min.js 未找到。</p>';
+                });
+            }
+        });
+    </script>
+    <style>
+        
+        
+        
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f7fa;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .nav-link:hover {
+            background: #f3f4f6;
+            color: #2563eb;
+        }
+
+        .nav-link.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+        .meta-icon {
+            font-size: 20px;
+        }
+
+        h2 {
+            font-size: 32px;
+            color: #1f2937;
+            margin: 50px 0 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2563eb;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 24px;
+            color: #374151;
+            margin: 35px 0 20px;
+            font-weight: 600;
+        }
+
+        h4 {
+            font-size: 20px;
+            color: #4b5563;
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #4b5563;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        /* 代码块 */
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        code {
+            background: #f3f4f6;
+            color: #dc2626;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 15px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        /* 列表 */
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 强调框 */
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box {
+            background: #e0e7ff;
+            border-left: 4px solid #6366f1;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 时间标签 */
+        .time-tag {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* 问答框 */
+        .qa-box {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #2563eb;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .answer {
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 链接 */
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2563eb;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s;
+            font-size: 24px;
+        }
+
+        .back-to-top:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 968px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-card {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            h2 {
+                font-size: 26px;
+            }
+
+            .hero-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* 打印样式 */
+        @media print {
+            .sidebar {
+                display: none;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .content-card {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+/* Mermaid diagrams */
+.mermaid {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Mindmap specific styles */
+.mermaid .mindmap-node {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+pre code.language-mermaid {
+    background: white;
+    color: #1f2937;
+    padding: 0;
+    border-radius: 8px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 侧边导航 -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">📚</span>
+                <span>AI核心概念</span>
+            </div>
+            <div class="subtitle">
+                
+            </div>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">🏠 返回首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#intro" class="nav-link active">📖 概述</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#开篇思考-为什么很多团队落地失败" class="nav-link">📚 开篇思考：为什么很多团队落地失败？</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#本章核心定位" class="nav-link">⭐ 本章核心定位</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#0-落地流程全景图" class="nav-link">📚 0. 落地流程全景图</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#步骤1-需求对齐-先定好目标-再动手干活" class="nav-link">🎯 步骤1：需求对齐——先定好目标，再动手干活</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#步骤2-架构设计-画好图纸再施工" class="nav-link">🏗️ 步骤2：架构设计——画好图纸再施工</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#步骤3-ci-cd流水线搭建-让测试-构建-部署自动化" class="nav-link">✅ 步骤3：CI/CD流水线搭建——让测试、构建、部署自动化</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#步骤4-上线验证-零风险上线-避免线上故障" class="nav-link">✅ 步骤4：上线验证——零风险上线，避免线上故障</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#步骤5-持续迭代-监控驱动的优化与升级" class="nav-link">⚡ 步骤5：持续迭代——监控驱动的优化与升级</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#6-五步法总结" class="nav-link">📝 6. 五步法总结</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#7-章末互动" class="nav-link">📚 7. 章末互动</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#本章要点回顾" class="nav-link">📝 本章要点回顾</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 英雄区域 -->
+            <section class="hero-section">
+                <h1>第6章：实战五步法｜从0到1落地Harness Engineering全流程</h1>
+                <div class="hero-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon">🎯</span>
+                        <span>学习目标：见标题</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">👥</span>
+                        <span>适合人群：所有人</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 内容区域 -->
+            <section id="intro" class="content-card">
+                <blockquote>
+<p>全文核心实操章节，给读者一套可直接复用、标准化的落地流程</p>
+</blockquote>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="开篇思考-为什么很多团队落地失败">开篇思考：为什么很多团队落地失败？</h2>
+<p>
+你是不是见过这样的场景：
+</p>
+<ul>
+<li>老板说"我们要搞AI工程化"，团队花了几个月搭建平台，结果发现解决不了实际问题，最后被叫停</li>
+<li>学了一堆工具，不知道从哪里入手，看了很多文章还是一头雾水</li>
+<li>想要落地，但不知道第一步该做什么，担心出错，迟迟不敢开始</li>
+</ul>
+<p>
+<strong>落地Harness Engineering，最怕的不是技术难，而是不知道从哪里开始</strong>。
+</p>
+<p>
+这就像装修房子，你买了很多家具（工具），但没有图纸（流程），最后家里一团糟。
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="本章核心定位">本章核心定位</h2>
+<p>
+给读者一套可直接复用、标准化的落地流程，从需求对齐到持续迭代，每一步都有明确的动作、模板、验收标准。
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="0-落地流程全景图">0. 落地流程全景图</h2>
+<p>
+先给你一张完整的路线图，我们在本章会一步步拆解：
+</p>
+<div class="mermaid">graph LR
+    A[步骤1：需求对齐<br/>定目标、定SLA、定范围] --> B[步骤2：架构设计<br/>画拓扑、定模块、设监控点]
+    B --> C[步骤3：流水线搭建<br/>测试→构建→部署自动化]
+    C --> D[步骤4：上线验证<br/>零风险灰度+影子流量]
+    D --> E[步骤5：持续迭代<br/>监控驱动的优化与升级]
+
+    style A fill:#e1f5ff
+    style B fill:#e1f5ff
+    style C fill:#fff4e1
+    style D fill:#ffe1f5
+    style E fill:#e1ffe1</div>
+<p>
+<strong>核心原则</strong>：
+</p>
+<ul>
+<li>✅ 从小范围试点开始，不要一上来就全业务线重构</li>
+<li>✅ 每一步都有明确的验收标准，做到可量化、可验证</li>
+<li>✅ 走完流程再逐步扩展，避免"大而全"的失败</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="步骤1-需求对齐-先定好目标-再动手干活">步骤1：需求对齐——先定好目标，再动手干活</h2>
+<h3>为什么需求对齐这么重要？</h3>
+<p>
+很多团队落地失败，不是因为技术不行，而是因为<strong>目标不清晰</strong>：
+</p>
+<ul>
+<li>❌ 老板说"我们要搞AI工程化"——没有具体目标</li>
+<li>❌ 工程师说"我们要上Kubeflow"——这是工具，不是目标</li>
+<li>❌ 业务说"模型要更稳定"——没有量化指标</li>
+</ul>
+<p>
+<strong>需求对齐的核心</strong>：把模糊的想法，变成清晰、可量化的目标。
+</p>
+<h3>核心动作1：对齐业务目标</h3>
+<p>
+先问自己3个问题：
+</p>
+<p>
+<strong>问题1：我们要解决的核心业务问题是什么？</strong>
+</p>
+<ul>
+<li>是模型上线后经常出故障？→ 目标：降低故障发生率</li>
+<li>是模型迭代太慢，跟不上业务变化？→ 目标：缩短迭代周期</li>
+<li>是模型效果不好，影响业务指标？→ 目标：提升模型业务效果</li>
+</ul>
+<p>
+<strong>问题2：当前的问题有多严重？</strong>
+</p>
+<ul>
+<li>故障频发：平均每周1-2次，每次影响几万用户</li>
+<li>迭代慢：从训练到上线要2周，错过市场机会</li>
+<li>效果差：推荐CTR下降，直接影响收入</li>
+</ul>
+<p>
+<strong>问题3：解决这个问题，能给业务带来什么价值？</strong>
+</p>
+<ul>
+<li>降低故障：减少用户流失，提升品牌口碑</li>
+<li>加快迭代：更快响应市场，抢占先机</li>
+<li>提升效果：直接带来收入增长</li>
+</ul>
+<h4>业务目标示例（可直接复用）</h4>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>业务目标</th>
+<th>量化指标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>模型上线后经常出故障</td>
+<td>提升服务稳定性</td>
+<td>故障发生率从每周2次降到每月1次</td>
+</tr>
+<tr>
+<td>模型迭代太慢</td>
+<td>加快模型迭代速度</td>
+<td>迭代周期从2周缩短到3天</td>
+</tr>
+<tr>
+<td>模型效果不好</td>
+<td>提升模型业务效果</td>
+<td>推荐CTR提升10%</td>
+</tr>
+<tr>
+<td>出了问题找不到原因</td>
+<td>提升问题定位效率</td>
+<td>故障定位时间从1小时降到5分钟</td>
+</tr>
+</tbody>
+</table>
+<h3>核心动作2：明确SLA（服务等级协议）</h3>
+<blockquote>
+<p><strong>SLA（Service Level Agreement）</strong>：服务等级协议，就是明确告诉业务方"我们的服务能做到什么水平"。</p>
+</blockquote>
+<p>
+如果没有SLA，业务方的预期和你的能力就不匹配，永远无法让业务方满意。
+</p>
+<h4>SLA模板（可直接复用）</h4>
+<table>
+<thead>
+<tr>
+<th>指标项</th>
+<th>目标值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>服务可用性</strong></td>
+<td>99.9%</td>
+<td>每月允许故障时长 ≤ 43.2分钟</td>
+</tr>
+<tr>
+<td><strong>推理延迟</strong></td>
+<td>P95 ≤ 500ms<br/>P99 ≤ 1s</td>
+<td>95%的请求在500ms内返回<br/>99%的请求在1s内返回</td>
+</tr>
+<tr>
+<td><strong>错误率</strong></td>
+<td>≤ 0.1%</td>
+<td>每1000个请求中，最多1个失败</td>
+</tr>
+<tr>
+<td><strong>故障恢复时间（MTTR）</strong></td>
+<td>≤ 5分钟</td>
+<td>出故障后，5分钟内恢复服务</td>
+</tr>
+<tr>
+<td><strong>数据漂移检测</strong></td>
+<td>每日检测</td>
+<td>每天自动检测数据分布变化</td>
+</tr>
+</tbody>
+</table>
+<h4>SLA解读</h4>
+<p>
+<strong>服务可用性 99.9%</strong> 是什么概念？
+</p>
+<ul>
+<li>一个月有30天 × 24小时 × 60分钟 = 43,200分钟</li>
+<li>99.9%可用 = 允许故障 43.2分钟/月</li>
+<li>相当于每个月可以有1-2次小故障，每次几分钟</li>
+</ul>
+<p>
+<strong>P95延迟 ≤ 500ms</strong> 是什么概念？
+</p>
+<ul>
+<li>100个请求里，有95个在500ms内返回</li>
+<li>用户基本感觉不到延迟</li>
+<li>最慢的5个请求可能超过500ms，但占比很低</li>
+</ul>
+<p>
+<strong>错误率 ≤ 0.1%</strong> 是什么概念？
+</p>
+<ul>
+<li>1000个请求里，最多1个失败</li>
+<li>对于用户来说，基本不会遇到错误</li>
+</ul>
+<h3>核心动作3：划定落地范围</h3>
+<blockquote>
+<p><strong>最大的坑</strong>：一上来就想全业务线重构，结果战线太长，半途而废。</p>
+</blockquote>
+<p>
+<strong>正确做法</strong>：先选单个核心模型服务做试点，跑通流程再扩展。
+</p>
+<h4>如何选择试点服务？</h4>
+<table>
+<thead>
+<tr>
+<th>选择标准</th>
+<th>好的试点服务</th>
+<th>不好的试点服务</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>业务重要性</strong></td>
+<td>核心业务，但不是最核心的</td>
+<td>最核心的业务（风险太高）<br/>边缘业务（没价值）</td>
+</tr>
+<tr>
+<td><strong>痛点程度</strong></td>
+<td>问题明显，业务方有强烈诉求</td>
+<td>运行良好，没有痛点</td>
+</tr>
+<tr>
+<td><strong>复杂度</strong></td>
+<td>相对简单，能快速验证价值</td>
+<td>过于复杂，短期内难见效</td>
+</tr>
+<tr>
+<td><strong>数据基础</strong></td>
+<td>有基本的监控、日志</td>
+<td>一团黑，没有任何可观测性</td>
+</tr>
+</tbody>
+</table>
+<h4>试点范围示例</h4>
+<p>
+<strong>好的试点</strong>：
+</p>
+<ul>
+<li>电商推荐系统的某个子模块（比如"猜你喜欢"）</li>
+<li>智能客服的文本分类模块</li>
+<li>图像识别的单个模型</li>
+</ul>
+<p>
+<strong>不好的试点</strong>：
+</p>
+<ul>
+<li>整个推荐系统（太复杂）</li>
+<li>全站搜索（风险太高）</li>
+<li>边缘的小功能（没价值）</li>
+</ul>
+<h3>验收标准</h3>
+<p>
+✅ 输出《Harness落地需求说明书》，包含：
+</p>
+<ul>
+<li>业务目标（解决什么问题）</li>
+<li>量化指标（SLA）</li>
+<li>试点范围（哪个服务）</li>
+<li>预期收益（给业务带来什么价值）</li>
+</ul>
+<p>
+✅ 业务方和技术方达成一致，都认可这个目标
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="步骤2-架构设计-画好图纸再施工">步骤2：架构设计——画好图纸再施工</h2>
+<h3>为什么需要架构设计？</h3>
+<p>
+你不会在没有图纸的情况下开始盖房子，同理，<strong>也不要在没有设计的情况下开始搭系统</strong>。
+</p>
+<p>
+架构设计的核心：把抽象的目标，变成可执行的技术方案。
+</p>
+<h3>核心动作1：设计服务拓扑图</h3>
+<blockquote>
+<p><strong>服务拓扑图</strong>：就是画出你的系统由哪些服务组成，它们之间是怎么调用的。</p>
+</blockquote>
+<h4>为什么要画拓扑图？</h4>
+<ul>
+<li>✅ 让团队对系统结构有共识</li>
+<li>✅ 找出潜在的单点故障</li>
+<li>✅ 明确每个模块的职责</li>
+<li>✅ 为监控设计打基础</li>
+</ul>
+<h4>拓扑图示例</h4>
+<p>
+假设我们要改造一个电商推荐系统：
+</p>
+<div class="mermaid">graph TB
+    A[用户请求] --> B[推荐API网关]
+    B --> C{用户特征服务}
+    B --> D[商品池服务]
+    B --> E[排序模型推理服务]
+
+    C --> C1[(Redis缓存)]
+    C --> C2[特征计算引擎]
+
+    E --> E1[模型加载器]
+    E --> E2[推理引擎]
+
+    E --> F[推荐结果服务]
+    F --> G[业务逻辑处理]
+    G --> H[返回结果]
+
+    style B fill:#e1f5ff
+    style E fill:#ffe1e1
+    style F fill:#e1ffe1</div>
+<p>
+从这个图我们可以看到：
+</p>
+<ul>
+<li>系统由5个服务组成（网关、特征、商品池、排序、结果）</li>
+<li>每个服务的依赖关系</li>
+<li>哪里可能出问题（比如特征服务挂了，整个推荐就挂了）</li>
+</ul>
+<h4>如何画出你的拓扑图？</h4>
+<p>
+<strong>步骤1</strong>：列出你的系统有哪些服务
+</p>
+<ul>
+<li>用户特征服务</li>
+<li>排序模型推理服务</li>
+<li>推荐结果服务</li>
+</ul>
+<p>
+<strong>步骤2</strong>：标出服务之间的调用关系
+</p>
+<ul>
+<li>推荐API → 调用用户特征服务</li>
+<li>推荐API → 调用排序模型推理服务</li>
+<li>推荐API → 调用推荐结果服务</li>
+</ul>
+<p>
+<strong>步骤3</strong>：标出外部依赖
+</p>
+<ul>
+<li>Redis缓存</li>
+<li>数据库</li>
+<li>第三方API</li>
+</ul>
+<p>
+<strong>步骤4</strong>：找出单点故障
+</p>
+<ul>
+<li>如果Redis挂了，特征服务还能工作吗？</li>
+<li>如果模型服务挂了，有降级方案吗？</li>
+</ul>
+<h3>核心动作2：明确技术选型与工具匹配</h3>
+<p>
+根据你在第5章学的工具选型方法，为每个模块选工具。
+</p>
+<h4>技术选表示例</h4>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>技术选型</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>模型服务化</strong></td>
+<td>BentoML</td>
+<td>开箱即用，自带监控，支持多模型</td>
+</tr>
+<tr>
+<td><strong>特征存储</strong></td>
+<td>Redis + 简单Feature Store</td>
+<td>快速上线，成本可控</td>
+</tr>
+<tr>
+<td><strong>数据监控</strong></td>
+<td>Evidently AI</td>
+<td>新手友好，生成报告</td>
+</tr>
+<tr>
+<td><strong>全链路监控</strong></td>
+<td>Prometheus + Grafana</td>
+<td>业界标准，免费开源</td>
+</tr>
+<tr>
+<td><strong>CI/CD</strong></td>
+<td>GitLab CI</td>
+<td>团队已有GitLab，集成方便</td>
+</tr>
+<tr>
+<td><strong>容器化</strong></td>
+<td>Docker</td>
+<td>标准方案，便于部署</td>
+</tr>
+</tbody>
+</table>
+<h3>核心动作3：预设监控点与告警阈值</h3>
+<blockquote>
+<p><strong>最大的坑</strong>：上线后才发现没有监控，出了问题不知道在哪里</p>
+</blockquote>
+<p>
+<strong>正确做法</strong>：在设计阶段就想好"要监控什么"，而不是上线后补监控。
+</p>
+<h4>监控点设计表</h4>
+<table>
+<thead>
+<tr>
+<th>监控维度</th>
+<th>监控指标</th>
+<th>告警阈值</th>
+<th>告警级别</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>技术指标</strong></td>
+<td>QPS</td>
+<td>QPS > 1000</td>
+<td>警告</td>
+</tr>
+<tr>
+<td></td>
+<td>延迟P95</td>
+<td>P95 > 500ms</td>
+<td>警告</td>
+</tr>
+<tr>
+<td></td>
+<td>延迟P99</td>
+<td>P99 > 1s</td>
+<td>严重</td>
+</tr>
+<tr>
+<td></td>
+<td>错误率</td>
+<td>错误率 > 0.1%</td>
+<td>严重</td>
+</tr>
+<tr>
+<td></td>
+<td>GPU利用率</td>
+<td>GPU利用率 > 90%</td>
+<td>警告</td>
+</tr>
+<tr>
+<td><strong>业务指标</strong></td>
+<td>CTR</td>
+<td>CTR下降 > 10%</td>
+<td>严重</td>
+</tr>
+<tr>
+<td></td>
+<td>数据漂移</td>
+<td>数据漂移 > 0.2</td>
+<td>警告</td>
+</tr>
+</tbody>
+</table>
+<h4>告警分级</h4>
+<table>
+<thead>
+<tr>
+<th>级别</th>
+<th>示例</th>
+<th>处理方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>严重</strong></td>
+<td>错误率 > 0.1%<br/>P99延迟 > 1s</td>
+<td>立即处理，5分钟内响应</td>
+</tr>
+<tr>
+<td><strong>警告</strong></td>
+<td>GPU利用率 > 90%<br/>数据漂移 > 0.2</td>
+<td>当天处理，24小时内解决</td>
+</tr>
+<tr>
+<td><strong>提示</strong></td>
+<td>QPS上升</td>
+<td>关注即可，不需要立即处理</td>
+</tr>
+</tbody>
+</table>
+<h3>验收标准</h3>
+<p>
+✅ 输出《服务架构拓扑图》
+</p>
+<ul>
+<li>标注出所有服务模块</li>
+<li>标注出调用关系</li>
+<li>标注出外部依赖</li>
+</ul>
+<p>
+✅ 输出《技术选型表》
+</p>
+<ul>
+<li>每个模块的选型</li>
+<li>选型理由</li>
+</ul>
+<p>
+✅ 输出《监控指标与告警规则表》
+</p>
+<ul>
+<li>监控什么指标</li>
+<li>指标到多少告警</li>
+<li>告警后怎么处理</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="步骤3-ci-cd流水线搭建-让测试-构建-部署自动化">步骤3：CI/CD流水线搭建——让测试、构建、部署自动化</h2>
+<h3>为什么需要CI/CD？</h3>
+<blockquote>
+<p><strong>CI/CD（Continuous Integration/Continuous Deployment）</strong>：持续集成/持续部署，就是让代码提交后自动完成测试、构建、部署。</p>
+</blockquote>
+<p>
+没有CI/CD：
+</p>
+<ul>
+<li>❌ 每次部署都要手动操作</li>
+<li>❌ 容易出错，经常因为人为失误导致故障</li>
+<li>❌ 效率低下，浪费时间</li>
+</ul>
+<p>
+有CI/CD：
+</p>
+<ul>
+<li>✅ 代码提交后自动测试</li>
+<li>✅ 自动构建镜像</li>
+<li>✅ 自动部署到测试环境</li>
+<li>✅ 减少人为失误，提高效率</li>
+</ul>
+<h3>核心动作1：集成3类核心测试</h3>
+<p>
+在代码进入流水线之前，必须通过3类测试：
+</p>
+<h4>测试1：单元测试（Unit Test）</h4>
+<blockquote>
+<p><strong>单元测试</strong>：测试代码的最小单元（函数、类）是否正常工作。</p>
+</blockquote>
+<p>
+<strong>为什么要写单元测试？</strong>
+</p>
+<ul>
+<li>✅ 保证代码改动不会引入新bug</li>
+<li>✅ 快速验证逻辑是否正确</li>
+<li>✅ 代码文档，让其他人理解你的代码</li>
+</ul>
+<p>
+<strong>示例：测试模型输入边界</strong>
+</p>
+<pre><code class="language-python"># test_model_boundary.py
+import pytest
+from model_service import predict
+
+def test_normal_input():
+    &quot;&quot;&quot;测试正常输入&quot;&quot;&quot;
+    result = predict(&quot;正常文本&quot;)
+    assert result is not None
+    assert &quot;category&quot; in result
+
+def test_empty_input():
+    &quot;&quot;&quot;测试空输入&quot;&quot;&quot;
+    with pytest.raises(ValueError):
+        predict(&quot;&quot;)
+
+def test_too_long_input():
+    &quot;&quot;&quot;测试超长输入&quot;&quot;&quot;
+    long_text = &quot;a&quot; * 10000
+    with pytest.raises(ValueError):
+        predict(long_text)
+
+def test_malicious_input():
+    &quot;&quot;&quot;测试恶意输入&quot;&quot;&quot;
+    malicious_inputs = [
+        &quot;&lt;script&gt;alert(&#39;xss&#39;)&lt;/script&gt;&quot;,
+        &quot;&#39;; DROP TABLE users; --&quot;,
+        &quot;\x00\x01\x02&quot;
+    ]
+    for input_text in malicious_inputs:
+        result = predict(input_text)
+        assert result is not None
+        assert &quot;error&quot; not in result</code></pre>
+<h4>测试2：集成测试（Integration Test）</h4>
+<blockquote>
+<p><strong>集成测试</strong>：测试多个模块一起工作是否正常。</p>
+</blockquote>
+<p>
+<strong>示例：测试端到端流程</strong>
+</p>
+<pre><code class="language-python"># test_integration.py
+def test_end_to_end_recommendation():
+    &quot;&quot;&quot;测试推荐完整流程&quot;&quot;&quot;
+    # 1. 构造请求
+    request = {
+        &quot;user_id&quot;: &quot;test_user_123&quot;,
+        &quot;scene&quot;: &quot;home_page&quot;
+    }
+
+    # 2. 调用API
+    response = client.post(&quot;/api/recommend&quot;, json=request)
+
+    # 3. 验证响应
+    assert response.status_code == 200
+    result = response.json()
+    assert &quot;recommendations&quot; in result
+    assert len(result[&quot;recommendations&quot;]) &gt; 0
+    assert all(&quot;item_id&quot; in item for item in result[&quot;recommendations&quot;])</code></pre>
+<h4>测试3：性能测试（Performance Test）</h4>
+<blockquote>
+<p><strong>性能测试</strong>：测试系统在高负载下的表现。</p>
+</blockquote>
+<p>
+<strong>示例：用Locust做压测</strong>
+</p>
+<pre><code class="language-python"># test_performance.py
+from locust import HttpUser, task, between
+
+class RecommendUser(HttpUser):
+    wait_time = between(1, 3)
+
+    @task
+    def recommend(self):
+        response = self.client.post(&quot;/api/recommend&quot;, json={
+            &quot;user_id&quot;: f&quot;user_{self.user_id}&quot;,
+            &quot;scene&quot;: &quot;home_page&quot;
+        })
+        assert response.status_code == 200</code></pre>
+<p>
+<strong>运行压测</strong>：
+</p>
+<pre><code class="language-bash">locust -f test_performance.py --host=http://localhost:8000</code></pre>
+<h3>核心动作2：搭建自动化流水线</h3>
+<h4>GitLab CI配置示例（可直接复用）</h4>
+<pre><code class="language-yaml"># .gitlab-ci.yml
+stages:
+  - test
+  - build
+  - deploy
+
+# ==================== 测试阶段 ====================
+# 单元测试
+unit_test:
+  stage: test
+  image: python:3.9
+  script:
+    - pip install -r requirements.txt
+    - pytest test_model_boundary.py -v
+    - pytest test_integration.py -v
+  only:
+    - merge_requests
+    - main
+
+# 性能测试
+performance_test:
+  stage: test
+  image: python:3.9
+  script:
+    - pip install -r requirements.txt
+    - locust -f test_performance.py --headless --users 100 --spawn-rate 10 --run-time 30s --host http://test-service:8000
+  only:
+    - main
+
+# ==================== 构建阶段 ====================
+# 构建Docker镜像
+build_image:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    # 构建镜像，用commit SHA做标签
+    - docker build -t registry.example.com/model-service:$CI_COMMIT_SHORT_SHA .
+    # 推送镜像到仓库
+    - docker push registry.example.com/model-service:$CI_COMMIT_SHORT_SHA
+    # 打上latest标签
+    - docker tag registry.example.com/model-service:$CI_COMMIT_SHORT_SHA registry.example.com/model-service:latest
+    - docker push registry.example.com/model-service:latest
+  only:
+    - main
+
+# ==================== 部署阶段 ====================
+# 部署到测试环境
+deploy_test:
+  stage: deploy
+  image: bitnami/kubectl:latest
+  script:
+    # 更新K8s部署的镜像版本
+    - kubectl set image deployment/model-service model-service=registry.example.com/model-service:$CI_COMMIT_SHORT_SHA -n test
+    # 等待部署完成
+    - kubectl rollout status deployment/model-service -n test
+  environment:
+    name: test
+    url: https://test.example.com
+  only:
+    - main
+
+# 部署到生产环境（需要手动触发）
+deploy_production:
+  stage: deploy
+  image: bitnami/kubectl:latest
+  script:
+    - kubectl set image deployment/model-service model-service=registry.example.com/model-service:$CI_COMMIT_SHORT_SHA -n production
+    - kubectl rollout status deployment/model-service -n production
+  environment:
+    name: production
+    url: https://example.com
+  when: manual  # 需要手动触发
+  only:
+    - main</code></pre>
+<h4>这个流水线做了什么？</h4>
+<p>
+<strong>测试阶段</strong>：
+</p>
+<ul>
+<li>代码提交后，自动运行单元测试和集成测试</li>
+<li>测试通过后，才能进入下一阶段</li>
+</ul>
+<p>
+<strong>构建阶段</strong>：
+</p>
+<ul>
+<li>自动构建Docker镜像</li>
+<li>用Git commit的SHA做标签（可回溯）</li>
+<li>推送到镜像仓库</li>
+</ul>
+<p>
+<strong>部署阶段</strong>：
+</p>
+<ul>
+<li>自动部署到测试环境</li>
+<li>生产环境部署需要手动触发（安全）</li>
+</ul>
+<h3>核心动作3：配套模型版本管理</h3>
+<blockquote>
+<p><strong>最大的坑</strong>：模型和代码分离，不知道哪个模型对应哪个代码版本，出了问题无法回滚。</p>
+</blockquote>
+<p>
+<strong>正确做法</strong>：每个模型版本对应唯一的代码版本、镜像版本。
+</p>
+<h4>模型版本管理方案</h4>
+<p>
+<strong>方案1：模型文件随代码管理</strong>
+</p>
+<pre><code class="language-bash"># 目录结构
+models/
+  v1.0/
+    model.pkl
+    metadata.json
+  v2.0/
+    model.pkl
+    metadata.json</code></pre>
+<p>
+<strong>方案2：用MLflow管理模型</strong>
+</p>
+<pre><code class="language-python">import mlflow
+
+# 训练完成后，记录模型
+with mlflow.start_run():
+    mlflow.log_param(&quot;model_version&quot;, &quot;2.0&quot;)
+    mlflow.log_metric(&quot;accuracy&quot;, 0.95)
+    mlflow.sklearn.log_model(model, &quot;model&quot;)
+
+# 部署时，加载指定版本
+model_uri = &quot;models:/my-model/Production&quot;
+model = mlflow.sklearn.load_model(model_uri)</code></pre>
+<p>
+<strong>方案3：模型文件存储在对象存储</strong>
+</p>
+<pre><code class="language-python">import boto3
+
+s3 = boto3.client(&#39;s3&#39;)
+
+# 保存模型
+s3.upload_file(&quot;model.pkl&quot;, &quot;my-bucket&quot;, &quot;models/v2.0/model.pkl&quot;)
+
+# 加载模型
+s3.download_file(&quot;my-bucket&quot;, &quot;models/v2.0/model.pkl&quot;, &quot;model.pkl&quot;)</code></pre>
+<h3>验收标准</h3>
+<p>
+✅ 代码提交后，自动完成测试、构建、部署到测试环境 ✅ 每个模型版本对应唯一的代码版本、镜像版本 ✅ 可以快速回滚到任意历史版本
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="步骤4-上线验证-零风险上线-避免线上故障">步骤4：上线验证——零风险上线，避免线上故障</h2>
+<h3>为什么需要上线验证？</h3>
+<blockquote>
+<p><strong>最大的坑</strong>：新版本直接全量上线，结果有bug，导致线上故障，所有用户都受影响。</p>
+</blockquote>
+<p>
+<strong>正确做法</strong>：先小范围验证，确认没问题再逐步放量。
+</p>
+<h3>核心动作1：金丝雀发布（Canary Deployment）</h3>
+<blockquote>
+<p><strong>金丝雀发布</strong>：先给一小部分用户用新版本，确认没问题再逐步扩大。</p>
+</blockquote>
+<h4>为什么叫"金丝雀"？</h4>
+<p>
+以前矿工下井前，会带一只金丝雀。如果有毒气，金丝雀会先死，矿工就知道有危险。
+</p>
+<p>
+软件发布也是同理：
+</p>
+<ul>
+<li>先让1%的用户用新版本（金丝雀）</li>
+<li>如果出问题，只有1%用户受影响</li>
+<li>如果没问题，逐步扩大到10%、50%、100%</li>
+</ul>
+<h4>金丝雀发布流程</h4>
+<div class="mermaid">graph LR
+    A[100%流量 → 旧版本] --> B[1%流量 → 新版本<br/>99%流量 → 旧版本]
+    B --> C[观察10%流量 → 新版本<br/>90%流量 → 旧版本]
+    C --> D[观察50%流量 → 新版本<br/>50%流量 → 旧版本]
+    D --> E[100%流量 → 新版本]
+
+    style B fill:#ffe1e1
+    style C fill:#fff4e1
+    style D fill:#e1ffe1
+    style E fill:#e1f5ff</div>
+<h4>观察指标</h4>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>正常范围</th>
+<th>异常范围</th>
+<th>处理方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>错误率</strong></td>
+<td>< 0.1%</td>
+<td>> 0.5%</td>
+<td>立即回滚</td>
+</tr>
+<tr>
+<td><strong>延迟P95</strong></td>
+<td>< 500ms</td>
+<td>> 800ms</td>
+<td>暂停扩量，排查问题</td>
+</tr>
+<tr>
+<td><strong>业务指标</strong></td>
+<td>基本持平</td>
+<td>下降 > 10%</td>
+<td>立即回滚</td>
+</tr>
+</tbody>
+</table>
+<h4>金丝雀发布配置示例（Istio）</h4>
+<pre><code class="language-yaml"># destination-rule.yaml
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: model-service
+spec:
+  host: model-service
+  subsets:
+  - name: v1  # 旧版本
+    labels:
+      version: v1
+  - name: v2  # 新版本
+    labels:
+      version: v2
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+# virtual-service.yaml
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: model-service
+spec:
+  http:
+  - match:
+    - headers:
+        x-canary:
+          exact: &quot;true&quot;
+    route:
+    - destination:
+        host: model-service
+        subset: v2
+  - route:
+    - destination:
+        host: model-service
+        subset: v1
+      weight: 99  # 99%流量到旧版本
+    - destination:
+        host: model-service
+        subset: v2
+      weight: 1   # 1%流量到新版本</code></pre>
+<h3>核心动作2：影子流量验证（Shadow Traffic）</h3>
+<blockquote>
+<p><strong>影子流量</strong>：让新服务"暗中"处理线上真实请求，但不把结果返回给用户，零风险验证。</p>
+</blockquote>
+<h4>影子流量 vs 金丝雀发布</h4>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>优点</th>
+<th>缺点</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>金丝雀发布</strong></td>
+<td>真实的用户反馈</td>
+<td>少量用户会受影响</td>
+<td>对效果有信心，想逐步放量</td>
+</tr>
+<tr>
+<td><strong>影子流量</strong></td>
+<td>零风险，不影响用户</td>
+<td>无法收集用户行为反馈</td>
+<td>验证性能、稳定性</td>
+</tr>
+</tbody>
+</table>
+<h4>影子流量配置示例</h4>
+<pre><code class="language-python"># FastAPI示例
+from fastapi import FastAPI
+import requests
+
+app = FastAPI()
+
+@app.post(&quot;/api/predict&quot;)
+async def predict(request: dict):
+    # 正常处理请求（旧版本）
+    result_old = process_with_old_model(request)
+
+    # 影子流量：同时调用新版本，但不返回结果
+    try:
+        result_new = process_with_new_model(request)
+
+        # 对比结果，记录差异
+        if result_old != result_new:
+            log_difference(request, result_old, result_new)
+    except Exception as e:
+        log_error(e)
+
+    # 返回旧版本的结果
+    return result_old</code></pre>
+<h3>核心动作3：全链路压测</h3>
+<blockquote>
+<p><strong>全链路压测</strong>：用线上真实流量（或模拟的等价流量）做压测，验证服务是否能扛住峰值。</p>
+</blockquote>
+<h4>压测场景设计</h4>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>QPS目标</th>
+<th>验收标准</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>正常流量</strong></td>
+<td>1000 QPS</td>
+<td>P95延迟 < 500ms<br/>错误率 < 0.1%</td>
+</tr>
+<tr>
+<td><strong>峰值流量</strong></td>
+<td>3000 QPS</td>
+<td>P95延迟 < 800ms<br/>错误率 < 0.5%</td>
+</tr>
+<tr>
+<td><strong>极端流量</strong></td>
+<td>5000 QPS</td>
+<td>P95延迟 < 1s<br/>错误率 < 1%<br/>服务不崩溃</td>
+</tr>
+</tbody>
+</table>
+<h4>压测工具推荐</h4>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>适用场景</th>
+<th>新手友好度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Locust</strong></td>
+<td>Python脚本，灵活</td>
+<td>★★★★☆</td>
+</tr>
+<tr>
+<td><strong>JMeter</strong></td>
+<td>GUI界面，可视化</td>
+<td>★★★☆☆</td>
+</tr>
+<tr>
+<td><strong>k6</strong></td>
+<td>现代化，性能好</td>
+<td>★★★★☆</td>
+</tr>
+<tr>
+<td><strong>云压测</strong></td>
+<td>云服务，免运维</td>
+<td>★★★★★</td>
+</tr>
+</tbody>
+</table>
+<h3>验收标准</h3>
+<p>
+✅ 金丝雀发布：从1%逐步扩到100%，各项指标正常 ✅ 影子流量：新旧版本结果一致，性能满足要求 ✅ 全链路压测：在峰值流量下，服务稳定，满足SLA
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="步骤5-持续迭代-监控驱动的优化与升级">步骤5：持续迭代——监控驱动的优化与升级</h2>
+<h3>为什么需要持续迭代？</h3>
+<blockquote>
+<p><strong>最大的误区</strong>：上线后就结束了，不再关注。</p>
+</blockquote>
+<p>
+<strong>正确认知</strong>：上线只是开始，真正的价值在持续迭代中体现。
+</p>
+<h3>核心动作1：建立每日巡检机制</h3>
+<h4>巡检清单（可直接复用）</h4>
+<p>
+<strong>每日必查</strong>：
+</p>
+<ul>
+<li>[ ] 查看监控看板，关注关键指标（QPS、延迟、错误率）</li>
+<li>[ ] 检查告警，处理未解决的告警</li>
+<li>[ ] 查看数据漂移报告</li>
+<li>[ ] 检查业务指标（CTR、转化率）</li>
+</ul>
+<p>
+<strong>每周必查</strong>：
+</p>
+<ul>
+<li>[ ] 分析错误日志，找出高频错误</li>
+<li>[ ] 审核慢查询，优化性能瓶颈</li>
+<li>[ ] 评估模型效果，决定是否需要重新训练</li>
+<li>[ ] 复盘本周故障，输出改进方案</li>
+</ul>
+<p>
+<strong>每月必查</strong>：
+</p>
+<ul>
+<li>[ ] 评估SLA达成情况</li>
+<li>[ ] 分析成本，优化资源使用</li>
+<li>[ ] 规划下月优化方向</li>
+<li>[ ] 复盘月度故障，更新预案</li>
+</ul>
+<h3>核心动作2：建立模型迭代流程</h3>
+<h4>模型迭代流程图</h4>
+<div class="mermaid">graph LR
+    A[数据收集] --> B[特征工程]
+    B --> C[模型训练]
+    C --> D[离线评估]
+    D --> E{是否满足<br/>上线标准?}
+    E -->|否| B
+    E -->|是| F[提交代码]
+    F --> G[自动化测试]
+    G --> H[金丝雀发布]
+    H --> I{效果验证}
+    I -->|效果差| J[回滚]
+    I -->|效果好| K[全量发布]
+    J --> L[分析原因]
+    L --> B</div>
+<h4>模型上线标准（可直接复用）</h4>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>上线标准</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>离线效果</strong></td>
+<td>AUC / 准确率至少提升1%</td>
+</tr>
+<tr>
+<td><strong>推理速度</strong></td>
+<td>P95延迟不增加超过10%</td>
+</tr>
+<tr>
+<td><strong>资源消耗</strong></td>
+<td>GPU/内存占用不增加超过20%</td>
+</tr>
+<tr>
+<td><strong>业务指标</strong></td>
+<td>A/B测试显示业务指标不下降</td>
+</tr>
+<tr>
+<td><strong>稳定性</strong></td>
+<td>测试环境运行24小时无故障</td>
+</tr>
+</tbody>
+</table>
+<h3>核心动作3：故障复盘机制</h3>
+<blockquote>
+<p><strong>故障复盘（Postmortem）</strong>：每次故障后，系统性地分析问题、总结经验、改进流程。</p>
+</blockquote>
+<h4>故障复盘模板（可直接复用）</h4>
+<p>
+<strong>1. 故障基本信息</strong>
+</p>
+<ul>
+<li>故障时间：2024-01-15 14:30 - 16:00</li>
+<li>影响范围：推荐服务，影响20%用户</li>
+<li>故障等级：P1（严重）</li>
+</ul>
+<p>
+<strong>2. 故障时间线</strong>
+</p>
+<table>
+<thead>
+<tr>
+<th>时间</th>
+<th>事件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>14:30</td>
+<td>监控告警：推荐服务错误率 > 1%</td>
+</tr>
+<tr>
+<td>14:35</td>
+<td>工程师介入，发现模型服务超时</td>
+</tr>
+<tr>
+<td>14:40</td>
+<td>尝试重启服务，问题未解决</td>
+</tr>
+<tr>
+<td>14:50</td>
+<td>发现是新模型加载失败，回滚到旧版本</td>
+</tr>
+<tr>
+<td>15:00</td>
+<td>服务恢复</td>
+</tr>
+<tr>
+<td>16:00</td>
+<td>问题根因分析完成</td>
+</tr>
+</tbody>
+</table>
+<p>
+<strong>3. 根本原因</strong>
+</p>
+<ul>
+<li>新模型文件损坏，加载失败</li>
+<li>缺少模型加载的监控，没有及时发现</li>
+<li>没有模型加载失败的降级方案</li>
+</ul>
+<p>
+<strong>4. 改进措施</strong>
+</p>
+<ul>
+<li>[ ] 添加模型加载状态监控</li>
+<li>[ ] 添加模型加载失败的降级方案</li>
+<li>[ ] 改进CI/CD流程，上线前验证模型文件完整性</li>
+</ul>
+<p>
+<strong>5. 责任人</strong>
+</p>
+<ul>
+<li>监控改进：张三（1周内完成）</li>
+<li>降级方案：李四（1周内完成）</li>
+<li>CI/CD改进：王五（2周内完成）</li>
+</ul>
+<h3>验收标准</h3>
+<p>
+✅ 建立了每日/每周/每月的巡检机制 ✅ 建立了标准化的模型迭代流程 ✅ 每次故障后都有复盘报告和改进措施
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="6-五步法总结">6. 五步法总结</h2>
+<p>
+让我们回顾一下完整的五步法：
+</p>
+<div class="mermaid">mindmap
+  root((Harness Engineering<br/>落地五步法))
+    步骤1：需求对齐
+      业务目标
+        解决什么问题
+        量化指标
+      明确SLA
+        可用性 99.9%
+        延迟 P95<500ms
+        错误率 <0.1%
+        MTTR <5分钟
+      划定范围
+        单个服务试点
+        不要全业务线重构
+    步骤2：架构设计
+      服务拓扑图
+        模块划分
+        调用关系
+        外部依赖
+      技术选型
+        匹配团队规模
+        优先成熟方案
+      监控设计
+        监控什么指标
+        告警阈值
+        告警级别
+    步骤3：流水线搭建
+      自动化测试
+        单元测试
+        集成测试
+        性能测试
+      CI/CD配置
+        测试→构建→部署
+        模型版本管理
+    步骤4：上线验证
+      金丝雀发布
+        1% → 10% → 50% → 100%
+      影子流量
+        零风险验证
+      全链路压测
+        验证峰值流量
+    步骤5：持续迭代
+      每日巡检
+        监控指标
+        告警处理
+      模型迭代
+        标准流程
+        上线标准
+      故障复盘
+        分析根因
+        改进措施</div>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="7-章末互动">7. 章末互动</h2>
+<h3>思考题</h3>
+<p>
+你的项目，当前处于五步法的哪个阶段？
+</p>
+<ul>
+<li>A. 步骤1：还没开始，还在梳理需求</li>
+<li>B. 步骤2：需求已明确，正在设计架构</li>
+<li>C. 步骤3：架构已设计，正在搭建流水线</li>
+<li>D. 步骤4：流水线已搭建，正在准备上线</li>
+<li>E. 步骤5：已上线，正在持续迭代</li>
+</ul>
+<h3>投票</h3>
+<p>
+接下来要做的第一个动作是什么？
+</p>
+<ul>
+<li>[ ] 梳理需求，明确SLA</li>
+<li>[ ] 画服务拓扑图</li>
+<li>[ ] 搭建CI/CD流水线</li>
+<li>[ ] 准备金丝雀发布</li>
+<li>[ ] 建立每日巡检机制</li>
+</ul>
+<p>
+欢迎在评论区投票和分享你的进度！👇
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="本章要点回顾">本章要点回顾</h2>
+<p>
+<strong>核心原则</strong>：
+</p>
+<ul>
+<li>✅ 从小范围试点开始，不要一上来就全业务线重构</li>
+<li>✅ 每一步都有明确的验收标准，做到可量化、可验证</li>
+<li>✅ 走完流程再逐步扩展，避免"大而全"的失败</li>
+</ul>
+<p>
+<strong>五步法回顾</strong>：
+</p>
+<ol>
+<li><strong>需求对齐</strong>：定目标、定SLA、定范围</li>
+<li><strong>架构设计</strong>：画拓扑、定模块、设监控点</li>
+<li><strong>流水线搭建</strong>：测试→构建→部署自动化</li>
+<li><strong>上线验证</strong>：零风险灰度+影子流量验证</li>
+<li><strong>持续迭代</strong>：监控驱动的优化与升级</li>
+</ol>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<p>
+<strong>下一章</strong>：<a href="./07-第七章-避坑指南.html">第7章：避坑指南｜落地中90%团队踩过的"隐形陷阱"与解决方案</a>
+</p>
+<p>
+我们将深入探讨90%团队都会踩的坑，以及如何提前规避，帮你少走弯路。
+</p>
+            </section>
+        </main>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top" onclick="scrollToTop()">↑</div>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 返回顶部
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 返回顶部按钮显示/隐藏
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        // 活动导航链接
+        window.addEventListener('scroll', () => {
+            const headings = document.querySelectorAll('h2[id]');
+            const scrollPosition = window.pageYOffset + 100;
+
+            headings.forEach(heading => {
+                const headingTop = heading.offsetTop;
+                const headingId = heading.getAttribute('id');
+
+                if (scrollPosition >= headingTop - 50) {
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + headingId) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

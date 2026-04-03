@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第8章：全案复盘｜用Harness Engineering重构AI服务的真实案例</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>"""
+    <!-- Load Mermaid from local assets folder -->
+    <script src="./assets/mermaid.min.js"></script>
+    <script>
+        // Initialize Mermaid when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.querySelectorAll('.mermaid').length === 0) {
+                console.log('No mermaid diagrams found');
+                return;
+            }
+            console.log('Initializing mermaid from local file...');
+
+            if (typeof mermaid !== 'undefined') {
+                mermaid.initialize({
+                    startOnLoad: true,
+                    theme: 'default',
+                    securityLevel: 'loose',
+                    mindmap: {
+                        padding: 10,
+                        useMaxWidth: true
+                    },
+                    logLevel: 'debug'
+                });
+                console.log('Mermaid initialized successfully from local file');
+            } else {
+                console.error('Local mermaid.js failed to load');
+                document.querySelectorAll('.mermaid').forEach(function(el) {
+                    el.style.border = '2px solid #f59e0b';
+                    el.style.padding = '20px';
+                    el.style.background = '#fef3c7';
+                    el.innerHTML = '<p style="color: #92400e; margin: 0;"><strong>⚠️ Mermaid 图表加载失败</strong><br>本地文件 ./assets/mermaid.min.js 未找到。</p>';
+                });
+            }
+        });
+    </script>
+    <style>
+        
+        
+        
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f7fa;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .nav-link:hover {
+            background: #f3f4f6;
+            color: #2563eb;
+        }
+
+        .nav-link.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+        .meta-icon {
+            font-size: 20px;
+        }
+
+        h2 {
+            font-size: 32px;
+            color: #1f2937;
+            margin: 50px 0 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2563eb;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 24px;
+            color: #374151;
+            margin: 35px 0 20px;
+            font-weight: 600;
+        }
+
+        h4 {
+            font-size: 20px;
+            color: #4b5563;
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #4b5563;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        /* 代码块 */
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        code {
+            background: #f3f4f6;
+            color: #dc2626;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 15px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        /* 列表 */
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 强调框 */
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box {
+            background: #e0e7ff;
+            border-left: 4px solid #6366f1;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 时间标签 */
+        .time-tag {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* 问答框 */
+        .qa-box {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #2563eb;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .answer {
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 链接 */
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2563eb;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s;
+            font-size: 24px;
+        }
+
+        .back-to-top:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 968px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-card {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            h2 {
+                font-size: 26px;
+            }
+
+            .hero-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* 打印样式 */
+        @media print {
+            .sidebar {
+                display: none;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .content-card {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+/* Mermaid diagrams */
+.mermaid {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Mindmap specific styles */
+.mermaid .mindmap-node {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+pre code.language-mermaid {
+    background: white;
+    color: #1f2937;
+    padding: 0;
+    border-radius: 8px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 侧边导航 -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">📚</span>
+                <span>AI核心概念</span>
+            </div>
+            <div class="subtitle">
+                
+            </div>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">🏠 返回首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#intro" class="nav-link active">📖 概述</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#开篇思考-理论学了很多-到底怎么落地" class="nav-link">📚 开篇思考：理论学了很多，到底怎么落地？</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#本章核心定位" class="nav-link">⭐ 本章核心定位</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#案例1-正向-电商推荐系统重构-故障恢复时间下降90-迭代周期缩至2天" class="nav-link">🏗️ 案例1（正向）：电商推荐系统重构——故障恢复时间下降90%，迭代周期缩至2天</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#案例2-反向-盲目追求-大而全-投入3个月-最终完全放弃" class="nav-link">🎬 案例2（反向）：盲目追求"大而全"，投入3个月，最终完全放弃</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#两个案例的核心对比" class="nav-link">⭐ 两个案例的核心对比</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#章末互动" class="nav-link">📚 章末互动</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#本章要点回顾" class="nav-link">📝 本章要点回顾</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 英雄区域 -->
+            <section class="hero-section">
+                <h1>第8章：全案复盘｜用Harness Engineering重构AI服务的真实案例</h1>
+                <div class="hero-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon">🎯</span>
+                        <span>学习目标：见标题</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">👥</span>
+                        <span>适合人群：所有人</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 内容区域 -->
+            <section id="intro" class="content-card">
+                <blockquote>
+<p>用正反两个真实案例，验证Harness Engineering的落地价值</p>
+</blockquote>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="开篇思考-理论学了很多-到底怎么落地">开篇思考：理论学了很多，到底怎么落地？</h2>
+<p>
+看完了前面的理论、方法、工具，你可能还是想知道：
+</p>
+<ul>
+<li>Harness Engineering到底能带来什么实际价值？</li>
+<li>其他团队是怎么落地的？有哪些经验可以借鉴？</li>
+<li>哪些做法是对的？哪些做法是绝对不能碰的？</li>
+</ul>
+<p>
+<strong>理论讲得再多，不如一个真实的落地案例来得直观</strong>。
+</p>
+<p>
+本章我们整理了两个典型案例：
+</p>
+<ul>
+<li><strong>正向案例</strong>：电商推荐系统重构，故障恢复时间下降90%，迭代周期缩至2天</li>
+<li><strong>反向案例</strong>：盲目追求"大而全"，投入3个月，最终完全放弃</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="本章核心定位">本章核心定位</h2>
+<p>
+用正反两个真实案例，验证Harness Engineering的落地价值，给读者可参考的落地路径，同时用反例帮读者规避错误的落地方式。
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="案例1-正向-电商推荐系统重构-故障恢复时间下降90-迭代周期缩至2天">案例1（正向）：电商推荐系统重构——故障恢复时间下降90%，迭代周期缩至2天</h2>
+<h3>背景与痛点</h3>
+<p>
+某中型电商平台，日活用户50万，推荐系统是核心业务之一。
+</p>
+<p>
+<strong>现状</strong>： 推荐系统是一个Flask单体服务，把特征计算、模型推理、结果排序全写在一起：
+</p>
+<pre><code class="language-python"># 原来的单体服务（简化版）
+@app.route(&quot;/api/recommend&quot;)
+def recommend(user_id):
+    # 1. 特征计算
+    user_features = calculate_user_features(user_id)
+    item_features = calculate_item_features(user_id)
+
+    # 2. 模型推理
+    scores = model.predict(user_features, item_features)
+
+    # 3. 结果排序
+    results = sort_items(scores)
+
+    return results</code></pre>
+<p>
+<strong>存在的4个核心问题</strong>：
+</p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>具体表现</th>
+<th>影响</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>故障频发</strong></td>
+<td>平均每周1-2次线上故障</td>
+<td>业务方不满，用户投诉</td>
+</tr>
+<tr>
+<td><strong>故障恢复慢</strong></td>
+<td>MTTR（平均恢复时间）1小时</td>
+<td>每次故障影响几万用户</td>
+</tr>
+<tr>
+<td><strong>模型迭代慢</strong></td>
+<td>从训练到上线要2周</td>
+<td>无法快速响应市场变化</td>
+</tr>
+<tr>
+<td><strong>无法精准扩缩容</strong></td>
+<td>大促时整个服务被打垮</td>
+<td>错失流量机会</td>
+</tr>
+<tr>
+<td><strong>没有监控</strong></td>
+<td>CTR下降2天才被发现</td>
+<td>直接影响收入</td>
+</tr>
+</tbody>
+</table>
+<p>
+<strong>最严重的一次故障</strong>：
+</p>
+<ul>
+<li>时间：2023年双11大促</li>
+<li>影响：推荐服务崩溃2小时</li>
+<li>损失：估计超过100万GMV</li>
+<li>原因：峰值流量是平时的10倍，单体服务扛不住</li>
+</ul>
+<h3>基于Harness Engineering的核心改造动作</h3>
+<p>
+团队决定引入Harness Engineering体系，改造推荐系统。
+</p>
+<h4>改造原则</h4>
+<ol>
+<li>✅ <strong>小范围试点</strong>：先改造"猜你喜欢"一个模块，验证价值后再推广</li>
+<li>✅ <strong>痛点驱动</strong>：优先解决故障和迭代问题，而不是追求大而全</li>
+<li>✅ <strong>逐步迭代</strong>：分阶段改造，每阶段都能带来实际价值</li>
+</ol>
+<h4>阶段1：服务拆分（第1-2周）</h4>
+<p>
+<strong>目标</strong>：把单体服务拆分成多个独立服务，提高稳定性和可扩展性。
+</p>
+<p>
+<strong>拆分方案</strong>：
+</p>
+<div class="mermaid">graph TB
+    A[用户请求] --> B[推荐API网关]
+
+    B --> C[用户特征服务]
+    B --> D[商品池服务]
+    B --> E[排序模型推理服务]
+
+    C --> C1[(Redis缓存)]
+    C --> C2[特征计算引擎]
+
+    E --> E1[模型加载器]
+    E --> E2[推理引擎]
+
+    E --> F[推荐结果服务]
+    F --> G[业务逻辑]
+    G --> H[返回结果]
+
+    style B fill:#e1f5ff
+    style E fill:#ffe1e1
+    style F fill:#e1ffe1</div>
+<p>
+<strong>拆分后的服务架构</strong>：
+</p>
+<table>
+<thead>
+<tr>
+<th>服务</th>
+<th>职责</th>
+<th>独立扩缩容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>推荐API网关</strong></td>
+<td>请求路由、结果聚合</td>
+<td>是</td>
+</tr>
+<tr>
+<td><strong>用户特征服务</strong></td>
+<td>计算和缓存用户特征</td>
+<td>是</td>
+</tr>
+<tr>
+<td><strong>商品池服务</strong></td>
+<td>过滤和召回商品</td>
+<td>是</td>
+</tr>
+<tr>
+<td><strong>排序模型推理服务</strong></td>
+<td>对商品排序打分</td>
+<td>是</td>
+</tr>
+<tr>
+<td><strong>推荐结果服务</strong></td>
+<td>业务逻辑处理</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<p>
+<strong>技术选型</strong>：
+</p>
+<ul>
+<li>服务框架：FastAPI（轻量、高性能）</li>
+<li>容器化：Docker</li>
+<li>编排：K8s（已有K8s基础）</li>
+<li>服务网格：Istio（流量管理、灰度发布）</li>
+</ul>
+<p>
+<strong>收益</strong>：
+</p>
+<ul>
+<li>✅ 单个服务故障不会影响整体</li>
+<li>✅ 可以独立扩缩容，成本更优</li>
+<li>✅ 团队可以并行开发，效率提升</li>
+</ul>
+<h4>阶段2：数据治理（第3-4周）</h4>
+<p>
+<strong>目标</strong>：搭建统一Feature Store，保证训练和推理的特征逻辑一致。
+</p>
+<p>
+<strong>问题背景</strong>： 之前团队踩过"训练推理特征不一致"的坑：
+</p>
+<ul>
+<li>训练时：年龄归一化用的是训练集的mean/std</li>
+<li>推理时：年龄归一化用的是固定值</li>
+<li>结果：离线AUC 0.85，上线后CTR只有0.5%</li>
+</ul>
+<p>
+<strong>解决方案</strong>：搭建Feast Feature Store
+</p>
+<pre><code class="language-python"># feature_store/definitions.py
+from feast import FeatureView, Field
+from feast.types import Float32
+
+# 定义用户特征
+user_features = FeatureView(
+    name=&quot;user_features&quot;,
+    entities=[&quot;user_id&quot;],
+    schema=[
+        Field(name=&quot;age_norm&quot;, dtype=Float32),
+        Field(name=&quot;purchase_count&quot;, dtype=Float32),
+        Field(name=&quot;avg_price&quot;, dtype=Float32),
+    ],
+    source=user_feature_source,
+)
+
+# 训练时获取特征
+from feast import FeatureStore
+store = FeatureStore(repo_path=&quot;.&quot;)
+
+training_df = store.get_historical_features(
+    features=[&#39;user_features:age_norm&#39;, &#39;user_features:purchase_count&#39;],
+    entity_df=training_data
+).to_df()
+
+# 推理时获取特征（完全一致）
+online_features = store.get_online_features(
+    features=[&#39;user_features:age_norm&#39;, &#39;user_features:purchase_count&#39;],
+    entity_rows=[{&#39;user_id&#39;: &#39;123&#39;}]
+)</code></pre>
+<p>
+<strong>配套数据漂移检测</strong>：
+</p>
+<pre><code class="language-python"># 用Evidently AI做数据漂移检测
+from evidently.dashboard import Dashboard
+from evidently.tabs import DataDriftTab
+
+drift_dashboard = Dashboard(tabs=[DataDriftTab()])
+drift_dashboard.calculate(reference_data, current_data)
+drift_dashboard.save(&quot;data_drift_report.html&quot;)
+
+# 每天自动检测，发现漂移立即告警</code></pre>
+<p>
+<strong>收益</strong>：
+</p>
+<ul>
+<li>✅ 训练和推理的特征逻辑100%一致</li>
+<li>✅ 实时监控数据漂移，提前发现问题</li>
+<li>✅ 特征可复用，其他模型也能用</li>
+</ul>
+<h4>阶段3：全链路可观测（第5-6周）</h4>
+<p>
+<strong>目标</strong>：搭建业务-技术双维度监控看板，快速定位问题。
+</p>
+<p>
+<strong>监控架构</strong>：
+</p>
+<div class="mermaid">graph LR
+    A[推荐服务] --> B[Prometheus]
+    A --> C[Grafana]
+    A --> D[Elasticsearch]
+
+    B --> E[技术指标]
+    C --> E
+
+    E --> F[QPS]
+    E --> G[延迟]
+    E --> H[错误率]
+    E --> I[GPU利用率]
+
+    E --> J[业务指标]
+    J --> K[CTR]
+    J --> L[转化率]
+    J --> M[GMV]
+
+    style E fill:#e1f5ff
+    style J fill:#ffe1e1</div>
+<p>
+<strong>核心监控指标</strong>：
+</p>
+<table>
+<thead>
+<tr>
+<th>指标类型</th>
+<th>具体指标</th>
+<th>告警阈值</th>
+<th>告警级别</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>技术指标</strong></td>
+<td>QPS</td>
+<td>QPS > 5000</td>
+<td>🟡 警告</td>
+</tr>
+<tr>
+<td></td>
+<td>P95延迟</td>
+<td>> 500ms</td>
+<td>🟡 警告</td>
+</tr>
+<tr>
+<td></td>
+<td>P99延迟</td>
+<td>> 1s</td>
+<td>🔴 严重</td>
+</tr>
+<tr>
+<td></td>
+<td>错误率</td>
+<td>> 0.1%</td>
+<td>🔴 严重</td>
+</tr>
+<tr>
+<td><strong>业务指标</strong></td>
+<td>CTR</td>
+<td>下降 > 10%</td>
+<td>🔴 严重</td>
+</tr>
+<tr>
+<td></td>
+<td>转化率</td>
+<td>下降 > 15%</td>
+<td>🔴 严重</td>
+</tr>
+<tr>
+<td></td>
+<td>GMV</td>
+<td>下降 > 20%</td>
+<td>🔴 严重</td>
+</tr>
+</tbody>
+</table>
+<p>
+<strong>Prometheus配置示例</strong>：
+</p>
+<pre><code class="language-python"># 推荐服务中上报指标
+from prometheus_client import Counter, Histogram
+
+# 技术指标
+prediction_counter = Counter(&#39;recommendation_predictions_total&#39;, &#39;Total predictions&#39;)
+prediction_latency = Histogram(&#39;recommendation_latency_seconds&#39;, &#39;Prediction latency&#39;)
+error_counter = Counter(&#39;recommendation_errors_total&#39;, &#39;Total errors&#39;)
+
+# 业务指标
+click_counter = Counter(&#39;recommendation_clicks_total&#39;, &#39;Total clicks&#39;)
+conversion_counter = Counter(&#39;recommendation_conversions_total&#39;, &#39;Total conversions&#39;)
+
+@app.post(&quot;/api/recommend&quot;)
+async def recommend(user_id: str):
+    # 记录技术指标
+    with prediction_latency.time():
+        try:
+            items = model.predict(user_id)
+            prediction_counter.inc()
+        except Exception as e:
+            error_counter.inc()
+            raise
+
+    return {&quot;items&quot;: items}
+
+@app.post(&quot;/api/click&quot;)
+async def click(user_id: str, item_id: str):
+    # 记录业务指标（点击）
+    click_counter.inc()
+
+@app.post(&quot;/api/convert&quot;)
+async def convert(user_id: str, item_id: str):
+    # 记录业务指标（转化）
+    conversion_counter.inc()</code></pre>
+<p>
+<strong>Grafana看板配置</strong>：
+</p>
+<pre><code class="language-sql">-- CTR监控
+sum(rate(recommendation_clicks_total[5m])) /
+sum(rate(recommendation_predictions_total[5m]))
+
+-- 转化率监控
+sum(rate(recommendation_conversions_total[5m])) /
+sum(rate(recommendation_predictions_total[5m]))</code></pre>
+<p>
+<strong>收益</strong>：
+</p>
+<ul>
+<li>✅ 问题定位时间从1小时降到5分钟</li>
+<li>✅ 业务指标异常能立即发现</li>
+<li>✅ 有完整的故障复盘数据</li>
+</ul>
+<h4>阶段4：自动化流水线（第7-8周）</h4>
+<p>
+<strong>目标</strong>：搭建CI/CD流水线，支持一键灰度发布和一键回滚。
+</p>
+<p>
+<strong>流水线设计</strong>：
+</p>
+<div class="mermaid">graph LR
+    A[代码提交] --> B[自动化测试]
+    B --> C[构建镜像]
+    C --> D[推送到仓库]
+    D --> E[部署到测试环境]
+    E --> F{测试通过?}
+    F -->|否| A
+    F -->|是| G[灰度发布 1%]
+    G --> H{效果验证}
+    H -->|效果差| I[一键回滚]
+    H -->|效果好| J[逐步扩量]
+    J --> K[10%]
+    K --> L[50%]
+    L --> M[100%]
+
+    style G fill:#ffe1e1
+    style I fill:#ffcccc
+    style M fill:#ccffcc</div>
+<p>
+<strong>GitLab CI配置</strong>：
+</p>
+<pre><code class="language-yaml">stages:
+  - test
+  - build
+  - deploy
+
+# 单元测试
+unit_test:
+  stage: test
+  script:
+    - pytest test_model.py
+    - pytest test_api.py
+
+# 性能测试
+performance_test:
+  stage: test
+  script:
+    - locust -f test_performance.py --headless --users 1000 --run-time 30s
+
+# 构建镜像
+build:
+  stage: build
+  script:
+    - docker build -t registry.com/recommend-service:$CI_COMMIT_SHORT_SHA .
+    - docker push registry.com/recommend-service:$CI_COMMIT_SHORT_SHA
+
+# 灰度发布
+deploy_canary:
+  stage: deploy
+  script:
+    # 部署新版本（1%流量）
+    - kubectl apply -f k8s/canary-deployment.yaml</code></pre>
+<p>
+<strong>一键回滚脚本</strong>：
+</p>
+<pre><code class="language-bash">#!/bin/bash
+# rollback.sh
+
+OLD_VERSION=$1
+NEW_VERSION=$2
+
+echo &quot;Rolling back from $NEW_VERSION to $OLD_VERSION...&quot;
+
+# 切换流量到旧版本
+kubectl patch deployment recommend-service -p &#39;{&quot;spec&quot;:{&quot;template&quot;:{&quot;spec&quot;:{&quot;containers&quot;:[{&quot;name&quot;:&quot;recommend-service&quot;,&quot;image&quot;:&quot;registry.com/recommend-service:&#39;$OLD_VERSION&#39;&quot;}]}}}}&#39;
+
+# 等待 rollout 完成
+kubectl rollout status deployment recommend-service
+
+echo &quot;Rollback completed!&quot;</code></pre>
+<p>
+<strong>收益</strong>：
+</p>
+<ul>
+<li>✅ 模型迭代周期从2周缩短到2天</li>
+<li>✅ 新版本出问题，10秒内回滚</li>
+<li>✅ 工程师不用手动部署，效率提升</li>
+</ul>
+<h4>阶段5：安全韧性（第9-10周）</h4>
+<p>
+<strong>目标</strong>：配置限流、熔断、降级机制，提高服务韧性。
+</p>
+<p>
+<strong>限流配置</strong>：
+</p>
+<pre><code class="language-python">from fastapi import FastAPI
+from slowapi import Limiter
+
+limiter = Limiter(key_func=get_remote_address)
+
+@app.post(&quot;/api/recommend&quot;)
+@limiter.limit(&quot;100/second&quot;)  # 每秒最多100个请求
+async def recommend(user_id: str):
+    pass</code></pre>
+<p>
+<strong>熔断配置</strong>：
+</p>
+<pre><code class="language-python">from circuitbreaker import circuit
+
+@circuit(failure_threshold=5, recovery_timeout=60)
+def call_feature_service(user_id):
+    &quot;&quot;&quot;调用特征服务&quot;&quot;&quot;
+    response = requests.get(f&quot;http://feature-service/{user_id}&quot;)
+    response.raise_for_status()
+    return response.json()
+
+@app.post(&quot;/api/recommend&quot;)
+async def recommend(user_id: str):
+    try:
+        features = call_feature_service(user_id)
+    except Exception:
+        # 特征服务故障，降级到基础特征
+        features = get_basic_features(user_id)
+
+    return model.predict(features)</code></pre>
+<p>
+<strong>降级策略</strong>：
+</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>降级策略</th>
+<th>用户体验</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>特征服务故障</td>
+<td>用基础特征（年龄、性别）</td>
+<td>略差但不影响使用</td>
+</tr>
+<tr>
+<td>模型服务故障</td>
+<td>返回热门商品</td>
+<td>可用但不个性化</td>
+</tr>
+<tr>
+<td>排序服务故障</td>
+<td>返回随机商品</td>
+<td>可用但不精准</td>
+</tr>
+</tbody>
+</table>
+<p>
+<strong>收益</strong>：
+</p>
+<ul>
+<li>✅ 大促峰值时，服务稳定性100%</li>
+<li>✅ 单点故障不会导致整体瘫痪</li>
+<li>✅ 用户体验有兜底保障</li>
+</ul>
+<h3>改造后成果（量化数据）</h3>
+<p>
+改造历时10周，投入3个工程师，带来了显著的业务价值：
+</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>改造前</th>
+<th>改造后</th>
+<th>提升</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>故障发生率</strong></td>
+<td>每周2次</td>
+<td>每月1次</td>
+<td>↓ 95%</td>
+</tr>
+<tr>
+<td><strong>故障恢复时间（MTTR）</strong></td>
+<td>1小时</td>
+<td>3分钟</td>
+<td>↓ 90%</td>
+</tr>
+<tr>
+<td><strong>模型迭代周期</strong></td>
+<td>2周</td>
+<td>2天</td>
+<td>↓ 7倍</td>
+</tr>
+<tr>
+<td><strong>推荐CTR</strong></td>
+<td>2.5%</td>
+<td>2.8%</td>
+<td>↑ 12%</td>
+</tr>
+<tr>
+<td><strong>加购率</strong></td>
+<td>8%</td>
+<td>8.64%</td>
+<td>↑ 8%</td>
+</tr>
+<tr>
+<td><strong>大促峰值稳定性</strong></td>
+<td>经常崩溃</td>
+<td>100%稳定</td>
+<td>-</td>
+</tr>
+<tr>
+<td><strong>问题定位时间</strong></td>
+<td>1小时</td>
+<td>5分钟</td>
+<td>↓ 92%</td>
+</tr>
+</tbody>
+</table>
+<p>
+<strong>成本投入</strong>：
+</p>
+<ul>
+<li>人力成本：3个工程师 × 10周 = 30人周</li>
+<li>基础设施：云资源 + 软件 ≈ 5万/月</li>
+<li>总投入：约50万</li>
+</ul>
+<p>
+<strong>业务收益</strong>（保守估算）：
+</p>
+<ul>
+<li>CTR提升12%，每月GMV增加约200万</li>
+<li>故障减少，每月挽回损失约50万</li>
+<li>迭代加快，响应市场更快（难以量化）</li>
+</ul>
+<p>
+<strong>ROI</strong>：投入50万，年化收益约3000万，ROI = 6000%
+</p>
+<h3>案例核心经验</h3>
+<p>
+<strong>成功因素</strong>：
+</p>
+<ol>
+<li>✅ <strong>小范围试点</strong>：先改造一个模块，验证价值后再推广</li>
+<li>✅ <strong>痛点驱动</strong>：优先解决故障和迭代问题，每一步都对齐业务目标</li>
+<li>✅ <strong>逐步迭代</strong>：分阶段改造，每阶段都能带来实际价值</li>
+<li>✅ <strong>团队配合</strong>：算法、工程、业务团队紧密协作</li>
+</ol>
+<p>
+<strong>可复用的落地路径</strong>：
+</p>
+<ol>
+<li>服务拆分 → 提高稳定性</li>
+<li>数据治理 → 保证特征一致性</li>
+<li>监控体系 → 快速定位问题</li>
+<li>自动化流水线 → 提高迭代效率</li>
+<li>安全韧性 → 提高服务可用性</li>
+</ol>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="案例2-反向-盲目追求-大而全-投入3个月-最终完全放弃">案例2（反向）：盲目追求"大而全"，投入3个月，最终完全放弃</h2>
+<h3>背景</h3>
+<p>
+某初创公司，只有2个算法工程师，主要业务是电商推荐和智能客服。
+</p>
+<p>
+看到行业内都在做MLOps/Harness Engineering，CTO决定搭建一套"全链路AI工程化平台"，目标是"对齐大厂的最佳实践"。
+</p>
+<h3>错误做法</h3>
+<h4>错误1：一上来就搭建重型Kubeflow平台</h4>
+<p>
+<strong>决策过程</strong>：
+</p>
+<ul>
+<li>CTO看到Google在用Kubeflow</li>
+<li>没有评估团队规模和技术能力</li>
+<li>直接决定"我们也要上Kubeflow"</li>
+</ul>
+<p>
+<strong>执行过程</strong>：
+</p>
+<ul>
+<li>花1个月搭建K8s集群（学习K8s）</li>
+<li>花2周安装和配置Kubeflow</li>
+<li>遇到各种问题：版本兼容、权限配置、网络问题...</li>
+</ul>
+<p>
+<strong>结果</strong>：
+</p>
+<ul>
+<li>2个工程师完全陷入运维工作</li>
+<li>没有时间做业务模型优化</li>
+<li>Kubeflow最终也没用起来</li>
+</ul>
+<h4>错误2：盲目堆砌工具，没有明确的痛点目标</h4>
+<p>
+<strong>引入的工具清单</strong>：
+</p>
+<ul>
+<li>Kubeflow（工作流）</li>
+<li>Airflow（数据管道）</li>
+<li>Feast（特征管理）</li>
+<li>Prometheus + Grafana（监控）</li>
+<li>ELK（日志）</li>
+<li>Jaeger（链路追踪）</li>
+<li>MLflow（实验管理）</li>
+<li>JupyterHub（开发环境）</li>
+<li>...</li>
+</ul>
+<p>
+<strong>问题</strong>：
+</p>
+<ul>
+<li>10+个工具，每个都需要单独配置和维护</li>
+<li>工具之间的集成很复杂</li>
+<li>没有明确的业务目标，为了工具而工具</li>
+</ul>
+<p>
+<strong>工程师的吐槽</strong>：
+</p>
+<blockquote>
+<p>"我们每天都在修工具、查文档，没有时间优化模型。业务方问我们推荐效果什么时候能提升，我们只能说'还在搭平台'。"</p>
+</blockquote>
+<h4>错误3：没有小范围试点，直接要求全业务线切换</h4>
+<p>
+<strong>决策</strong>：
+</p>
+<ul>
+<li>CTO要求"所有模型都要走新的流水线"</li>
+<li>没有试点验证，直接全面推广</li>
+<li>业务方完全配合不了</li>
+</ul>
+<p>
+<strong>问题</strong>：
+</p>
+<ul>
+<li>新平台太复杂，业务方学不会</li>
+<li>老流程被砍掉，业务方无法正常工作</li>
+<li>业务方抱怨"效率反而降低了"</li>
+</ul>
+<h4>错误4：全程没有对齐业务目标</h4>
+<p>
+<strong>关键问题</strong>：
+</p>
+<ul>
+<li>没有明确要解决什么业务问题</li>
+<li>没有量化的目标和验收标准</li>
+<li>没有定期评估投入产出比</li>
+</ul>
+<p>
+<strong>CTO的思路</strong>：
+</p>
+<blockquote>
+<p>"我们要做全链路AI工程化，这是行业趋势。不管投入多少，先把平台搭起来再说。"</p>
+</blockquote>
+<h3>最终结果</h3>
+<p>
+<strong>时间线</strong>：
+</p>
+<ul>
+<li>第1个月：搭建K8s + Kubeflow</li>
+<li>第2个月：引入各种工具，配置集成</li>
+<li>第3个月：业务方抱怨，看不到价值</li>
+</ul>
+<p>
+<strong>结局</strong>：
+</p>
+<ul>
+<li>老板看到投入3个月，没有任何业务价值</li>
+<li>直接叫停项目</li>
+<li>已投入的资源（时间、金钱）全部浪费</li>
+<li>2个工程师士气受挫，其中1人离职</li>
+</ul>
+<p>
+<strong>损失估算</strong>：
+</p>
+<ul>
+<li>人力成本：2个工程师 × 3个月 = 6人月</li>
+<li>云资源：K8s集群 + 各种工具 ≈ 10万</li>
+<li>总损失：约50万</li>
+<li>机会成本：3个月没有优化模型，业务增长停滞</li>
+</ul>
+<h3>案例核心教训</h3>
+<p>
+<strong>根本错误</strong>：
+</p>
+<ol>
+<li>❌ <strong>脱离业务</strong>：为了工程化而工程化，没有解决实际业务问题</li>
+<li>❌ <strong>盲目求大</strong>：小团队选了重型工具，运维成本完全扛不住</li>
+<li>❌ <strong>没有试点</strong>：一上来就全业务线推广，风险极高</li>
+<li>❌ <strong>没有ROI意识</strong>：不评估投入产出，投入越大损失越大</li>
+</ol>
+<p>
+<strong>正确的做法应该是</strong>：
+</p>
+<table>
+<thead>
+<tr>
+<th>错误做法</th>
+<th>正确做法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>我们要做全链路AI工程化</td>
+<td>我们要解决推荐系统故障频发的问题</td>
+</tr>
+<tr>
+<td>一上来就搭Kubeflow</td>
+<td>先用MLflow + FastAPI搭最小可行方案</td>
+</tr>
+<tr>
+<td>全业务线切换</td>
+<td>先选一个模块做试点</td>
+</tr>
+<tr>
+<td>不评估ROI</td>
+<td>每一步都对齐业务目标，测算ROI</td>
+</tr>
+</tbody>
+</table>
+<p>
+<strong>给小团队的建议</strong>：
+</p>
+<ol>
+<li>✅ 先明确业务痛点（是故障多？迭代慢？效果差？）</li>
+<li>✅ 优先选轻量、易用的工具（BentoML、MLflow、FastAPI）</li>
+<li>✅ 小范围试点，验证价值后再推广</li>
+<li>✅ 定期评估ROI，不要为了工程化而工程化</li>
+</ol>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="两个案例的核心对比">两个案例的核心对比</h2>
+<p>
+让我们把这两个案例放在一起，看看为什么一个成功，一个失败：
+</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>正向案例</th>
+<th>反向案例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>目标</strong></td>
+<td>解决推荐系统故障和迭代问题</td>
+<td>搭建全链路AI工程化平台</td>
+</tr>
+<tr>
+<td><strong>范围</strong></td>
+<td>先试点一个模块，验证价值后推广</td>
+<td>一上来就全业务线重构</td>
+</tr>
+<tr>
+<td><strong>工具选型</strong></td>
+<td>BentoML、Feast、Prometheus等轻量工具</td>
+<td>Kubeflow、Airflow等重型工具</td>
+</tr>
+<tr>
+<td><strong>投入</strong></td>
+<td>10周，3个工程师</td>
+<td>3个月，2个工程师</td>
+</tr>
+<tr>
+<td><strong>ROI</strong></td>
+<td>投入50万，年化收益3000万</td>
+<td>投入50万，收益0</td>
+</tr>
+<tr>
+<td><strong>结果</strong></td>
+<td>成功，推广到全业务线</td>
+<td>失败，项目被叫停</td>
+</tr>
+</tbody>
+</table>
+<p>
+<strong>核心差异</strong>：
+</p>
+<ul>
+<li>✅ <strong>正向案例</strong>：痛点驱动、小范围试点、逐步迭代</li>
+<li>❌ <strong>反向案例</strong>：脱离业务、盲目求大、一步到位</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="章末互动">章末互动</h2>
+<h3>思考题</h3>
+<p>
+从这两个案例中，你得到的最大启发是什么？
+</p>
+<ul>
+<li>A. 必须小范围试点，不能一步到位</li>
+<li>B. 必须对齐业务目标，不能为了工程化而工程化</li>
+<li>C. 必须选适合团队规模的工具，不能盲目求大</li>
+<li>D. 必须定期评估ROI，不能无限投入</li>
+<li>E. 其他（欢迎分享）</li>
+</ul>
+<h3>投票</h3>
+<p>
+你觉得你的团队更容易犯哪种错误？
+</p>
+<ul>
+<li>[ ] 脱离业务，为了工程化而工程化</li>
+<li>[ ] 盲目求大，选了不适合的工具</li>
+<li>[ ] 没有试点，一上来就全业务线推广</li>
+<li>[ ] 没有ROI意识，投入产出不成正比</li>
+</ul>
+<p>
+欢迎在评论区投票和分享你的看法！👇
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="本章要点回顾">本章要点回顾</h2>
+<div class="mermaid">mindmap
+  root((全案复盘))
+    正向案例
+      背景
+        电商推荐系统
+        每周故障2次
+        MTTR 1小时
+        迭代周期2周
+      改造动作
+        1. 服务拆分
+          5个独立服务
+          可独立扩缩容
+        2. 数据治理
+          Feast Feature Store
+          数据漂移检测
+        3. 监控体系
+          技术+业务双维度
+          问题定位5分钟
+        4. 自动流水线
+          CI/CD
+          灰度发布
+          一键回滚
+        5. 安全韧性
+          限流熔断
+          降级策略
+      成果
+        故障 ↓95%
+        MTTR ↓90%
+        迭代周期 ↓7倍
+        CTR ↑12%
+        ROI 6000%
+    反向案例
+      背景
+        初创公司
+        2个工程师
+        要做"全链路平台"
+      错误做法
+        1. 一上来搭Kubeflow
+          陷入运维
+          没时间优化模型
+        2. 盲目堆砌工具
+          10+个工具
+          没有明确目标
+        3. 全业务线推广
+          没有试点
+          业务方不配合
+        4. 脱离业务目标
+          为了工程化而工程化
+          不评估ROI
+      结果
+        投入50万
+        收益0
+        项目被叫停
+    核心对比
+      成功关键
+        痛点驱动
+        小范围试点
+        逐步迭代
+        对齐业务
+      失败原因
+        脱离业务
+        盲目求大
+        没有试点
+        没有ROI</div>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<p>
+<strong>下一章</strong>：<a href="./09-第九章-未来趋势.html">第9章：未来趋势｜大模型时代，Harness Engineering的新挑战与新方向</a>
+</p>
+<p>
+我们将探讨大模型时代，Harness Engineering面临的新挑战、新机遇，以及正在落地的6大核心新方向。
+</p>
+            </section>
+        </main>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top" onclick="scrollToTop()">↑</div>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 返回顶部
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 返回顶部按钮显示/隐藏
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        // 活动导航链接
+        window.addEventListener('scroll', () => {
+            const headings = document.querySelectorAll('h2[id]');
+            const scrollPosition = window.pageYOffset + 100;
+
+            headings.forEach(heading => {
+                const headingTop = heading.offsetTop;
+                const headingId = heading.getAttribute('id');
+
+                if (scrollPosition >= headingTop - 50) {
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + headingId) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

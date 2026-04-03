@@ -5,13 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>第六章：Agent的"记忆"秘密—— 如何让智能体"不健忘、有经验"</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
-    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
-    <script src="https://cdn.bootcdn.net/mermaid/10.9.0/mermaid.min.js"
-            onerror="this.onerror=null; this.src='https://unpkg.com/mermaid@10/dist/mermaid.min.js'"></script>
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>"""
+    <!-- Load Mermaid from local assets folder -->
+    <script src="./assets/mermaid.min.js"></script>
     <script>
-        if (typeof mermaid !== 'undefined') {
-            mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
-        }
+        // Initialize Mermaid when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.querySelectorAll('.mermaid').length === 0) {
+                console.log('No mermaid diagrams found');
+                return;
+            }
+            console.log('Initializing mermaid from local file...');
+
+            if (typeof mermaid !== 'undefined') {
+                mermaid.initialize({
+                    startOnLoad: true,
+                    theme: 'default',
+                    securityLevel: 'loose',
+                    mindmap: {
+                        padding: 10,
+                        useMaxWidth: true
+                    },
+                    logLevel: 'debug'
+                });
+                console.log('Mermaid initialized successfully from local file');
+            } else {
+                console.error('Local mermaid.js failed to load');
+                document.querySelectorAll('.mermaid').forEach(function(el) {
+                    el.style.border = '2px solid #f59e0b';
+                    el.style.padding = '20px';
+                    el.style.background = '#fef3c7';
+                    el.innerHTML = '<p style="color: #92400e; margin: 0;"><strong>⚠️ Mermaid 图表加载失败</strong><br>本地文件 ./assets/mermaid.min.js 未找到。</p>';
+                });
+            }
+        });
     </script>
     <style>
         
@@ -498,6 +525,20 @@ blockquote strong {
     border-radius: 8px;
     margin: 20px 0;
     text-align: center;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Mindmap specific styles */
+.mermaid .mindmap-node {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
 }
 
 pre code.language-mermaid {

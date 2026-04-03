@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第5章：工具全景图｜Harness Engineering落地工具选型指南</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>"""
+    <!-- Load Mermaid from local assets folder -->
+    <script src="./assets/mermaid.min.js"></script>
+    <script>
+        // Initialize Mermaid when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.querySelectorAll('.mermaid').length === 0) {
+                console.log('No mermaid diagrams found');
+                return;
+            }
+            console.log('Initializing mermaid from local file...');
+
+            if (typeof mermaid !== 'undefined') {
+                mermaid.initialize({
+                    startOnLoad: true,
+                    theme: 'default',
+                    securityLevel: 'loose',
+                    mindmap: {
+                        padding: 10,
+                        useMaxWidth: true
+                    },
+                    logLevel: 'debug'
+                });
+                console.log('Mermaid initialized successfully from local file');
+            } else {
+                console.error('Local mermaid.js failed to load');
+                document.querySelectorAll('.mermaid').forEach(function(el) {
+                    el.style.border = '2px solid #f59e0b';
+                    el.style.padding = '20px';
+                    el.style.background = '#fef3c7';
+                    el.innerHTML = '<p style="color: #92400e; margin: 0;"><strong>⚠️ Mermaid 图表加载失败</strong><br>本地文件 ./assets/mermaid.min.js 未找到。</p>';
+                });
+            }
+        });
+    </script>
+    <style>
+        
+        
+        
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f7fa;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .nav-link:hover {
+            background: #f3f4f6;
+            color: #2563eb;
+        }
+
+        .nav-link.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+        .meta-icon {
+            font-size: 20px;
+        }
+
+        h2 {
+            font-size: 32px;
+            color: #1f2937;
+            margin: 50px 0 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2563eb;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 24px;
+            color: #374151;
+            margin: 35px 0 20px;
+            font-weight: 600;
+        }
+
+        h4 {
+            font-size: 20px;
+            color: #4b5563;
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #4b5563;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        /* 代码块 */
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        code {
+            background: #f3f4f6;
+            color: #dc2626;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 15px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        /* 列表 */
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 强调框 */
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box {
+            background: #e0e7ff;
+            border-left: 4px solid #6366f1;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 时间标签 */
+        .time-tag {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* 问答框 */
+        .qa-box {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #2563eb;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .answer {
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 链接 */
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2563eb;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s;
+            font-size: 24px;
+        }
+
+        .back-to-top:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 968px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-card {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            h2 {
+                font-size: 26px;
+            }
+
+            .hero-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* 打印样式 */
+        @media print {
+            .sidebar {
+                display: none;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .content-card {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+/* Mermaid diagrams */
+.mermaid {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Mindmap specific styles */
+.mermaid .mindmap-node {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+pre code.language-mermaid {
+    background: white;
+    color: #1f2937;
+    padding: 0;
+    border-radius: 8px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 侧边导航 -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">📚</span>
+                <span>AI核心概念</span>
+            </div>
+            <div class="subtitle">
+                
+            </div>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">🏠 返回首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#intro" class="nav-link active">📖 概述</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#开篇困惑-工具太多了-到底该选哪个" class="nav-link">🛠️ 开篇困惑：工具太多了，到底该选哪个？</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#本章核心定位" class="nav-link">⭐ 本章核心定位</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#1-选型核心心法-开篇必讲" class="nav-link">⭐ 1. 选型核心心法（开篇必讲）</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#2-分模块工具选型表-含新手友好度评级" class="nav-link">🛠️ 2. 分模块工具选型表（含新手友好度评级）</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#3-分受众选型推荐" class="nav-link">📚 3. 分受众选型推荐</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#4-工具选型实战-三个真实案例" class="nav-link">🛠️ 4. 工具选型实战：三个真实案例</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#5-新手避坑提醒" class="nav-link">📚 5. 新手避坑提醒</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#6-工具对比速查表" class="nav-link">🛠️ 6. 工具对比速查表</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#7-章末互动" class="nav-link">📚 7. 章末互动</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#本章要点回顾" class="nav-link">📝 本章要点回顾</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 英雄区域 -->
+            <section class="hero-section">
+                <h1>第5章：工具全景图｜Harness Engineering落地工具选型指南</h1>
+                <div class="hero-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon">🎯</span>
+                        <span>学习目标：见标题</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">👥</span>
+                        <span>适合人群：所有人</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 内容区域 -->
+            <section id="intro" class="content-card">
+                <blockquote>
+<p>解决读者"知道要做什么，但不知道用什么工具做"的核心痛点</p>
+</blockquote>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="开篇困惑-工具太多了-到底该选哪个">开篇困惑：工具太多了，到底该选哪个？</h2>
+<p>
+你是不是也有这样的经历：
+</p>
+<ul>
+<li>听说Kubeflow是大厂在用的MLOps平台，花了一个月搭好环境，结果发现团队只有2个人，运维成本完全扛不住</li>
+<li>在GitHub上看到十几个开源工具，不知道该选哪个，最后每个都装了一点，结果完全用不起来</li>
+<li>想给模型加监控，搜索后发现Prometheus、Grafana、WhyLabs、MLflow都能用，不知道哪个更适合自己</li>
+</ul>
+<p>
+<strong>工具选型，是落地Harness Engineering的第一道关卡</strong>。
+</p>
+<p>
+选对了，事半功倍；选错了，不仅浪费时间，还可能让整个项目半途而废。
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="本章核心定位">本章核心定位</h2>
+<p>
+按模块分类，给不同团队规模、不同技术栈的读者匹配对应的工具，避免工具炫技，坚持"痛点优先，够用就好"。
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="1-选型核心心法-开篇必讲">1. 选型核心心法（开篇必讲）</h2>
+<p>
+在进入具体工具之前，我们先建立正确的选型思路。这比记住一堆工具名字更重要。
+</p>
+<h3>心法1：先明确痛点，再选工具</h3>
+<p>
+❌ <strong>错误做法</strong>：
+</p>
+<ul>
+<li>看到别人用Kubeflow，自己也想搭一套</li>
+<li>听说哪个工具火热，就先装上再说</li>
+</ul>
+<p>
+✅ <strong>正确做法</strong>：
+</p>
+<ul>
+<li>我们当前最核心的痛点是什么？</li>
+<li>是模型上线后经常出故障？→ 优先选监控工具</li>
+<li>是模型迭代太慢？→ 优先选CI/CD工具</li>
+<li>是训练推理特征不一致？→ 优先选Feature Store</li>
+<li>针对这个痛点，哪个工具最能快速解决问题？</li>
+</ul>
+<h3>心法2：匹配团队规模与技术栈</h3>
+<p>
+<strong>个人开发者/纯新手</strong>：
+</p>
+<ul>
+<li>不要选Kubeflow这种需要K8s集群的重型工具</li>
+<li>优先选开箱即用、文档完善的轻量工具</li>
+<li>学习成本比功能全面更重要</li>
+</ul>
+<p>
+<strong>初创公司/小团队</strong>：
+</p>
+<ul>
+<li>不要选运维成本过高的工具</li>
+<li>优先选云服务托管方案，减少运维负担</li>
+<li>2-3人的团队，要把时间花在业务模型上，而不是运维上</li>
+</ul>
+<p>
+<strong>中大型企业</strong>：
+</p>
+<ul>
+<li>可以考虑重型平台，但要评估ROI</li>
+<li>优先选能和现有技术栈集成的工具</li>
+<li>要考虑多团队协作、合规审计等需求</li>
+</ul>
+<h3>心法3：避免工具碎片化</h3>
+<p>
+❌ <strong>错误做法</strong>：
+</p>
+<ul>
+<li>监控用Prometheus，日志用ELK，追踪用Jaeger，模型管理用MLflow，特征用Feast</li>
+<li>引入了10+个工具，每个都要单独维护，最后哪个都用不好</li>
+</ul>
+<p>
+✅ <strong>正确做法</strong>：
+</p>
+<ul>
+<li>优先选能覆盖多个需求的平台型工具</li>
+<li>比如：MLflow既能做模型管理，也能做实验追踪，还能做部分监控</li>
+<li>先用1-2个核心工具跑通流程，再逐步扩展</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="2-分模块工具选型表-含新手友好度评级">2. 分模块工具选型表（含新手友好度评级）</h2>
+<p>
+我们把工具按四大支柱模块分类，每个工具都标注了新手友好度，方便你快速匹配。
+</p>
+<h3>2.1 模型服务化工具</h3>
+<p>
+这个模块的核心是：把你的训练好的模型，打包成一个能扛流量、能升级、能回滚的标准化服务。
+</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>核心能力</th>
+<th>适用场景</th>
+<th>新手友好度</th>
+<th>学习成本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FastAPI</strong></td>
+<td>轻量级API框架，自动生成文档，支持异步</td>
+<td>个人开发者、小团队、快速原型开发</td>
+<td>★★★★★</td>
+<td>1-2天</td>
+</tr>
+<tr>
+<td><strong>BentoML</strong></td>
+<td>模型服务全栈框架，支持多模型、批处理、监控</td>
+<td>小团队、中型团队、需要开箱即用的完整方案</td>
+<td>★★★★☆</td>
+<td>3-5天</td>
+</tr>
+<tr>
+<td><strong>Triton Inference Server</strong></td>
+<td>高性能推理服务器，支持多框架、动态批处理</td>
+<td>中大型企业、高并发场景、多模型部署</td>
+<td>★★☆☆☆</td>
+<td>1-2周</td>
+</tr>
+<tr>
+<td><strong>TorchServe</strong></td>
+<td>PyTorch官方推理服务器，深度集成Torch生态</td>
+<td>以PyTorch为主的技术栈、需要Torch专属优化</td>
+<td>★★★☆☆</td>
+<td>5-7天</td>
+</tr>
+<tr>
+<td><strong>AWS SageMaker Endpoints</strong></td>
+<td>云托管推理服务，免运维</td>
+<td>使用AWS云、预算充足、不想管运维</td>
+<td>★★★★☆</td>
+<td>2-3天</td>
+</tr>
+<tr>
+<td><strong>阿里云PAI-EAS</strong></td>
+<td>云托管推理服务，支持多种框架</td>
+<td>使用阿里云、需要快速上线</td>
+<td>★★★★☆</td>
+<td>2-3天</td>
+</tr>
+</tbody>
+</table>
+<h4>推荐组合方案</h4>
+<p>
+<strong>个人开发者</strong>：
+</p>
+<pre><code>FastAPI + Docker + 云服务器</code></pre>
+<ul>
+<li>优点：完全免费，学习成本低，灵活度高</li>
+<li>缺点：需要自己处理监控、限流等功能</li>
+</ul>
+<p>
+<strong>初创公司/小团队</strong>：
+</p>
+<pre><code>BentoML + 云服务托管</code></pre>
+<ul>
+<li>优点：开箱即用，自带监控、多模型管理，运维成本低</li>
+<li>缺点：有一定学习成本，需要理解BentoML的概念</li>
+</ul>
+<p>
+<strong>中大型企业</strong>：
+</p>
+<pre><code>Triton + K8s + Istio</code></pre>
+<ul>
+<li>优点：高并发、高可用、多团队协作</li>
+<li>缺点：运维成本高，需要专门的平台团队</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>2.2 特征与数据治理工具</h3>
+<p>
+这个模块的核心是：保证训练和推理的特征计算逻辑一致，监控数据质量，及时发现数据漂移。
+</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>核心能力</th>
+<th>适用场景</th>
+<th>新手友好度</th>
+<th>学习成本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Feast</strong></td>
+<td>开源Feature Store，支持离线/在线特征</td>
+<td>中大型团队、多模型共享特征、需要特征统一管理</td>
+<td>★★★☆☆</td>
+<td>1-2周</td>
+</tr>
+<tr>
+<td><strong>Evidently AI</strong></td>
+<td>数据质量监控、数据漂移检测、报告生成</td>
+<td>所有团队、需要快速发现数据问题</td>
+<td>★★★★★</td>
+<td>1-2天</td>
+</tr>
+<tr>
+<td><strong>Great Expectations</strong></td>
+<td>数据质量检测、数据文档、测试框架</td>
+<td>数据工程团队、需要严格的数据质量管控</td>
+<td>★★★☆☆</td>
+<td>1周</td>
+</tr>
+<tr>
+<td><strong>WhyLabs</strong></td>
+<td>云服务数据监控，自动异常检测</td>
+<td>预算充足、不想自己维护监控系统</td>
+<td>★★★★☆</td>
+<td>2-3天</td>
+</tr>
+<tr>
+<td><strong>GCP Vertex AI Feature Store</strong></td>
+<td>云托管Feature Store，全托管服务</td>
+<td>使用GCP云、中大型企业</td>
+<td>★★★☆☆</td>
+<td>3-5天</td>
+</tr>
+<tr>
+<td><strong>阿里云PAI Feature Store</strong></td>
+<td>云托管Feature Store，国内访问快</td>
+<td>使用阿里云、需要快速上线</td>
+<td>★★★☆☆</td>
+<td>3-5天</td>
+</tr>
+</tbody>
+</table>
+<h4>推荐组合方案</h4>
+<p>
+<strong>个人开发者</strong>：
+</p>
+<pre><code>Pandas + 基础统计监控</code></pre>
+<ul>
+<li>优点：零成本，快速上手</li>
+<li>缺点：功能有限，需要自己写监控代码</li>
+</ul>
+<p>
+<strong>小团队</strong>：
+</p>
+<pre><code>Evidently AI + 简单特征存储</code></pre>
+<ul>
+<li>优点：开箱即用，生成漂亮的报告，新手友好</li>
+<li>缺点：Feature Store能力有限</li>
+</ul>
+<p>
+<strong>中大型企业</strong>：
+</p>
+<pre><code>Feast + Evidently AI + 自建数据平台</code></pre>
+<ul>
+<li>优点：完整的特征管理+监控体系，可扩展性强</li>
+<li>缺点：需要专门的平台团队维护</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>2.3 可观测与监控工具</h3>
+<p>
+这个模块的核心是：出了问题能在1分钟内找到问题在哪，而不是对着黑屏瞎猜。
+</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>核心能力</th>
+<th>适用场景</th>
+<th>新手友好度</th>
+<th>学习成本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prometheus + Grafana</strong></td>
+<td>业界标准监控方案，生态完善</td>
+<td>所有团队、需要灵活定制监控</td>
+<td>★★★★☆</td>
+<td>3-5天</td>
+</tr>
+<tr>
+<td><strong>MLflow Tracking</strong></td>
+<td>实验追踪+模型监控+部分生产监控</td>
+<td>小团队、需要实验到生产的全流程追踪</td>
+<td>★★★★★</td>
+<td>1-2天</td>
+</tr>
+<tr>
+<td><strong>WhyLabs</strong></td>
+<td>云服务监控，自动异常检测</td>
+<td>预算充足、不想自己维护监控系统</td>
+<td>★★★★☆</td>
+<td>2-3天</td>
+</tr>
+<tr>
+<td><strong>Datadog</strong></td>
+<td>商业APM平台，全栈监控</td>
+<td>预算充足、需要一站式监控</td>
+<td>★★★★☆</td>
+<td>2-3天</td>
+</tr>
+<tr>
+<td><strong>AWS CloudWatch</strong></td>
+<td>AWS云监控，深度集成AWS服务</td>
+<td>使用AWS云、预算充足</td>
+<td>★★★☆☆</td>
+<td>3-5天</td>
+</tr>
+<tr>
+<td><strong>阿里云ARMS</strong></td>
+<td>阿里云APM，国内访问快</td>
+<td>使用阿里云、需要APM能力</td>
+<td>★★★☆☆</td>
+<td>3-5天</td>
+</tr>
+</tbody>
+</table>
+<h4>推荐组合方案</h4>
+<p>
+<strong>个人开发者</strong>：
+</p>
+<pre><code>Prometheus + Grafana</code></pre>
+<ul>
+<li>优点：免费、开源、社区活跃、文档完善</li>
+<li>缺点：需要自己搭建和维护</li>
+</ul>
+<p>
+<strong>小团队</strong>：
+</p>
+<pre><code>Prometheus + Grafana + MLflow Tracking</code></pre>
+<ul>
+<li>优点：覆盖实验到生产的全流程监控</li>
+<li>缺点：需要维护两套系统</li>
+</ul>
+<p>
+<strong>中大型企业</strong>：
+</p>
+<pre><code>Datadog / 云厂商APM + 自建监控平台</code></pre>
+<ul>
+<li>优点：功能全面、运维负担小、支持告警、日志、追踪一体化</li>
+<li>缺点：成本较高</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>2.4 流程编排与CI/CD工具</h3>
+<p>
+这个模块的核心是：让测试、构建、部署自动化，不需要人工干预。
+</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>核心能力</th>
+<th>适用场景</th>
+<th>新手友好度</th>
+<th>学习成本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MLflow Projects</strong></td>
+<td>轻量级流程管理，代码打包+环境复现</td>
+<td>小团队、需要快速上手的实验管理</td>
+<td>★★★★★</td>
+<td>1-2天</td>
+</tr>
+<tr>
+<td><strong>GitHub Actions</strong></td>
+<td>CI/CD自动化，GitHub深度集成</td>
+<td>使用GitHub、需要免费CI/CD方案</td>
+<td>★★★★☆</td>
+<td>2-3天</td>
+</tr>
+<tr>
+<td><strong>GitLab CI</strong></td>
+<td>CI/CD自动化，GitLab深度集成</td>
+<td>使用GitLab、需要一体化DevOps</td>
+<td>★★★★☆</td>
+<td>2-3天</td>
+</tr>
+<tr>
+<td><strong>Airflow</strong></td>
+<td>复杂工作流编排，DAG任务管理</td>
+<td>数据工程团队、复杂的数据管道</td>
+<td>★★☆☆☆</td>
+<td>1-2周</td>
+</tr>
+<tr>
+<td><strong>Kubeflow</strong></td>
+<td>K8s上的ML工作流平台，全链路ML</td>
+<td>中大型企业、已有K8s基础、需要完整MLOps</td>
+<td>★★☆☆☆</td>
+<td>2-4周</td>
+</tr>
+<tr>
+<td><strong>AWS SageMaker Pipelines</strong></td>
+<td>云托管ML流水线，无服务器</td>
+<td>使用AWS云、预算充足</td>
+<td>★★★☆☆</td>
+<td>1周</td>
+</tr>
+<tr>
+<td><strong>阿里云PAI Pipelines</strong></td>
+<td>云托管ML流水线，国内访问快</td>
+<td>使用阿里云、需要快速上线</td>
+<td>★★★☆☆</td>
+<td>1周</td>
+</tr>
+</tbody>
+</table>
+<h4>推荐组合方案</h4>
+<p>
+<strong>个人开发者</strong>：
+</p>
+<pre><code>MLflow Projects + GitHub Actions</code></pre>
+<ul>
+<li>优点：免费、简单、社区活跃</li>
+<li>缺点：功能相对基础</li>
+</ul>
+<p>
+<strong>小团队</strong>：
+</p>
+<pre><code>GitLab CI + MLflow</code></pre>
+<ul>
+<li>优点：一体化、开箱即用、学习成本低</li>
+<li>缺点：GitLab CI的高级功能需要付费</li>
+</ul>
+<p>
+<strong>中大型企业</strong>：
+</p>
+<pre><code>Kubeflow / Airflow + 企业级CI/CD</code></pre>
+<ul>
+<li>优点：功能强大、可扩展、支持复杂流程</li>
+<li>缺点：运维成本高、学习曲线陡</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h3>2.5 安全与合规工具</h3>
+<p>
+这个模块的核心是：防止恶意攻击、保护数据隐私、满足合规要求。
+</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>核心能力</th>
+<th>适用场景</th>
+<th>新手友好度</th>
+<th>学习成本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NVIDIA NeMo Guardrails</strong></td>
+<td>LLM防护，防止Prompt注入、越狱</td>
+<td>LLM应用、需要安全防护</td>
+<td>★★★☆☆</td>
+<td>3-5天</td>
+</tr>
+<tr>
+<td><strong>OpenPolicyAgent</strong></td>
+<td>策略引擎，细粒度权限控制</td>
+<td>需要复杂权限管理、合规要求高</td>
+<td>★★☆☆☆</td>
+<td>1-2周</td>
+</tr>
+<tr>
+<td><strong>基础鉴权库（PyJWT等）</strong></td>
+<td>JWT鉴权、API Key管理</td>
+<td>所有团队、基础的接口鉴权</td>
+<td>★★★★☆</td>
+<td>1-2天</td>
+</tr>
+<tr>
+<td><strong>云厂商安全套件</strong></td>
+<td>云服务自带的安全能力</td>
+<td>使用云服务、需要快速合规</td>
+<td>★★★☆☆</td>
+<td>3-5天</td>
+</tr>
+</tbody>
+</table>
+<h4>推荐组合方案</h4>
+<p>
+<strong>个人开发者/小团队</strong>：
+</p>
+<pre><code>基础鉴权（PyJWT）+ 速率限制（slowapi）</code></pre>
+<ul>
+<li>优点：简单、免费、满足基本需求</li>
+<li>缺点：功能有限，不支持复杂的安全策略</li>
+</ul>
+<p>
+<strong>中大型企业</strong>：
+</p>
+<pre><code>NeMo Guardrails + OpenPolicyAgent + 云安全套件</code></pre>
+<ul>
+<li>优点：全链路安全防护、满足合规要求</li>
+<li>缺点：成本高、复杂度高</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="3-分受众选型推荐">3. 分受众选型推荐</h2>
+<p>
+我们把上面的工具按团队规模和技术能力，给出最推荐的组合方案。
+</p>
+<h3>3.1 个人开发者/纯新手</h3>
+<p>
+<strong>核心诉求</strong>：
+</p>
+<ul>
+<li>零成本或低成本</li>
+<li>学习曲线平缓</li>
+<li>能快速搭建最小可行Harness</li>
+</ul>
+<p>
+<strong>推荐组合</strong>：
+</p>
+<pre><code>FastAPI（模型服务化）
++ Prometheus + Grafana（监控）
++ MLflow（实验管理）
++ GitHub Actions（CI/CD）
++ Evidently AI（数据监控）</code></pre>
+<p>
+<strong>为什么选这个组合</strong>：
+</p>
+<ul>
+<li>✅ 全部免费，社区活跃</li>
+<li>✅ 文档完善，新手友好</li>
+<li>✅ 能覆盖最小可行Harness的全部需求</li>
+<li>✅ 学习成本：1-2周可以上手</li>
+</ul>
+<p>
+<strong>替代方案</strong>（如果你不想自己搭建）：
+</p>
+<pre><code>BentoML（一站式模型服务+监控）
++ MLflow（实验管理）</code></pre>
+<h3>3.2 初创公司/小团队</h3>
+<p>
+<strong>核心诉求</strong>：
+</p>
+<ul>
+<li>平衡功能与运维成本</li>
+<li>支持多模型、多环境</li>
+<li>能快速响应业务需求</li>
+</ul>
+<p>
+<strong>推荐组合</strong>：
+</p>
+<pre><code>BentoML（模型服务化）
++ Feast（Feature Store）
++ Evidently AI（数据监控）
++ 云服务托管（AWS/阿里云）
++ MLflow（实验+模型管理）
++ GitLab CI（CI/CD）</code></pre>
+<p>
+<strong>为什么选这个组合</strong>：
+</p>
+<ul>
+<li>✅ BentoML开箱即用，自带监控、多模型管理</li>
+<li>✅ 云服务托管，减少运维负担</li>
+<li>✅ 功能全面，能支持中等规模业务</li>
+<li>✅ 学习成本：2-4周可以落地</li>
+</ul>
+<p>
+<strong>成本估算</strong>（月成本）：
+</p>
+<ul>
+<li>云服务器：2-4K</li>
+<li>云服务托管：3-8K</li>
+<li>总计：5-12K/月</li>
+</ul>
+<h3>3.3 中大型企业</h3>
+<p>
+<strong>核心诉求</strong>：
+</p>
+<ul>
+<li>支持高并发、多团队协作</li>
+<li>满足合规审计要求</li>
+<li>可扩展性强</li>
+</ul>
+<p>
+<strong>推荐组合</strong>：
+</p>
+<pre><code>Triton Inference Server（模型服务化）
++ Kubeflow（工作流编排）
++ 企业级Feature Store（Feast定制/云服务）
++ Datadog/云厂商APM（全链路监控）
++ OpenPolicyAgent（权限控制）
++ K8s + Istio（服务网格）</code></pre>
+<p>
+<strong>为什么选这个组合</strong>：
+</p>
+<ul>
+<li>✅ 支持高并发、多模型部署</li>
+<li>✅ 完整的监控、追踪、日志体系</li>
+<li>✅ 满足合规审计要求</li>
+<li>✅ 可扩展性强，支持多团队协作</li>
+<li>⚠️ 需要专门的平台团队维护</li>
+</ul>
+<p>
+<strong>成本估算</strong>（月成本）：
+</p>
+<ul>
+<li>平台团队：3-5人</li>
+<li>云资源：20-50K</li>
+<li>商业软件：10-30K</li>
+<li>总计：50-100K/月</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="4-工具选型实战-三个真实案例">4. 工具选型实战：三个真实案例</h2>
+<h3>案例1：个人开发者的选型之路</h3>
+<p>
+<strong>背景</strong>： 小张是个AI爱好者，训练了一个商品推荐模型，想上线到自己的博客上。
+</p>
+<p>
+<strong>错误尝试</strong>： 听人说Kubeflow是大厂在用的MLOps平台，花了一个月学习K8s和Kubeflow，最后发现：
+</p>
+<ul>
+<li>自己的博客每天只有100个访问，根本用不上Kubeflow的复杂功能</li>
+<li>K8s集群的运维成本完全扛不住</li>
+<li>模型上线的事一拖再拖</li>
+</ul>
+<p>
+<strong>正确选型</strong>： 重新评估自己的需求后，换了方案：
+</p>
+<pre><code>FastAPI + Docker + Prometheus + Grafana</code></pre>
+<p>
+<strong>结果</strong>：
+</p>
+<ul>
+<li>2天完成模型API封装</li>
+<li>3天完成监控搭建</li>
+<li>1周内成功上线</li>
+<li>总成本：0元（用免费云服务器）</li>
+</ul>
+<h3>案例2：小团队的工具取舍</h3>
+<p>
+<strong>背景</strong>： 某初创公司，3个算法工程师，需要支持5个模型的上线和迭代。
+</p>
+<p>
+<strong>初始方案</strong>： 引入了10+个开源工具：Kubeflow、Airflow、Feast、Prometheus、Grafana、ELK、Jaeger...
+</p>
+<ul>
+<li>3个人完全陷入运维工作</li>
+<li>每个月都在修工具的bug，没时间优化模型</li>
+<li>业务方抱怨模型迭代太慢</li>
+</ul>
+<p>
+<strong>优化后方案</strong>： 砍掉了大部分工具，只保留核心的：
+</p>
+<pre><code>BentoML（模型服务+基础监控）
++ MLflow（实验管理）
++ GitLab CI（CI/CD）
++ 云服务托管</code></pre>
+<p>
+<strong>结果</strong>：
+</p>
+<ul>
+<li>运维工作减少80%</li>
+<li>模型迭代周期从2周缩到3天</li>
+<li>工程师能专注在模型优化上</li>
+</ul>
+<h3>案例3：中大型企业的选型考量</h3>
+<p>
+<strong>背景</strong>： 某中型电商平台，需要支持50+模型的上线，日均QPS百万级。
+</p>
+<p>
+<strong>选型过程</strong>：
+</p>
+<ol>
+<li>评估需求：高并发、多团队、合规要求</li>
+<li>技术栈：已有K8s基础设施</li>
+<li>团队：有专门的平台团队（5人）</li>
+<li>预算：可以接受商业软件</li>
+</ol>
+<p>
+<strong>最终方案</strong>：
+</p>
+<pre><code>Triton（推理服务）
++ Kubeflow（工作流）
++ 自建Feature Store
++ Datadog（监控）
++ K8s + Istio</code></pre>
+<p>
+<strong>结果</strong>：
+</p>
+<ul>
+<li>支持百万级QPS</li>
+<li>模型迭代周期从2周缩到2天</li>
+<li>故障恢复时间从1小时降到3分钟</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="5-新手避坑提醒">5. 新手避坑提醒</h2>
+<h3>避坑1：不要盲目追求"大厂同款"</h3>
+<p>
+❌ <strong>错误想法</strong>： "Google用Kubeflow，我们也要用" "Netflix用自定义平台，我们也要自建"
+</p>
+<p>
+✅ <strong>正确认知</strong>：
+</p>
+<ul>
+<li>大厂的方案是为大厂的规模设计的</li>
+<li>小团队用重型工具只会徒增运维成本</li>
+<li>先解决核心痛点，再逐步完善</li>
+</ul>
+<h3>避坑2：不要同时引入太多工具</h3>
+<p>
+❌ <strong>错误做法</strong>： 看到好用的工具就想装，结果引入了10+个工具，每个都只用了20%的功能
+</p>
+<p>
+✅ <strong>正确做法</strong>：
+</p>
+<ul>
+<li>先从1-2个核心工具入手</li>
+<li>跑通流程再逐步扩展</li>
+<li>优先选能覆盖多个需求的平台型工具</li>
+</ul>
+<h3>避坑3：不要选小众工具</h3>
+<p>
+❌ <strong>错误做法</strong>： 在GitHub上找了一个功能很酷但只有100 stars的工具，结果遇到问题找不到解决方案
+</p>
+<p>
+✅ <strong>正确做法</strong>：
+</p>
+<ul>
+<li>优先选社区活跃、文档完善的工具</li>
+<li>检查工具的GitHub stars、issues响应速度、文档质量</li>
+<li>避免选没有明确维护者的小众工具</li>
+</ul>
+<h3>避坑4：不要忽视学习成本</h3>
+<p>
+❌ <strong>错误做法</strong>： 选了Kubeflow，没有评估团队的学习能力，结果学了2个月还没用起来
+</p>
+<p>
+✅ <strong>正确做法</strong>：
+</p>
+<ul>
+<li>选工具前评估团队的技术栈和学习能力</li>
+<li>新手优先选文档友好、社区活跃的工具</li>
+<li>给团队留出学习时间，不要急于求成</li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="6-工具对比速查表">6. 工具对比速查表</h2>
+<p>
+为了方便你快速选型，我们把核心工具做成一个速查表：
+</p>
+<h3>模型服务化工具对比</h3>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>学习成本</th>
+<th>运维成本</th>
+<th>功能全面性</th>
+<th>推荐场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FastAPI</td>
+<td>★☆☆☆☆</td>
+<td>★☆☆☆☆</td>
+<td>★★☆☆☆</td>
+<td>个人开发者、快速原型</td>
+</tr>
+<tr>
+<td>BentoML</td>
+<td>★★☆☆☆</td>
+<td>★★☆☆☆</td>
+<td>★★★★☆</td>
+<td>小团队、需要完整方案</td>
+</tr>
+<tr>
+<td>Triton</td>
+<td>★★★★☆</td>
+<td>★★★★☆</td>
+<td>★★★★★</td>
+<td>高并发、多模型部署</td>
+</tr>
+<tr>
+<td>云服务</td>
+<td>★☆☆☆☆</td>
+<td>☆☆☆☆☆</td>
+<td>★★★☆☆</td>
+<td>预算充足、不想运维</td>
+</tr>
+</tbody>
+</table>
+<h3>监控工具对比</h3>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>学习成本</th>
+<th>运维成本</th>
+<th>功能全面性</th>
+<th>推荐场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prometheus+Grafana</td>
+<td>★★☆☆☆</td>
+<td>★★☆☆☆</td>
+<td>★★★★☆</td>
+<td>所有团队、灵活定制</td>
+</tr>
+<tr>
+<td>MLflow Tracking</td>
+<td>★☆☆☆☆</td>
+<td>★☆☆☆☆</td>
+<td>★★★☆☆</td>
+<td>小团队、实验追踪</td>
+</tr>
+<tr>
+<td>Datadog</td>
+<td>★☆☆☆☆</td>
+<td>☆☆☆☆☆</td>
+<td>★★★★★</td>
+<td>预算充足、一站式监控</td>
+</tr>
+</tbody>
+</table>
+<h3>特征管理工具对比</h3>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>学习成本</th>
+<th>运维成本</th>
+<th>功能全面性</th>
+<th>推荐场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pandas+自建</td>
+<td>★☆☆☆☆</td>
+<td>★☆☆☆☆</td>
+<td>★☆☆☆☆</td>
+<td>个人开发者、简单场景</td>
+</tr>
+<tr>
+<td>Evidently AI</td>
+<td>★☆☆☆☆</td>
+<td>★☆☆☆☆</td>
+<td>★★★☆☆</td>
+<td>所有团队、数据监控</td>
+</tr>
+<tr>
+<td>Feast</td>
+<td>★★★☆☆</td>
+<td>★★★☆☆</td>
+<td>★★★★★</td>
+<td>中大型团队、特征统一管理</td>
+</tr>
+</tbody>
+</table>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="7-章末互动">7. 章末互动</h2>
+<h3>思考题</h3>
+<p>
+你的团队现有技术栈，最适配哪个工具方案？
+</p>
+<ul>
+<li>A. 个人开发者：FastAPI + Prometheus + MLflow</li>
+<li>B. 小团队：BentoML + 云服务托管</li>
+<li>C. 中大型企业：Triton + Kubeflow + K8s</li>
+<li>D. 还不确定，需要进一步评估</li>
+</ul>
+<h3>投票</h3>
+<p>
+你当前最想入手的工具是哪个？
+</p>
+<ul>
+<li>[ ] BentoML（一站式模型服务）</li>
+<li>[ ] Prometheus + Grafana（监控）</li>
+<li>[ ] MLflow（实验管理）</li>
+<li>[ ] Evidently AI（数据监控）</li>
+<li>[ ] Triton（高性能推理）</li>
+</ul>
+<p>
+欢迎在评论区投票和分享你的选型经验！👇
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="本章要点回顾">本章要点回顾</h2>
+<div class="mermaid">mindmap
+  root((工具选型))
+    核心心法
+      先明确痛点
+        监控问题？
+        迭代慢？
+        数据不一致？
+      匹配团队规模
+        个人：轻量级
+        小团队：平衡成本
+        大企业：功能全面
+      避免碎片化
+        1-2个核心工具
+        跑通再扩展
+    模型服务化
+      个人
+        FastAPI
+      小团队
+        BentoML
+      大企业
+        Triton + K8s
+    监控可观测
+      个人
+        Prometheus + Grafana
+      小团队
+        MLflow + Prometheus
+      大企业
+        Datadog / 云APM
+    特征数据
+      个人
+        Pandas + 自建
+      小团队
+        Evidently AI
+      大企业
+        Feast + 自建平台
+    CI/CD
+      个人
+        GitHub Actions
+      小团队
+        GitLab CI
+      大企业
+        Kubeflow / Airflow
+    避坑提醒
+      不盲目追求大厂同款
+      不同时引入太多工具
+      不选小众工具
+      不忽视学习成本</div>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<p>
+<strong>下一章</strong>：<a href="./06-第六章-实战五步法.html">第6章：实战五步法｜从0到1落地Harness Engineering全流程</a>
+</p>
+<p>
+我们将深入探讨从需求对齐到持续迭代的完整落地流程，每一步都有明确的动作、模板、验收标准，让你看完就能照着落地。
+</p>
+            </section>
+        </main>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top" onclick="scrollToTop()">↑</div>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 返回顶部
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 返回顶部按钮显示/隐藏
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        // 活动导航链接
+        window.addEventListener('scroll', () => {
+            const headings = document.querySelectorAll('h2[id]');
+            const scrollPosition = window.pageYOffset + 100;
+
+            headings.forEach(heading => {
+                const headingTop = heading.offsetTop;
+                const headingId = heading.getAttribute('id');
+
+                if (scrollPosition >= headingTop - 50) {
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + headingId) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

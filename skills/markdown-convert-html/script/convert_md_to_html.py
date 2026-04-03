@@ -7,6 +7,7 @@ Converts markdown files to HTML with the same styling as AI转型启动会.html
 
 import re
 import os
+import urllib.request
 from pathlib import Path
 
 def read_template():
@@ -51,6 +52,20 @@ blockquote strong {
     border-radius: 8px;
     margin: 20px 0;
     text-align: center;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Mindmap specific styles */
+.mermaid .mindmap-node {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
 }
 
 pre code.language-mermaid {
@@ -63,16 +78,67 @@ pre code.language-mermaid {
 
     return css + blockquote_css + mermaid_css
 
-def generate_html_from_markdown(md_content, title, css):
-    """Convert markdown content to HTML with full styling"""
+def download_mermaid_js(target_path):
+    """Download mermaid.min.js from CDN to local path
+
+    Args:
+        target_path: Path where mermaid.min.js should be saved
+
+    Returns:
+        bool: True if download successful, False otherwise
+    """
+    mermaid_url = "https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js"
+
+    try:
+        # Create parent directory if it doesn't exist
+        target_path.parent.mkdir(parents=True, exist_ok=True)
+
+        print(f"[DOWNLOAD] Downloading mermaid.min.js from CDN...")
+        print(f"[DOWNLOAD] Target: {target_path}")
+
+        # Download with progress indication
+        def show_progress(block_num, block_size, total_size):
+            downloaded = block_num * block_size
+            if total_size > 0:
+                percent = min(100, downloaded * 100 / total_size)
+                print(f"\r[DOWNLOAD] Progress: {percent:.1f}%", end='', flush=True)
+
+        urllib.request.urlretrieve(mermaid_url, target_path, show_progress)
+        print()  # New line after progress
+
+        file_size = target_path.stat().st_size / (1024 * 1024)  # Size in MB
+        print(f"[OK] Downloaded mermaid.min.js ({file_size:.1f} MB)")
+        return True
+
+    except Exception as e:
+        print(f"[ERROR] Failed to download mermaid.min.js: {e}")
+        # Clean up partial download if it exists
+        if target_path.exists():
+            target_path.unlink()
+        return False
+
+def generate_html_from_markdown(md_content, title, css, use_local_mermaid=False):
+    """Convert markdown content to HTML with full styling
+
+    Args:
+        md_content: Markdown content
+        title: Document title
+        css: CSS styles
+        use_local_mermaid: If True, use local mermaid.js instead of CDN
+    """
 
     # Code blocks - process BEFORE other conversions to protect them
     code_blocks = []
     placeholder_template = "___CODE_BLOCK_{}___"
+    has_mermaid = False  # Track if page contains mermaid diagrams
 
     def extract_code_block(match):
+        nonlocal has_mermaid
         language = match.group(1) if match.group(1) else ''
         code = match.group(2)
+        # Check if this is a mermaid code block
+        if language and language.lower() == 'mermaid':
+            has_mermaid = True
         idx = len(code_blocks)
         code_blocks.append((language, code))
         return placeholder_template.format(idx)
@@ -536,6 +602,83 @@ def generate_html_from_markdown(md_content, title, css):
     # Handle horizontal rules
     html_content = re.sub(r'^---+$', '<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">', html_content, flags=re.MULTILINE)
 
+    # Generate mermaid loader script based on whether page has mermaid diagrams
+    if has_mermaid:
+        if use_local_mermaid:
+            # Use local mermaid.js file
+            mermaid_loader = """    <!-- Load Mermaid from local assets folder -->
+    <script src="./assets/mermaid.min.js"></script>
+    <script>
+        // Initialize Mermaid when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.querySelectorAll('.mermaid').length === 0) {
+                console.log('No mermaid diagrams found');
+                return;
+            }
+            console.log('Initializing mermaid from local file...');
+
+            if (typeof mermaid !== 'undefined') {
+                mermaid.initialize({
+                    startOnLoad: true,
+                    theme: 'default',
+                    securityLevel: 'loose',
+                    mindmap: {
+                        padding: 10,
+                        useMaxWidth: true
+                    },
+                    logLevel: 'debug'
+                });
+                console.log('Mermaid initialized successfully from local file');
+            } else {
+                console.error('Local mermaid.js failed to load');
+                document.querySelectorAll('.mermaid').forEach(function(el) {
+                    el.style.border = '2px solid #f59e0b';
+                    el.style.padding = '20px';
+                    el.style.background = '#fef3c7';
+                    el.innerHTML = '<p style="color: #92400e; margin: 0;"><strong>⚠️ Mermaid 图表加载失败</strong><br>本地文件 ./assets/mermaid.min.js 未找到。</p>';
+                });
+            }
+        });
+    </script>"""
+        else:
+            # Use CDN as fallback
+            mermaid_loader = """    <!-- Load Mermaid from CDN (fallback) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js"></script>
+    <script>
+        // Initialize Mermaid when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.querySelectorAll('.mermaid').length === 0) {
+                console.log('No mermaid diagrams found');
+                return;
+            }
+            console.log('Initializing mermaid from CDN...');
+
+            if (typeof mermaid !== 'undefined') {
+                mermaid.initialize({
+                    startOnLoad: true,
+                    theme: 'default',
+                    securityLevel: 'loose',
+                    mindmap: {
+                        padding: 10,
+                        useMaxWidth: true
+                    },
+                    logLevel: 'debug'
+                });
+                console.log('Mermaid initialized successfully from CDN');
+            } else {
+                console.error('Mermaid failed to load from CDN');
+                document.querySelectorAll('.mermaid').forEach(function(el) {
+                    el.style.border = '2px solid #f59e0b';
+                    el.style.padding = '20px';
+                    el.style.background = '#fef3c7';
+                    el.innerHTML = '<p style="color: #92400e; margin: 0;"><strong>⚠️ Mermaid 图表加载失败</strong><br>请检查网络连接或下载 mermaid.min.js 到本地 assets 文件夹。</p>';
+                });
+            }
+        });
+    </script>"""
+    else:
+        mermaid_loader = '    <!-- No mermaid diagrams in this page -->\n'
+
     # Build complete HTML document
     full_html = f'''<!DOCTYPE html>
 <html lang="zh-CN">
@@ -544,14 +687,8 @@ def generate_html_from_markdown(md_content, title, css):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{main_title}</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
-    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
-    <script src="https://cdn.bootcdn.net/mermaid/10.9.0/mermaid.min.js"
-            onerror="this.onerror=null; this.src='https://unpkg.com/mermaid@10/dist/mermaid.min.js'"></script>
-    <script>
-        if (typeof mermaid !== 'undefined') {{
-            mermaid.initialize({{ startOnLoad: true, theme: 'default', securityLevel: 'loose' }});
-        }}
-    </script>
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>"""
+{mermaid_loader}
     <style>
         {css}
     </style>
@@ -677,8 +814,14 @@ def escape_html(text):
     }
     return ''.join(html_escape_table.get(c, c) for c in text)
 
-def convert_file(md_path, output_path):
-    """Convert a single markdown file to HTML"""
+def convert_file(md_path, output_path, auto_download=False):
+    """Convert a single markdown file to HTML
+
+    Args:
+        md_path: Path to markdown file
+        output_path: Path to output HTML file
+        auto_download: If True, automatically download mermaid.min.js when needed
+    """
     print(f"Converting {md_path}...")
 
     with open(md_path, 'r', encoding='utf-8') as f:
@@ -687,7 +830,36 @@ def convert_file(md_path, output_path):
     css = read_template()
     title = Path(md_path).stem
 
-    html_content = generate_html_from_markdown(md_content, title, css)
+    # Pre-scan markdown to check if it contains mermaid code blocks
+    has_mermaid = bool(re.search(r'```mermaid\n', md_content))
+
+    # Only check/download local mermaid.js if the file actually uses mermaid
+    use_local_mermaid = False
+    if has_mermaid:
+        output_dir = Path(output_path).parent
+        local_mermaid_path = output_dir / 'assets' / 'mermaid.min.js'
+
+        if local_mermaid_path.exists():
+            use_local_mermaid = True
+            print(f"[INFO] Using local mermaid.js: {local_mermaid_path}")
+        else:
+            print(f"[INFO] Markdown contains mermaid diagrams, but local file not found")
+
+            # Auto-download if requested
+            if auto_download:
+                print(f"[INFO] Auto-downloading mermaid.min.js...")
+                if download_mermaid_js(local_mermaid_path):
+                    use_local_mermaid = True
+                else:
+                    print(f"[INFO] Download failed, using CDN as fallback")
+            else:
+                print(f"[INFO] Using CDN as fallback")
+                print(f"[INFO] Tip: Use --download-mermaid flag to download for offline use")
+                print(f"[INFO] Or manually download to: {local_mermaid_path}")
+    else:
+        print(f"[INFO] No mermaid diagrams detected in markdown file")
+
+    html_content = generate_html_from_markdown(md_content, title, css, use_local_mermaid=use_local_mermaid)
 
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(html_content)
@@ -697,10 +869,19 @@ def convert_file(md_path, output_path):
 def main():
     """Main conversion function"""
     import sys
+    import argparse
+
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description='Convert Markdown to HTML with styling')
+    parser.add_argument('file', nargs='?', help='Markdown file to convert')
+    parser.add_argument('--download-mermaid', action='store_true',
+                        help='Automatically download mermaid.min.js when mermaid diagrams are detected')
+
+    args = parser.parse_args()
 
     # Check if a specific file is provided as argument
-    if len(sys.argv) > 1:
-        md_file = Path(sys.argv[1])
+    if args.file:
+        md_file = Path(args.file)
         if not md_file.exists():
             print(f"[ERROR] File not found: {md_file}")
             sys.exit(1)
@@ -712,7 +893,7 @@ def main():
         print("=" * 60)
 
         try:
-            convert_file(md_file, html_file)
+            convert_file(md_file, html_file, auto_download=args.download_mermaid)
             print("=" * 60)
             print("Conversion complete!")
             print("=" * 60)

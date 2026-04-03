@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第一章：什么是AI Agent？—— 为什么它正在改变AI的未来</title>
+    <title>开篇总序：让AI模型真正"武装上阵"</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
     <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>"""
     <!-- Load Mermaid from local assets folder -->
@@ -572,28 +572,34 @@ pre code.language-mermaid {
                     </li>
 
                     <li class="nav-item">
-                        <a href="#开篇思考-ai到底能帮你做什么" class="nav-link">🤖 开篇思考：AI到底能帮你做什么？</a>
+                        <a href="#写在前面" class="nav-link">📚 写在前面</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#一-一个比喻-秒懂ai-agent的本质" class="nav-link">🤖 一、一个比喻，秒懂AI Agent的本质</a>
+                        <a href="#本系列写给谁看" class="nav-link">📚 本系列写给谁看？</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#二-ai-agent的4个核心特征-缺一不可" class="nav-link">🤖 二、AI Agent的4个核心特征（缺一不可）</a>
+                        <a href="#读完这套系列-你将收获什么" class="nav-link">📚 读完这套系列，你将收获什么？</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#三-认知纠偏-90-的人都搞错的-llm-vs-agent" class="nav-link">🤖 三、认知纠偏：90%的人都搞错的「LLM vs Agent」</a>
+                        <a href="#核心术语澄清-什么是-harness-engineering" class="nav-link">⭐ 核心术语澄清：什么是 Harness Engineering？</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#四-为什么ai-agent是ai的未来" class="nav-link">🤖 四、为什么AI Agent是AI的未来？</a>
+                        <a href="#大白话核心价值" class="nav-link">⭐ 大白话核心价值</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#五-本章核心小结" class="nav-link">⭐ 五、本章核心小结</a>
+                        <a href="#受众分层阅读指南" class="nav-link">📚 受众分层阅读指南</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#六-下章预告" class="nav-link">📚 六、下章预告</a>
+                        <a href="#配套资源说明" class="nav-link">📖 配套资源说明</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#配图说明" class="nav-link">📖 📊 配图说明</a>
+                        <a href="#最佳阅读体验建议" class="nav-link">📚 最佳阅读体验建议</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#全系列导航" class="nav-link">📚 全系列导航</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#写在最后" class="nav-link">📚 写在最后</a>
                     </li>
                 </ul>
             </nav>
@@ -603,7 +609,7 @@ pre code.language-mermaid {
         <main class="main-content">
             <!-- 英雄区域 -->
             <section class="hero-section">
-                <h1>第一章：什么是AI Agent？—— 为什么它正在改变AI的未来</h1>
+                <h1>开篇总序：让AI模型真正"武装上阵"</h1>
                 <div class="hero-meta">
                     <div class="meta-item">
                         <span class="meta-icon">🎯</span>
@@ -619,453 +625,301 @@ pre code.language-mermaid {
             <!-- 内容区域 -->
             <section id="intro" class="content-card">
                 <blockquote>
-<p><strong>章节核心目标</strong></p>
-<p></p>
-<p>彻底搞懂AI Agent的核心定义和核心特征，明确区分「传统程序/纯LLM/AI Agent」的本质差异，建立基础认知，为后续所有章节打下基础。</p>
+<p>写给每一个想让AI模型走出实验室的工程师、决策者和爱好者</p>
 </blockquote>
 <p>
 <hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
 </p>
-<h2 id="开篇思考-ai到底能帮你做什么">开篇思考：AI到底能帮你做什么？</h2>
+<h2 id="写在前面">写在前面</h2>
 <p>
-让我先问几个问题：
+你可能在Notebook里把模型调到了99%的准确率，但一上线就频频崩溃；
 </p>
 <p>
-<strong>场景1：</strong> 你对ChatGPT说："帮我查一下上海今天天气怎么样。"
-</p>
-<ul>
-<li>ChatGPT会回答你："抱歉，我的知识截止到训练时间，无法获取实时天气信息。"</li>
-<li><strong>你得到了一个"回答"，但问题没解决。</strong></li>
-</ul>
-<p>
-<strong>场景2：</strong> 你对AI Agent说："帮我查一下上海今天天气，如果是晴天就帮我订一张去上海的机票，如果是雨天就帮我订购雨具外卖送到家。"
-</p>
-<ul>
-<li>AI Agent会先调用天气API查询实时天气</li>
-<li>然后根据天气情况，调用机票API或外卖API</li>
-<li>最后告诉你："已经帮你订好了明天去上海的机票/雨具已经在路上了"</li>
-<li><strong>你的问题被真正解决了。</strong></li>
-</ul>
-<p>
-<strong>这就是核心区别：</strong>
-</p>
-<ul>
-<li><strong>传统程序</strong>：只能按固定规则执行，超出规则就失效</li>
-<li><strong>纯LLM（如ChatGPT）</strong>：能回答问题，但只能"被动应答"</li>
-<li><strong>AI Agent</strong>：能真正"做事"，从对话工具变成了行动主体</li>
-</ul>
-<p>
-<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
-</p>
-<h2 id="一-一个比喻-秒懂ai-agent的本质">一、一个比喻，秒懂AI Agent的本质</h2>
-<p>
-为了让你彻底搞懂这三者的区别，我用一个生活化的场景来比喻：<strong>点咖啡</strong>。
-</p>
-<h3>1.1 传统程序 = 自动售货机</h3>
-<p>
-想象你在商场里看到一台自动售货机：
+你可能做出了一个惊艳的LLM应用，但并发一高就超时瘫痪；
 </p>
 <p>
-<strong>它的逻辑是：</strong>
-</p>
-<ul>
-<li>投币 → 选择商品 → 机器吐出商品</li>
-<li><strong>规则完全固定，每一步都写死</strong></li>
-</ul>
-<p>
-<strong>它的问题：</strong>
-</p>
-<ul>
-<li>你想让它帮你"加热咖啡"，它完全做不到，因为没有这个功能</li>
-<li>你想让它"推荐一款适合现在天气的咖啡"，它做不到，因为它没有思考能力</li>
-<li><strong>超出规则的功能，它完全无法工作</strong></li>
-</ul>
-<p>
-<strong>这就是传统程序的本质：</strong>
-</p>
-<ul>
-<li>输入 → 按固定规则处理 → 输出</li>
-<li>一旦遇到规则之外的情况，就彻底失效</li>
-</ul>
-<h3>1.2 纯大模型LLM = 万能顾问</h3>
-<p>
-想象你雇了一个非常博学的顾问，他能回答任何问题：
+你可能训练了优秀的推荐模型，但线上效果却离线效果大相径庭。
 </p>
 <p>
-<strong>你问他："上海今天天气怎么样？"</strong>
-</p>
-<ul>
-<li>他能告诉你："上海今天晴天，气温18-26度"</li>
-<li><strong>但他不会帮你做任何事</strong></li>
-</ul>
-<p>
-<strong>你问他："能帮我订一张去上海的机票吗？"</strong>
-</p>
-<ul>
-<li>他会说："很抱歉，我只能提供信息，无法帮你订票"</li>
-<li><strong>他能理解你的需求，但没有行动能力</strong></li>
-</ul>
-<p>
-<strong>这就是纯LLM的本质：</strong>
-</p>
-<ul>
-<li>能理解、能回答、能生成内容</li>
-<li>但只能"被动应答"，无法和真实世界交互</li>
-<li><strong>它的能力局限在"虚拟世界"</strong></li>
-</ul>
-<h3>1.3 AI Agent = 专属私人助理</h3>
-<p>
-现在想象你雇了一个专属助理：
-</p>
-<p>
-<strong>你对他说："帮我安排下周去上海的差旅，预算3000以内，要靠近会场，避开我之前踩过坑的酒店。"</strong>
-</p>
-<p>
-<strong>他会怎么做？</strong>
-</p>
-<ol>
-<li><strong>理解你的目标</strong>（不是简单的问答，而是理解"我要完成这件事"）</li>
-<li><strong>自主拆解任务</strong>：</li>
-</ol>
-<ul>
-<li>先查会场地址</li>
-<li>查附近的酒店</li>
-<li>筛选掉你之前不喜欢的酒店</li>
-<li>查往返机票</li>
-<li>核对预算</li>
-<li>下单预订</li>
-<li>同步到你的日历</li>
-<li>设置出行提醒</li>
-</ul>
-<ol>
-<li><strong>调用工具执行</strong>：调用机票API、酒店API、日历API</li>
-<li><strong>根据反馈优化</strong>：如果某酒店满房，会自动更换同价位的其他酒店</li>
-<li><strong>完成目标并汇报</strong>："已经帮你订好了，详细信息如下..."</li>
-</ol>
-<p>
-<strong>全程你只需要说一句话，剩下的所有工作都是他自主完成的。</strong>
+这些问题，不是你的模型不够好，而是你的模型缺少了一层"作战装备"——<strong>Harness Engineering</strong>。
 </p>
 <p>
 <hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
 </p>
-<h2 id="二-ai-agent的4个核心特征-缺一不可">二、AI Agent的4个核心特征（缺一不可）</h2>
+<h2 id="本系列写给谁看">本系列写给谁看？</h2>
+<h3>👶 纯新手/学生/AI爱好者</h3>
 <p>
-通过上面的比喻，你应该已经感觉到：AI Agent和传统程序、纯LLM的核心区别是什么。
+你刚刚接触AI，可能跑过几个模型Demo，想了解如何让AI模型真正落地到生产环境。
 </p>
 <p>
-让我给你一个<strong>更清晰的定义</strong>：
+<strong>阅读路径</strong>：重点关注第1-5章、第10章，跟着新手任务动手实操，7天跑通最小可行Harness体系。
 </p>
-<h3>🎯 核心定义</h3>
+<h3>💻 个人开发者/初级算法工程师</h3>
 <p>
-<strong>AI Agent = 以大模型为核心大脑 + 能自主理解目标 + 能拆解任务 + 能调用工具 + 能执行操作 + 能根据反馈优化迭代的完整智能体</strong>
-</p>
-<p>
-<strong>用一句话总结：Agent是一个"目标驱动的自主闭环智能体"</strong>
-</p>
-<h3>📊 4个核心特征</h3>
-<table>
-<thead>
-<tr>
-<th>特征</th>
-<th>核心含义</th>
-<th>和传统程序/LLM的区别</th>
-<th>具象案例：点咖啡</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>1. 目标驱动</strong></td>
-<td>只需要给最终目标，不需要给每一步的执行指令，自主拆解任务</td>
-<td>传统程序需要写死每一步；LLM不会主动做事</td>
-<td>你只需说"点一杯符合我习惯的无糖冰美式到公司"，Agent会自主拆解成：查口味→选店铺→下单→同步地址</td>
-</tr>
-<tr>
-<td><strong>2. 自主性</strong></td>
-<td>无需人工逐轮干预，能自主完成多步操作，形成闭环</td>
-<td>传统程序遇到异常就停止；LLM只能回答问题</td>
-<td>Agent下单时发现店铺闭店，会自动更换同品类的其他店铺，重新下单，不需要你干预</td>
-</tr>
-<tr>
-<td><strong>3. 环境交互与工具使用</strong></td>
-<td>能调用外部工具、和真实世界交互，突破LLM的能力边界</td>
-<td>传统程序工具是写死的；LLM无法调用外部工具</td>
-<td>Agent会调用外卖API、天气API、地图API，完成真实的操作</td>
-</tr>
-<tr>
-<td><strong>4. 闭环迭代</strong></td>
-<td>能根据执行结果的反馈，自主优化后续的决策和行动</td>
-<td>传统程序不会自我优化；LLM没有行动也就没有反馈</td>
-<td>Agent根据"咖啡店闭店"的反馈，优化决策，更换店铺，直到完成目标</td>
-</tr>
-</tbody>
-</table>
-<h3>💡 为什么叫"闭环"？</h3>
-<p>
-<strong>闭环 = 感知 → 决策 → 行动 → 反馈 → 再感知 → 再优化</strong>
+你已经训练过模型，但模型上线后总是遇到各种问题，想系统学习如何让模型稳定运行。
 </p>
 <p>
-用点咖啡的案例：
+<strong>阅读路径</strong>：重点读第2-8章，理解核心模块，学习工具选型，掌握落地流程，避开常见陷阱。
 </p>
-<ol>
-<li><strong>感知</strong>：用户说"点一杯冰美式"</li>
-<li><strong>决策</strong>：用户喜欢无糖、要送到公司、预算30元以内，决定调用XX咖啡外卖API</li>
-<li><strong>行动</strong>：调用外卖API下单</li>
-<li><strong>反馈</strong>：API返回"该店铺已闭店"</li>
-<li><strong>再感知</strong>：收到反馈，知道下单失败</li>
-<li><strong>再优化</strong>：更换同品类的其他店铺，重新下单</li>
-<li><strong>循环</strong>：直到成功完成目标</li>
-</ol>
+<h3>🏢 初创公司/小团队</h3>
 <p>
-<strong>这就是Agent和传统程序、LLM的核心分水岭：传统程序是线性的，LLM是单次应答的，只有Agent是闭环迭代的。</strong>
+你们团队已经做了一些AI应用，但工程化水平不高，故障频发，迭代缓慢，想提升稳定性。
+</p>
+<p>
+<strong>阅读路径</strong>：重点读第2-6章、第8章，学习最小可行体系，参考正向案例，避开发散式大而全的陷阱。
+</p>
+<h3>👔 技术负责人/技术决策者</h3>
+<p>
+你需要评估是否在团队内推行Harness Engineering，想知道投入产出比、落地路径、未来趋势。
+</p>
+<p>
+<strong>阅读路径</strong>：重点读第2-3章、第8-10章，理解核心价值，参考真实案例，制定团队落地计划。
 </p>
 <p>
 <hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
 </p>
-<h2 id="三-认知纠偏-90-的人都搞错的-llm-vs-agent">三、认知纠偏：90%的人都搞错的「LLM vs Agent」</h2>
+<h2 id="读完这套系列-你将收获什么">读完这套系列，你将收获什么？</h2>
+<h3>✅ 清晰的认知框架</h3>
 <p>
-这是我见过的<strong>最高频的认知错误</strong>，很多人误以为：
+搞懂Harness Engineering的定义、边界、核心模块，知道它和MLOps、DevOps、AI Agent的关系和区别，建立完整的认知体系。
 </p>
-<ul>
-<li>❌ "ChatGPT就是Agent"</li>
-<li>❌ "LLM = Agent"</li>
-<li>❌ "能用对话的AI就是Agent"</li>
-</ul>
+<h3>✅ 可落地的实战能力</h3>
 <p>
-让我给你一个<strong>清晰的关系图</strong>：
+掌握从0到1落地Harness Engineering的五步法，每一步都有明确的动作、模板、验收标准，可以直接复用到你的项目中。
 </p>
-<h3>🔍 核心结论</h3>
+<h3>✅ 避开90%的踩坑</h3>
 <p>
-<strong>LLM是Agent的"大脑"，但LLM ≠ Agent</strong>
+学习行业内上百个团队的踩坑经验，提前规避"特征不一致"、"只监控技术指标"、"大而全陷阱"等高频问题。
 </p>
+<h3>✅ 工具选型能力</h3>
 <p>
-<strong>Agent = LLM（大脑） + 记忆系统（数据仓库） + 工具调用能力（手脚） + 感知能力（五官） + 反馈优化机制（自我迭代）</strong>
+了解主流工具的特点、适用场景、新手友好度，能根据团队规模和技术栈选择最合适的工具组合。
 </p>
-<h3>📋 对比案例</h3>
+<h3>✅ 分人群的行动计划</h3>
 <p>
-<strong>纯ChatGPT对话 vs 基于ChatGPT搭建的差旅Agent</strong>
-</p>
-<table>
-<thead>
-<tr>
-<th>对比维度</th>
-<th>纯ChatGPT对话</th>
-<th>基于ChatGPT的差旅Agent</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>你问</strong>："帮我安排下周去上海的差旅"</td>
-<td><strong>回答</strong>："我可以给你一些建议..."<br>（只能提供信息）</td>
-<td><strong>执行</strong>：开始查询机票、酒店、做行程、同步日历<br>（真正在做事）</td>
-</tr>
-<tr>
-<td><strong>能力</strong></td>
-<td>只能回答问题、生成内容</td>
-<td>能理解目标、拆解任务、调用工具、执行操作</td>
-</tr>
-<tr>
-<td><strong>交互</strong></td>
-<td>你问它答，单次应答</td>
-<td>闭环迭代，自主完成多步操作</td>
-</tr>
-<tr>
-<td><strong>和真实世界的连接</strong></td>
-<td>无</td>
-<td>能调用API、能操作系统、能和真实世界交互</td>
-</tr>
-<tr>
-<td><strong>记忆</strong></td>
-<td>只有上下文窗口，对话长了就忘</td>
-<td>有完整的记忆系统，长期记住你的偏好</td>
-</tr>
-</tbody>
-</table>
-<h3>🤔 那为什么有人说"ChatGPT是Agent"？</h3>
-<p>
-这里有两个概念容易混淆：
-</p>
-<p>
-<strong>1. ChatGPT本身（纯LLM）</strong>
-</p>
-<ul>
-<li>只能对话，不能调用工具</li>
-<li><strong>不是Agent</strong></li>
-</ul>
-<p>
-<strong>2. 基于ChatGPT搭建的应用</strong>
-</p>
-<ul>
-<li>比如OpenAI的"Assistant API"功能，可以给ChatGPT加工具调用能力</li>
-<li>这个"带工具的ChatGPT" = Agent</li>
-<li><strong>本质是：LLM + 工具调用 = Agent</strong></li>
-</ul>
-<p>
-<strong>记住一个核心公式：</strong>
-</p>
-<pre><code>LLM（大脑） + 工具调用（手脚） + 记忆系统（数据仓库） + 反馈优化（自我迭代） = AI Agent（完整智能体）</code></pre>
-<p>
-<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
-</p>
-<h2 id="四-为什么ai-agent是ai的未来">四、为什么AI Agent是AI的未来？</h2>
-<p>
-你可能会问：<strong>"为什么这么多人说Agent是下一代AI的核心形态？它到底解决了什么问题？"</strong>
-</p>
-<p>
-让我给你一个<strong>最直接的答案</strong>：
-</p>
-<h3>🎯 AI的终极目标：解放人力，帮人"完成事情"</h3>
-<p>
-过去几十年，AI的发展经历了几个阶段：
-</p>
-<p>
-<strong>阶段1：从规则到学习</strong>
-</p>
-<ul>
-<li>早期AI = 写死规则的专家系统</li>
-<li>核心问题：规则写不完，泛化能力为0</li>
-</ul>
-<p>
-<strong>阶段2：从学习到理解</strong>
-</p>
-<ul>
-<li>深度学习爆发，AI能识别图片、语音</li>
-<li>核心问题：只能做单一任务，跨场景能力弱</li>
-</ul>
-<p>
-<strong>阶段3：从理解到对话</strong>
-</p>
-<ul>
-<li>大语言模型（LLM）诞生，AI能理解、生成人类语言</li>
-<li>核心突破：通用交互能力，普通人都能用</li>
-<li><strong>核心局限</strong>：只能"说"，不能"做"</li>
-</ul>
-<p>
-<strong>阶段4：从对话到行动 —— 这就是Agent</strong>
-</p>
-<ul>
-<li><strong>Agent让AI从"对话工具"变成了"行动主体"</strong></li>
-<li><strong>核心突破</strong>：不仅能理解、能回答，还能调用工具、执行操作、完成目标</li>
-<li><strong>这是AI真正能替代人类重复劳动的关键一步</strong></li>
-</ul>
-<h3>📊 真实案例：某企业的数据报表自动化</h3>
-<p>
-<strong>传统方式：</strong>
-</p>
-<ul>
-<li>2个数据分析师</li>
-<li>每天做4小时</li>
-<li>人工从多个系统导出数据</li>
-<li>手动清洗、整理、制作报表</li>
-<li>人工核对数据准确性</li>
-<li><strong>成本高、效率低、容易出错</strong></li>
-</ul>
-<p>
-<strong>用Agent后：</strong>
-</p>
-<ul>
-<li>1个数据分析师 Agent</li>
-<li>10分钟完成全部工作</li>
-<li>自动从多个系统API拉取数据</li>
-<li>自动清洗、整理、制作报表</li>
-<li>自动交叉校验数据准确性</li>
-<li>异常情况自动标记、人工审核</li>
-<li><strong>成本降低80%、效率提升24倍、准确率100%</strong></li>
-</ul>
-<p>
-<strong>这就是Agent的价值：它让AI不再是"锦上添花"的对话玩具，而是真正能"降本增效"的生产力工具。</strong>
+无论你是纯新手、初级工程师还是技术负责人，都有对应的成长路径和落地计划，可以直接照着执行。
 </p>
 <p>
 <hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
 </p>
-<h2 id="五-本章核心小结">五、本章核心小结</h2>
-<h3>✅ 核心结论</h3>
-<ol>
-<li><strong>AI Agent的本质</strong>：以大模型为核心大脑，能自主理解目标、拆解任务、调用工具、执行操作、根据反馈优化迭代的完整智能体</li>
-</ol>
-<ol>
-<li><strong>和传统程序、纯LLM的核心区别</strong>：</li>
-</ol>
-<ul>
-<li>传统程序 = 自动售货机（固定规则，超出规则就失效）</li>
-<li>纯LLM = 万能顾问（能回答问题，但不会主动做事）</li>
-<li>AI Agent = 专属私人助理（目标驱动、自主闭环、环境交互、持续迭代）</li>
-</ul>
-<ol>
-<li><strong>AI Agent的4个核心特征</strong>：</li>
-</ol>
-<ul>
-<li>目标驱动：只需给最终目标，自主拆解任务</li>
-<li>自主性：无需人工逐轮干预，能自主完成多步操作</li>
-<li>环境交互与工具使用：能调用外部工具，突破LLM能力边界</li>
-<li>闭环迭代：能根据反馈优化决策，持续迭代</li>
-</ul>
-<ol>
-<li><strong>LLM vs Agent的关系</strong>：LLM是Agent的"大脑"，但LLM ≠ Agent；Agent是包含"大脑+记忆+手脚+感官"的完整智能体</li>
-</ol>
-<ol>
-<li><strong>为什么Agent是AI的未来</strong>：它让AI从"对话工具"变成了"行动主体"，真正实现了用AI替代重复、复杂的全流程工作</li>
-</ol>
+<h2 id="核心术语澄清-什么是-harness-engineering">核心术语澄清：什么是 Harness Engineering？</h2>
 <p>
-<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+在正式开始之前，我们必须先澄清一个容易混淆的术语。
 </p>
-<h2 id="六-下章预告">六、下章预告</h2>
+<h3>⚠️ 术语强制澄清</h3>
 <p>
-<strong>这一章，我们搞懂了"什么是AI Agent"。</strong>
-</p>
-<p>
-<strong>但有一个问题：Agent这个概念，并不是随着ChatGPT才出现的。早在1950年代，"智能体"的概念就已经诞生了。</strong>
-</p>
-<p>
-<strong>那为什么偏偏是大语言模型，引爆了Agent的全民革命？LLM到底给Agent带来了什么革命性的突破？</strong>
-</p>
-<p>
-<strong>下一章，我们会追溯Agent的进化史，搞懂从规则引擎到LLM的完整演进脉络，理解为什么大语言模型是Agent从实验室走向大众的关键。</strong>
-</p>
-<p>
-<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
-</p>
-<h2 id="配图说明">📊 配图说明</h2>
-<p>
-<strong>图1：传统程序 vs 纯LLM vs AI Agent 对比图</strong>
-</p>
-<div class="mermaid">flowchart LR
-    subgraph Traditional["传统程序<br/>Traditional Program"]
-        T1["📋 规则驱动"]
-        T2["❌ 无法泛化"]
-        T3["🔧 固定逻辑"]
-    end
-
-    subgraph LLM["纯LLM<br/>Pure LLM"]
-        L1["🧠 推理能力"]
-        L2["⚠️ 幻觉问题"]
-        L3["💭 对话能力"]
-    end
-
-    subgraph Agent["AI Agent<br/>AI Agent"]
-        A1["🎯 目标驱动"]
-        A2["🔄 自主循环"]
-        A3["🛠️ 工具调用"]
-    end
-
-    style Traditional fill:#E0E0E0,stroke:#9E9E9E,stroke-width:2px
-    style LLM fill:#FFE0B2,stroke:#FF9800,stroke-width:2px
-    style Agent fill:#C8E6C9,stroke:#4CAF50,stroke-width:2px</div>
-<p>
-<strong>图2：AI Agent 4大核心特征环形图</strong>
-</p>
-<img src="./image/01-AI-Agent四大核心特征环形图.png" alt="image" style="max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0;">
-<p>
-<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+本文讨论的 <strong>Harness Engineering</strong>，特指：
 </p>
 <blockquote>
-<p><strong>💡 学习小贴士</strong></p>
-<p></p>
-<p>- 这一章的核心是<strong>建立认知</strong>，不需要记住所有细节，理解"Agent是目标驱动的自主闭环智能体"这个核心定义就够了</p>
-<p>- 如果你用过ChatGPT，可以试试想一下：它能不能算Agent？为什么？</p>
-<p>- 如果你对"闭环迭代"还有点模糊，没关系，第三章会详细拆解Agent的工作流程</p>
-<p></p>
-<p><strong>下一章：<a href="./02-第二章-Agent的大脑从何而来.html">Agent的"大脑"从何而来？—— 从规则引擎到LLM的进化史</a></strong></p>
+<p><strong>通过工程化手段，将AI模型封装为高可用、可监控、可迭代的生产级服务的全链路实践</strong>，是MLOps在落地层的深化实践。</p>
 </blockquote>
+<p>
+<strong>它不是</strong>：CI/CD工具 Harness（软件交付平台）
+</p>
+<p>
+<strong>为什么需要澄清</strong>？
+</p>
+<p>
+因为"Harness"这个词在技术领域有两个常见的含义：
+</p>
+<ol>
+<li><strong>CI/CD工具 Harness</strong>：一个用于软件交付的DevOps平台</li>
+<li><strong>Harness Engineering</strong>（本文主题）：AI模型工程化落地的实践体系</li>
+</ol>
+<p>
+为了避免混淆，本文开篇即明确：<strong>我们讨论的是AI模型工程化，不是CI/CD工具</strong>。
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="大白话核心价值">大白话核心价值</h2>
+<p>
+Harness Engineering的本质，就是<strong>给AI模型做"全流程售后保障"</strong>。
+</p>
+<p>
+让它从实验室里的"完美样品"，变成能扛住高并发、不出故障、可随时升级的线上"合格品"。
+</p>
+<p>
+打个比方：
+</p>
+<ul>
+<li><strong>训练模型</strong>：就像造一辆法拉利跑车，在实验室里跑得飞快</li>
+<li><strong>Harness Engineering</strong>：就像给这辆车装上刹车系统、安全气囊、导航仪、保养体系，让它能在真实的公路上稳定、安全地跑</li>
+</ul>
+<p>
+没有Harness Engineering的模型，就像一辆没有刹车、没有安全气囊的跑车，在实验室里很炫，但一上公路就会出问题。
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="受众分层阅读指南">受众分层阅读指南</h2>
+<h3>👶 纯新手/学生/AI爱好者</h3>
+<p>
+<strong>优先阅读</strong>：第1-5章、第10章
+</p>
+<p>
+<strong>核心目标</strong>：
+</p>
+<ul>
+<li>理解为什么需要Harness Engineering</li>
+<li>掌握最小可行Harness（3步搭建）</li>
+<li>跟着新手任务动手实操</li>
+<li>7天内跑通第一个带监控的模型服务</li>
+</ul>
+<p>
+<strong>时间投入</strong>：5-7天
+</p>
+<h3>💻 个人开发者/初级算法工程师</h3>
+<p>
+<strong>优先阅读</strong>：第1-8章
+</p>
+<p>
+<strong>核心目标</strong>：
+</p>
+<ul>
+<li>理解核心定义和四大支柱</li>
+<li>掌握工具选型方法</li>
+<li>学习五步落地流程</li>
+<li>避开90%的常见陷阱</li>
+<li>能在项目中落地最小可行体系</li>
+</ul>
+<p>
+<strong>时间投入</strong>：7-10天
+</p>
+<h3>🏢 初创公司/小团队</h3>
+<p>
+<strong>优先阅读</strong>：第2-6章、第8章
+</p>
+<p>
+<strong>核心目标</strong>：
+</p>
+<ul>
+<li>理解核心价值和边界</li>
+<li>选择合适的工具组合</li>
+<li>参考正向案例的落地路径</li>
+<li>避开"大而全"陷阱</li>
+<li>提升服务稳定性和迭代效率</li>
+</ul>
+<p>
+<strong>时间投入</strong>：10-14天（含试点落地）
+</p>
+<h3>👔 技术负责人/技术决策者</h3>
+<p>
+<strong>优先阅读</strong>：第2-3章、第8-10章
+</p>
+<p>
+<strong>核心目标</strong>：
+</p>
+<ul>
+<li>理解Harness Engineering的ROI</li>
+<li>评估团队落地路径</li>
+<li>参考真实案例的投入产出</li>
+<li>了解未来趋势</li>
+<li>制定团队落地计划</li>
+</ul>
+<p>
+<strong>时间投入</strong>：3-5天
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="配套资源说明">配套资源说明</h2>
+<p>
+为了让你的学习更加高效，本系列博客配套了完整的资源：
+</p>
+<h3>📦 GitHub开源仓库（即将发布）</h3>
+<p>
+包含所有章节的：
+</p>
+<ul>
+<li>示例代码（FastAPI模型服务化、监控接入、CI/CD配置）</li>
+<li>Docker配置文件</li>
+<li>Prometheus+Grafana监控模板</li>
+<li>Kubernetes部署YAML</li>
+<li>一键回滚脚本</li>
+</ul>
+<p>
+你可以直接复制使用，快速搭建自己的Harness体系。
+</p>
+<h3>🎨 配套图表</h3>
+<p>
+每章都配套了：
+</p>
+<ul>
+<li>Mermaid流程图（核心流程可视化）</li>
+<li>对比表格（概念辨析、工具选型）</li>
+<li>架构图（系统设计参考）</li>
+</ul>
+<p>
+图片存放在 <code>image/</code> 文件夹中，方便查阅和引用。
+</p>
+<h3>💬 互动交流</h3>
+<p>
+每章末尾都有思考题和投票，欢迎在评论区分享你的观点和经验。
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="最佳阅读体验建议">最佳阅读体验建议</h2>
+<ol>
+<li><strong>按顺序阅读</strong>：建议按章节顺序阅读，每章内容前后呼应，建立完整认知体系</li>
+<li><strong>边读边动手</strong>：遇到"新手入门小任务"，建议动手尝试，加深理解</li>
+<li><strong>结合自己的项目</strong>：阅读时思考"这个内容如何应用到我的项目中"，效果更好</li>
+<li><strong>记笔记</strong>：每章结束后，记录核心要点和自己的思考，形成知识体系</li>
+<li><strong>查阅术语表</strong>：遇到不熟悉的术语，可以回顾第二章的边界辨析部分</li>
+</ol>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="全系列导航">全系列导航</h2>
+<div class="mermaid">graph LR
+    A[00-开篇总序<br/>建立全貌认知] --> B[01-破题<br/>理解为什么需要]
+    B --> C[02-正名<br/>明确定义与边界]
+    C --> D[03-核心辨析<br/>vs AI Agent]
+    D --> E[04-四大支柱<br/>掌握核心模块]
+    E --> F[05-工具全景图<br/>学习工具选型]
+    F --> G[06-实战五步法<br/>掌握落地流程]
+    G --> H[07-避坑指南<br/>避开常见陷阱]
+    H --> I[08-全案复盘<br/>参考真实案例]
+    I --> J[09-未来趋势<br/>了解发展方向]
+    J --> K[10-行动指南<br/>制定落地计划]
+
+    style A fill:#e1f5ff
+    style E fill:#fff4e1
+    style G fill:#ffe1f5
+    style K fill:#e1ffe1</div>
+<p>
+<strong>章节快速跳转</strong>：
+</p>
+<ul>
+<li>想了解"为什么需要"？→ <a href="./01-第一章-破题.html">第1章：破题</a></li>
+<li>想知道"是什么"？→ <a href="./02-第二章-正名.html">第2章：正名</a></li>
+<li>想理解"四大支柱"？→ <a href="./04-第四章-四大支柱.html">第4章：四大支柱</a></li>
+<li>想学习"落地流程"？→ <a href="./06-第六章-实战五步法.html">第6章：实战五步法</a></li>
+<li>想制定"行动计划"？→ <a href="./10-第十章-行动指南.html">第10章：行动指南</a></li>
+</ul>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<h2 id="写在最后">写在最后</h2>
+<p>
+AI行业的发展，已经从"拼模型效果"的时代，进入了"拼落地能力"的时代。
+</p>
+<p>
+能把模型训练到99%的准确率，是算法能力； 能把99%准确率的模型，稳定、低成本地给百万用户用，就是Harness Engineering的工程能力。
+</p>
+<p>
+希望这套系列博客，能帮你给你的AI模型，打造一套坚不可摧的"作战装备"，让它真正走出实验室，在生产环境里"武装上阵"，创造实际的业务价值。
+</p>
+<p>
+<strong>准备好开始这段旅程了吗？让我们从第1章开始吧！</strong> 🚀
+</p>
+<p>
+<hr style="border: none; border-top: 2px solid #e5e7eb; margin: 30px 0;">
+</p>
+<p>
+<strong>下一章</strong>：<a href="./01-第一章-破题.html">第1章：破题｜当你的AI模型"走出实验室"后，为何频频"掉链子"？</a>
+</p>
             </section>
         </main>
     </div>
