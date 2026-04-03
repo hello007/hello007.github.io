@@ -22,6 +22,9 @@ def read_template():
     css_match = re.search(r'<style>(.*?)</style>', content, re.DOTALL)
     css = css_match.group(1) if css_match else ""
 
+    # Clean up leading/trailing whitespace from extracted CSS
+    css = css.strip()
+
     # Append blockquote styles (not in template)
     blockquote_css = """
 blockquote {
@@ -76,7 +79,7 @@ pre code.language-mermaid {
 }
 """
 
-    return css + blockquote_css + mermaid_css
+    return css + '\n\n' + blockquote_css + mermaid_css
 
 def download_mermaid_js(target_path):
     """Download mermaid.min.js from CDN to local path
@@ -143,8 +146,9 @@ def generate_html_from_markdown(md_content, title, css, use_local_mermaid=False)
         code_blocks.append((language, code))
         return placeholder_template.format(idx)
 
-    # Extract and protect code blocks
-    html_content = re.sub(r'```(\w*)\n(.*?)\n```', extract_code_block, md_content, flags=re.DOTALL)
+    # Extract and protect code blocks (support optional leading whitespace)
+    # Matches both standard ``` and indented ``` (with spaces/tabs before)
+    html_content = re.sub(r'^\s*```(\w*)\n(.*?)\n^\s*```', extract_code_block, md_content, flags=re.DOTALL | re.MULTILINE)
 
     # Extract metadata from frontmatter
     doc_position = re.search(r'\*\*文档定位：\*\*\s*(.*?)\n', md_content)
@@ -540,10 +544,18 @@ def generate_html_from_markdown(md_content, title, css, use_local_mermaid=False)
                     result.append(line)
                 else:
                     # This is an inline tag (like <strong>, <a>, etc.), wrap in paragraph
+                    # But close the paragraph after it if it's a complete line
                     if not in_paragraph:
                         result.append('<p>')
                         in_paragraph = True
                     result.append(line)
+                    # Check if this line is just an inline tag (like <strong>text</strong> without other text)
+                    # If so, close the paragraph to prevent merging with next line
+                    if stripped.startswith('<') and not stripped.startswith('</') and '>' in stripped:
+                        # This looks like a complete inline tag on its own line
+                        # Close the paragraph to prevent merging
+                        result.append('</p>')
+                        in_paragraph = False
             elif stripped.startswith('___CODE_BLOCK_'):
                 # Code block placeholder - don't wrap in p
                 if in_paragraph:
@@ -687,7 +699,7 @@ def generate_html_from_markdown(md_content, title, css, use_local_mermaid=False)
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{main_title}</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
-    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>"""
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
 {mermaid_loader}
     <style>
         {css}
