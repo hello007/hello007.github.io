@@ -758,17 +758,51 @@ def generate_html_from_markdown(md_content, title, css, use_local_mermaid=False)
     <div class="back-to-top" onclick="scrollToTop()">↑</div>
 
     <script>
-        // 平滑滚动
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {{
-            anchor.addEventListener('click', function (e) {{
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {{
-                    target.scrollIntoView({{
-                        behavior: 'smooth',
-                        block: 'start'
-                    }});
+        document.addEventListener('DOMContentLoaded', function() {{
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {{
+                anchor.addEventListener('click', function (e) {{
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    const targetId = href.substring(1);
+                    const target = document.getElementById(targetId);
+                    if (target) {{
+                        target.scrollIntoView({{
+                            behavior: 'smooth',
+                            block: 'start'
+                        }});
+                    }}
+                }});
+            }});
+
+            // 返回顶部按钮显示/隐藏
+            const backToTop = document.querySelector('.back-to-top');
+            window.addEventListener('scroll', () => {{
+                if (window.pageYOffset > 300) {{
+                    backToTop.classList.add('show');
+                }} else {{
+                    backToTop.classList.remove('show');
                 }}
+            }});
+
+            // 活动导航链接
+            window.addEventListener('scroll', () => {{
+                const headings = document.querySelectorAll('h2[id]');
+                const scrollPosition = window.pageYOffset + 100;
+
+                headings.forEach(heading => {{
+                    const headingTop = heading.offsetTop;
+                    const headingId = heading.getAttribute('id');
+
+                    if (scrollPosition >= headingTop - 50) {{
+                        document.querySelectorAll('.nav-link').forEach(link => {{
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === '#' + headingId) {{
+                                link.classList.add('active');
+                            }}
+                        }});
+                    }}
+                }});
             }});
         }});
 
@@ -779,36 +813,6 @@ def generate_html_from_markdown(md_content, title, css, use_local_mermaid=False)
                 behavior: 'smooth'
             }});
         }}
-
-        // 返回顶部按钮显示/隐藏
-        const backToTop = document.querySelector('.back-to-top');
-        window.addEventListener('scroll', () => {{
-            if (window.pageYOffset > 300) {{
-                backToTop.classList.add('show');
-            }} else {{
-                backToTop.classList.remove('show');
-            }}
-        }});
-
-        // 活动导航链接
-        window.addEventListener('scroll', () => {{
-            const headings = document.querySelectorAll('h2[id]');
-            const scrollPosition = window.pageYOffset + 100;
-
-            headings.forEach(heading => {{
-                const headingTop = heading.offsetTop;
-                const headingId = heading.getAttribute('id');
-
-                if (scrollPosition >= headingTop - 50) {{
-                    document.querySelectorAll('.nav-link').forEach(link => {{
-                        link.classList.remove('active');
-                        if (link.getAttribute('href') === '#' + headingId) {{
-                            link.classList.add('active');
-                        }}
-                    }});
-                }}
-            }});
-        }});
     </script>
 </body>
 </html>'''
