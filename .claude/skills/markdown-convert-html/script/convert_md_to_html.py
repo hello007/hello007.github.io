@@ -10,10 +10,18 @@ import os
 import urllib.request
 from pathlib import Path
 
+def find_project_root():
+    """Walk up from script location to find git repo root"""
+    current = Path(__file__).resolve().parent
+    while current != current.parent:
+        if (current / ".git").exists():
+            return current
+        current = current.parent
+    raise FileNotFoundError("Cannot find project root (.git directory not found)")
+
 def read_template():
     """Read the template HTML file to extract styles and structure"""
-    # Get project root (script/ -> markdown-convert-html/ -> skills/ -> root)
-    project_root = Path(__file__).parent.parent.parent.parent
+    project_root = find_project_root()
     template_path = project_root / "ai" / "AI转型启动会.html"
     with open(template_path, 'r', encoding='utf-8') as f:
         content = f.read()
@@ -135,6 +143,21 @@ def generate_html_from_markdown(md_content, title, css, use_local_mermaid=False)
     placeholder_template = "___CODE_BLOCK_{}___"
     has_mermaid = False  # Track if page contains mermaid diagrams
 
+    # Extract metadata: try YAML frontmatter first, then inline format
+    # Must happen BEFORE code block extraction so frontmatter is stripped from html_content
+    yaml_match = re.match(r'^---\s*\n(.*?)\n---\s*\n', md_content, re.DOTALL)
+    yaml_fields = {}
+    if yaml_match:
+        yaml_text = yaml_match.group(1)
+        for line in yaml_text.split('\n'):
+            if ':' in line and not line.startswith(' '):
+                key, val = line.split(':', 1)
+                val = val.strip().strip('"').strip("'")
+                if val:
+                    yaml_fields[key.strip()] = val
+        # Remove YAML frontmatter from content
+        md_content = md_content[yaml_match.end():]
+
     def extract_code_block(match):
         nonlocal has_mermaid
         language = match.group(1) if match.group(1) else ''
@@ -150,14 +173,69 @@ def generate_html_from_markdown(md_content, title, css, use_local_mermaid=False)
     # Matches both standard ``` and indented ``` (with spaces/tabs before)
     html_content = re.sub(r'^\s*```(\w*)\n(.*?)\n^\s*```', extract_code_block, md_content, flags=re.DOTALL | re.MULTILINE)
 
-    # Extract metadata from frontmatter
-    doc_position = re.search(r'\*\*文档定位：\*\*\s*(.*?)\n', md_content)
-    learning_goal = re.search(r'\*\*学习目标：\*\*\s*(.*?)\n', md_content)
-    target_audience = re.search(r'\*\*适合人群：\*\*\s*(.*?)\n', md_content)
+    doc_position = yaml_fields.get('title', '')
+    learning_goal = yaml_fields.get('learning_goal', yaml_fields.get('目标', ''))
+    target_audience = yaml_fields.get('target_audience', yaml_fields.get('适合人群', ''))
+    fm_date = yaml_fields.get('date', '')
+    fm_series = yaml_fields.get('series', '')
+    fm_chapter = yaml_fields.get('chapter', '')
+    fm_tags = yaml_fields.get('tags', '')
+    fm_category = yaml_fields.get('category', '')
 
-    doc_position = doc_position.group(1).strip() if doc_position else ""
-    learning_goal = learning_goal.group(1).strip() if learning_goal else "见标题"
-    target_audience = target_audience.group(1).strip() if target_audience else "所有人"
+    # Fallback: inline metadata format (**文档定位：** etc.)
+    inline_doc = re.search(r'\*\*文档定位：\*\*\s*(.*?)\n', md_content)
+    inline_goal = re.search(r'\*\*学习目标：\*\*\s*(.*?)\n', md_content)
+    inline_audience = re.search(r'\*\*适合人群：\*\*\s*(.*?)\n', md_content)
+    if inline_doc:
+        doc_position = inline_doc.group(1).strip()
+    if inline_goal:
+        learning_goal = inline_goal.group(1).strip()
+    if inline_audience:
+        target_audience = inline_audience.group(1).strip()
+
+    if not learning_goal:
+        learning_goal = "见标题"
+    if not target_audience:
+        target_audience = "所有人"
+
+    # Build hero meta items dynamically
+    hero_meta_items = []
+    if fm_series:
+        hero_meta_items.append(f'''                    <div class="meta-item">
+                        <span class="meta-icon">📖</span>
+                        <span>系列：{fm_series}</span>
+                    </div>''')
+    if fm_chapter:
+        hero_meta_items.append(f'''                    <div class="meta-item">
+                        <span class="meta-icon">📑</span>
+                        <span>第{fm_chapter}章</span>
+                    </div>''')
+    if fm_date:
+        hero_meta_items.append(f'''                    <div class="meta-item">
+                        <span class="meta-icon">📅</span>
+                        <span>{fm_date}</span>
+                    </div>''')
+    if fm_category:
+        hero_meta_items.append(f'''                    <div class="meta-item">
+                        <span class="meta-icon">📂</span>
+                        <span>{fm_category}</span>
+                    </div>''')
+    if fm_tags:
+        display_tags = fm_tags.strip('[]').replace(',', ' · ')
+        hero_meta_items.append(f'''                    <div class="meta-item">
+                        <span class="meta-icon">🏷️</span>
+                        <span>{display_tags}</span>
+                    </div>''')
+    # Always show learning goal and target audience
+    hero_meta_items.append(f'''                    <div class="meta-item">
+                        <span class="meta-icon">🎯</span>
+                        <span>学习目标：{learning_goal}</span>
+                    </div>''')
+    hero_meta_items.append(f'''                    <div class="meta-item">
+                        <span class="meta-icon">👥</span>
+                        <span>适合人群：{target_audience}</span>
+                    </div>''')
+    hero_meta_html = '\n'.join(hero_meta_items)
 
     # Extract main title (first # heading)
     title_match = re.search(r'^#\s+(.+?)\n', md_content)
@@ -736,14 +814,7 @@ def generate_html_from_markdown(md_content, title, css, use_local_mermaid=False)
             <section class="hero-section">
                 <h1>{main_title}</h1>
                 <div class="hero-meta">
-                    <div class="meta-item">
-                        <span class="meta-icon">🎯</span>
-                        <span>学习目标：{learning_goal}</span>
-                    </div>
-                    <div class="meta-item">
-                        <span class="meta-icon">👥</span>
-                        <span>适合人群：{target_audience}</span>
-                    </div>
+{hero_meta_html}
                 </div>
             </section>
 
@@ -920,7 +991,7 @@ def main():
         return
 
     # Otherwise, process all files in the default list
-    base_path = Path(__file__).parent / "ai" / "03.核心概念知识体系"
+    base_path = find_project_root() / "ai" / "03.核心概念知识体系"
 
     files_to_convert = [
         "01.AI基础层概念详解.md",

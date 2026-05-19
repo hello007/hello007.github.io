@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第2章：BMAD 核心概念体系深度拆解</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <!-- No mermaid diagrams in this page -->
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f7fa;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        /* 侧边导航 */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
+            color: #4b5563;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .nav-link:hover {
+            background: #f3f4f6;
+            color: #2563eb;
+        }
+
+        .nav-link.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+        .meta-icon {
+            font-size: 20px;
+        }
+
+        h2 {
+            font-size: 32px;
+            color: #1f2937;
+            margin: 50px 0 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #2563eb;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 24px;
+            color: #374151;
+            margin: 35px 0 20px;
+            font-weight: 600;
+        }
+
+        h4 {
+            font-size: 20px;
+            color: #4b5563;
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #4b5563;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        /* 代码块 */
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        code {
+            background: #f3f4f6;
+            color: #dc2626;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 15px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        /* 列表 */
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 强调框 */
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box {
+            background: #e0e7ff;
+            border-left: 4px solid #6366f1;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 时间标签 */
+        .time-tag {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* 问答框 */
+        .qa-box {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #2563eb;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .answer {
+            color: #4b5563;
+            line-height: 1.8;
+        }
+
+        /* 链接 */
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        /* 返回顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2563eb;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s;
+            font-size: 24px;
+        }
+
+        .back-to-top:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 968px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-card {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            h2 {
+                font-size: 26px;
+            }
+
+            .hero-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* 打印样式 */
+        @media print {
+            .sidebar {
+                display: none;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .content-card {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+/* Mermaid diagrams */
+.mermaid {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Mindmap specific styles */
+.mermaid .mindmap-node {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+pre code.language-mermaid {
+    background: white;
+    color: #1f2937;
+    padding: 0;
+    border-radius: 8px;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+/* Mermaid diagrams */
+.mermaid {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Mindmap specific styles */
+.mermaid .mindmap-node {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+pre code.language-mermaid {
+    background: white;
+    color: #1f2937;
+    padding: 0;
+    border-radius: 8px;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+/* Mermaid diagrams */
+.mermaid {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Mindmap specific styles */
+.mermaid .mindmap-node {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+pre code.language-mermaid {
+    background: white;
+    color: #1f2937;
+    padding: 0;
+    border-radius: 8px;
+}
+
+    
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+/* Mermaid diagrams */
+.mermaid {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Mindmap specific styles */
+.mermaid .mindmap-node {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+pre code.language-mermaid {
+    background: white;
+    color: #1f2937;
+    padding: 0;
+    border-radius: 8px;
+}
+
+
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+/* Mermaid diagrams */
+.mermaid {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Mindmap specific styles */
+.mermaid .mindmap-node {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+pre code.language-mermaid {
+    background: white;
+    color: #1f2937;
+    padding: 0;
+    border-radius: 8px;
+}
+
+
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+/* Mermaid diagrams */
+.mermaid {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Mindmap specific styles */
+.mermaid .mindmap-node {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+pre code.language-mermaid {
+    background: white;
+    color: #1f2937;
+    padding: 0;
+    border-radius: 8px;
+}
+
+
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+/* Mermaid diagrams */
+.mermaid {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Mindmap specific styles */
+.mermaid .mindmap-node {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+pre code.language-mermaid {
+    background: white;
+    color: #1f2937;
+    padding: 0;
+    border-radius: 8px;
+}
+
+
+blockquote {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-left: 4px solid #2563eb;
+    background: #f8fafc;
+    color: #4b5563;
+    border-radius: 0 8px 8px 0;
+}
+
+blockquote p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+blockquote strong {
+    color: #1f2937;
+}
+
+/* Mermaid diagrams */
+.mermaid {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Mindmap specific styles */
+.mermaid .mindmap-node {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+pre code.language-mermaid {
+    background: white;
+    color: #1f2937;
+    padding: 0;
+    border-radius: 8px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 侧边导航 -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">📚</span>
+                <span>AI核心概念</span>
+            </div>
+            <div class="subtitle">
+                第2章：BMAD 核心概念体系深度拆解
+            </div>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">🏠 返回首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#intro" class="nav-link active">📖 概述</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#1-agent-智能体体系-六位专业协作者" class="nav-link">🤖 1 Agent 智能体体系：六位专业协作者</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#2-skills-技能系统-42-个原子能力单元" class="nav-link">🏗️ 2 Skills 技能系统：42 个原子能力单元</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#3-workflow-工作流-四阶段流程编排" class="nav-link">📚 3 Workflow 工作流：四阶段流程编排</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#4-checkpoint-检查点-人机协作的质量闸门" class="nav-link">✅ 4 Checkpoint 检查点：人机协作的质量闸门</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#5-三层配置系统-从框架到团队的适配层" class="nav-link">🏗️ 5 三层配置系统：从框架到团队的适配层</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#6-agent-skills-workflow-三维协同模型" class="nav-link">🤖 6 Agent × Skills × Workflow：三维协同模型</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#7-核心概念的协作关系总结" class="nav-link">💡 7 核心概念的协作关系总结</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#8-本章小结与下章预告" class="nav-link">📚 8 本章小结与下章预告</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 英雄区域 -->
+            <section class="hero-section">
+                <h1>第2章：BMAD 核心概念体系深度拆解</h1>
+                <div class="hero-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon">📖</span>
+                        <span>系列：AI 驱动开发方法论 — BMAD 框架深度解析与实战</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">📑</span>
+                        <span>第2章</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">📅</span>
+                        <span>2026-05-15</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">📂</span>
+                        <span>AI工程化</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">🏷️</span>
+                        <span>BMAD ·  Agent ·  Skills ·  Workflow ·  Checkpoint ·  AI工程化 ·  角色化智能体</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">🎯</span>
+                        <span>学习目标：见标题</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">👥</span>
+                        <span>适合人群：所有人</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 内容区域 -->
+            <section id="intro" class="content-card">
+                <p>
+在上一章中，我们建立了理解 BMAD 的认知基座：它不是一个提示词模板库，而是一套让 AI 以专业角色参与软件全生命周期的工程化方法论。我们梳理了其核心设计哲学——"专业分工的 Agent + 可组合的 Skills + 结构化的 Workflow + 检查点质量闸门"四位一体架构。本章将从设计哲学进入实现细节，逐一拆解这四大支柱的内部构造，并揭示它们之间的三维协同机制。
+</p>
+<p>
+理解这些概念不是为了记忆清单，而是为了掌握一套<strong>可推理的工程框架</strong>——当你面对一个具体的项目场景时，能够准确判断应该激活哪个 Agent、编排哪些 Skills、在哪个 Checkpoint 设置审查闸门。
+</p>
+<h2 id="1-agent-智能体体系-六位专业协作者">1 Agent 智能体体系：六位专业协作者</h2>
+<p>
+BMAD 的 Agent 体系是整个框架中最具辨识度的设计。六个角色化智能体——Mary、John、Sally、Winston、Amelia、Paige——分别对应软件开发中的六个专业角色。但它们绝不仅是六个不同的提示词模板。每个智能体拥有独立的方法论根基、行为准则、技能菜单和持久上下文，构成了一套<strong>深度角色化的专业分工体系</strong>。
+</p>
+<h3>1.1 Agent 的结构化定义</h3>
+<p>
+从源码层面看，每个 Agent 由 <code>SKILL.md</code>（行为协议）和 <code>customize.toml</code>（配置定义）两个核心文件构成。SKILL.md 定义了 Agent 的激活流程——从配置解析、人格采纳、持久事实加载到菜单分发，共八个标准步骤。customize.toml 则定义了 Agent 的灵魂：
+</p>
+<table>
+<thead>
+<tr>
+<th>配置维度</th>
+<th>作用</th>
+<th>示例（Winston/架构师）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>identity</code></td>
+<td>方法论根基</td>
+<td>Martin Fowler 实用主义 + Werner Vogels 云规模思想</td>
+</tr>
+<tr>
+<td><code>role</code></td>
+<td>职责边界</td>
+<td>将 PRD 和 UX 转化为技术架构决策</td>
+</tr>
+<tr>
+<td><code>communication_style</code></td>
+<td>表达风格</td>
+<td>冷静务实，以权衡替代裁决</td>
+</tr>
+<tr>
+<td><code>principles</code></td>
+<td>行为准则（数组）</td>
+<td>"三次重复再抽象"、"无聊技术保稳定"、"开发者生产力即架构"</td>
+</tr>
+<tr>
+<td><code>persistent_facts</code></td>
+<td>持久上下文</td>
+<td><code>file:{project-root}/**/project-context.md</code></td>
+</tr>
+<tr>
+<td><code>menu</code></td>
+<td>可调度技能列表</td>
+<td>CA（创建架构）、IR（实施就绪检查）</td>
+</tr>
+</tbody>
+</table>
+<p>
+<strong>关键设计细节：</strong> <code>persistent_facts</code> 是 Agent 的长期记忆锚点。每个 Agent 默认加载 <code>project-context.md</code> 文件作为全局上下文。这意味着无论当前对话讨论什么主题，Agent 始终掌握项目的基本技术栈、编码规范和架构约束。这正是解决第1章所述"上下文丢失"问题的工程手段——关键信息不依赖对话历史传递，而是通过文件系统持久化并按需加载。
+</p>
+<h3>1.2 六个角色的职责边界与协作关系</h3>
+<p>
+六个 Agent 按其在工作流中的活跃阶段，自然形成了上下游的协作链：
+</p>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>角色</th>
+<th>活跃阶段</th>
+<th>核心职责</th>
+<th>方法论根基</th>
+<th>可用技能（详见速查表）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mary</td>
+<td>业务分析师</td>
+<td>分析</td>
+<td>市场研究、竞品分析、需求引导</td>
+<td>Porter 战略模型 + Minto 金字塔原理</td>
+<td>BP、MR、DR、TR、CB、WB、DP（7个）</td>
+</tr>
+<tr>
+<td>John</td>
+<td>产品经理</td>
+<td>规划</td>
+<td>PRD 创建/验证、Epic 拆分、实施就绪</td>
+<td>Marty Cagan + Teresa Torres 思维</td>
+<td>CP、VP、EP、CE、IR、CC（6个）</td>
+</tr>
+<tr>
+<td>Sally</td>
+<td>UX 设计师</td>
+<td>规划</td>
+<td>UX 设计规格</td>
+<td>Don Norman 人本设计 + Cooper 角色模型</td>
+<td>CU（1个）</td>
+</tr>
+<tr>
+<td>Winston</td>
+<td>系统架构师</td>
+<td>方案设计</td>
+<td>技术架构决策</td>
+<td>Fowler 实用主义 + Vogels 云规模思想</td>
+<td>CA、IR（2个）</td>
+</tr>
+<tr>
+<td>Amelia</td>
+<td>高级工程师</td>
+<td>实施</td>
+<td>Story 实现、代码审查、Sprint 管理</td>
+<td>Kent Beck TDD + 红-绿-重构</td>
+<td>DS、QD、QA、CR、SP、CS、ER（7个）</td>
+</tr>
+<tr>
+<td>Paige</td>
+<td>技术文档专家</td>
+<td>全阶段</td>
+<td>文档生成、图表绘制、概念解释</td>
+<td>Julia Evans 可读性 + Tufte 视觉精确性</td>
+<td>DP、WD、MG、VD、EC（5个）</td>
+</tr>
+</tbody>
+</table>
+<p>
+这张表格揭示了一个重要的设计规律：<strong>Agent 的技能数量与其职责广度正相关，而非与权力层级正相关。</strong> Mary（分析师）和 Amelia（开发者）各拥有 7 个技能，因为分析和实现阶段的工作类型最为多样；Sally（UX 设计师）和 Winston（架构师）各只有 1-2 个技能，因为设计和架构阶段的输出高度聚焦。各技能代码的详细含义参见第 2.2 节的速查表。
+</p>
+<p>
+<strong>跨阶段协作的关键设计：</strong> 注意 John（产品经理）和 Winston（架构师）都拥有 <code>IR</code>（实施就绪检查）技能。这不是功能重复，而是<strong>视角互补</strong>。John 从需求完整性和用户价值视角验证就绪性，Winston 从技术可行性和架构一致性视角验证就绪性。只有两个维度同时通过，项目才能进入实施阶段。
+</p>
+<h3>1.3 Agent 的激活与人格保持机制</h3>
+<p>
+Agent 的激活遵循严格的八步协议：
+</p>
+<pre><code>Step 1: 配置解析 → 三层定制化合并（基础→团队→个人）
+Step 2: 前置步骤 → activation_steps_prepend 中的自定义初始化
+Step 3: 人格采纳 → 角色、身份、沟通风格、行为准则
+Step 4: 持久事实 → 加载 project-context.md 等全局上下文
+Step 5: 配置加载 → 读取 config.yaml 中的用户名、语言、输出路径
+Step 6: 用户问候 → 以 Agent 角色和指定语言问候用户
+Step 7: 后置步骤 → activation_steps_append 中的自定义初始化
+Step 8: 菜单分发 → 展示技能菜单或直接调度已明确意图</code></pre>
+<p>
+其中最具工程价值的设计是 <strong>"人格保持"（Persona Persistence）</strong>。SKILL.md 中明确要求：一旦激活，Agent 的人格、持久事实、图标前缀和语言设定将在整个会话中持续生效，直到用户主动解除。这意味着如果激活了 Amelia（开发者），她不会在编码过程中突然切换为产品经理的思维方式来评价需求——她会严格以工程师的视角执行任务。
+</p>
+<p>
+<strong>图标前缀（Icon Prefix）</strong> 是一个看似微小但极具实用性的设计。每个 Agent 在输出时都带有专属图标前缀（Mary=📊、John=📋、Sally=🎨、Winston=🏗️、Amelia=💻、Paige=📚）。在多 Agent 协作或长会话中，开发者一眼就能识别当前是哪个 Agent 在发言，有效防止角色混淆。
+</p>
+<h3>1.4 设计原则的差异化塑造</h3>
+<p>
+每个 Agent 拥有三条独有的行为原则，这些原则不是装饰性描述，而是<strong>约束 LLM 行为的工程护栏</strong>。对比一下核心差异：
+</p>
+<p>
+<strong>Mary（分析师）的原则：</strong>
+</p>
+<ul>
+<li>"Every finding grounded in verifiable evidence"——每项发现必须基于可验证的证据</li>
+<li>"Requirements stated with absolute precision"——需求表述必须绝对精确</li>
+<li>"Every stakeholder voice represented"——每个利益相关方的声音都要被代表</li>
+</ul>
+<p>
+这三条原则将 Mary 的行为锚定在"严谨的实证分析"上。她不会基于直觉做出市场判断，不会使用模糊的需求描述，也不会忽视少数利益相关方的诉求。
+</p>
+<p>
+<strong>Amelia（开发者）的原则：</strong>
+</p>
+<ul>
+<li>"No task complete without passing tests"——没有通过测试，任务不算完成</li>
+<li>"Red, green, refactor — in that order"——红-绿-重构，严格按序执行</li>
+<li>"Tasks executed in the sequence written"——任务按书写顺序执行</li>
+</ul>
+<p>
+这三条原则将 Amelia 的行为锚定在"测试驱动的工程纪律"上。她不会跳过测试先写实现代码，不会在红灯阶段做重构，也不会自行调整任务的执行顺序。
+</p>
+<p>
+<strong>Winston（架构师）的原则：</strong>
+</p>
+<ul>
+<li>"Rule of Three before abstraction"——三次重复再抽象</li>
+<li>"Boring technology for stability"——无聊技术保稳定</li>
+<li>"Developer productivity is architecture"——开发者生产力即架构</li>
+</ul>
+<p>
+这三条原则将 Winston 的行为锚定在"务实的工程权衡"上。他不会在只有一个用例时就设计通用抽象，不会追求最新最酷的技术栈，也不会为了架构的"优雅"牺牲开发效率。
+</p>
+<p>
+这种差异化的原则设计，本质上是<strong>在 LLM 的注意力空间中植入角色化的决策偏好</strong>，使得同一个 LLM 在不同 Agent 人格下表现出截然不同的专业判断。
+</p>
+<h2 id="2-skills-技能系统-42-个原子能力单元">2 Skills 技能系统：42 个原子能力单元</h2>
+<p>
+如果说 Agent 是 BMAD 的"人格层"，那么 Skills 就是它的"能力层"。42 个技能构成了 BMAD 方法论的可执行基座——每个技能都是一个独立的、可编排的、可定制的原子能力单元。
+</p>
+<h3>2.1 Skills 的分层架构</h3>
+<p>
+42 个技能分为两大模块：
+</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>技能数量</th>
+<th>定位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Core（核心模块）</td>
+<td>14 个</td>
+<td>通用能力，跨阶段可用</td>
+</tr>
+<tr>
+<td>BMM（方法模块）</td>
+<td>28 个</td>
+<td>阶段专用，按工作流编排</td>
+</tr>
+</tbody>
+</table>
+<p>
+<strong>Core 模块</strong>提供的是不依赖特定开发阶段的通用能力。<strong>BMM 模块</strong>则按四阶段工作流严格分布，承载了从分析到实施的具体执行逻辑。下方的速查表给出了全部 42 个技能的概览。
+</p>
+<h3>2.2 Skills 速查表</h3>
+<blockquote>
+<p><strong>阅读说明：</strong> "代码"列对应 Agent 菜单中的缩写（如 <code>BP</code>、<code>MR</code>）。标记 ★ 的为<strong>必需关卡</strong>（Required Gate），不可跳过。标记"直接调用"的技能不在任何 Agent 菜单中，需通过 <code>/bmad:bmad-xxx</code> 斜杠命令调用。</p>
+</blockquote>
+<h4>Core 模块（14 个）——跨阶段通用能力</h4>
+<table>
+<thead>
+<tr>
+<th>代码</th>
+<th>技能名称</th>
+<th>功能描述</th>
+<th>调用方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BP</td>
+<td>brainstorming</td>
+<td>引导式头脑风暴，使用多种创意技术发散和收敛想法</td>
+<td>Mary 菜单</td>
+</tr>
+<tr>
+<td>PM</td>
+<td>party-mode</td>
+<td>多 Agent 圆桌讨论，每个 Agent 作为独立子代理参与对话</td>
+<td>直接调用</td>
+</tr>
+<tr>
+<td>—</td>
+<td>help</td>
+<td>分析当前状态和用户意图，推荐下一步应使用的技能</td>
+<td>直接调用</td>
+</tr>
+<tr>
+<td>ID</td>
+<td>index-docs</td>
+<td>为指定目录生成或更新 index.md 文档索引</td>
+<td>直接调用</td>
+</tr>
+<tr>
+<td>SD</td>
+<td>shard-doc</td>
+<td>将大型 Markdown 文档按二级标题拆分为多个小文件</td>
+<td>直接调用</td>
+</tr>
+<tr>
+<td>PR</td>
+<td>editorial-review-prose</td>
+<td>文案级编辑审查，检查文字表达和沟通问题</td>
+<td>直接调用</td>
+</tr>
+<tr>
+<td>SR</td>
+<td>editorial-review-structure</td>
+<td>结构级编辑审查，提出裁剪、重组和简化建议</td>
+<td>直接调用</td>
+</tr>
+<tr>
+<td>RA</td>
+<td>review-adversarial-general</td>
+<td>对抗性审查，以批评视角产出发现报告</td>
+<td>直接调用</td>
+</tr>
+<tr>
+<td>RE</td>
+<td>review-edge-case-hunter</td>
+<td>边缘用例探测，遍历所有分支路径报告未处理场景</td>
+<td>直接调用</td>
+</tr>
+<tr>
+<td>DI</td>
+<td>distillator</td>
+<td>无损 LLM 优化压缩，将源文档蒸馏为高信息密度版本</td>
+<td>直接调用</td>
+</tr>
+<tr>
+<td>—</td>
+<td>customize</td>
+<td>编写和更新已安装 BMAD 技能的定制化覆盖配置</td>
+<td>直接调用</td>
+</tr>
+<tr>
+<td>DP ★</td>
+<td>document-project</td>
+<td>分析存量项目，生成供人类和 LLM 消费的项目文档</td>
+<td>Mary / Paige 菜单</td>
+</tr>
+<tr>
+<td>GP ★</td>
+<td>generate-project-context</td>
+<td>生成 project-context.md，定义项目级 AI 规则</td>
+<td>直接调用</td>
+</tr>
+<tr>
+<td>AE</td>
+<td>advanced-elicitation</td>
+<td>推动LLM重新审视、细化和改进其近期输出</td>
+<td>直接调用</td>
+</tr>
+</tbody>
+</table>
+<h4>BMM 分析阶段（7 个）——需求发现与市场洞察</h4>
+<table>
+<thead>
+<tr>
+<th>代码</th>
+<th>技能名称</th>
+<th>功能描述</th>
+<th>调用方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BP</td>
+<td>brainstorming</td>
+<td>项目级头脑风暴（与 Core 共享，分析阶段激活）</td>
+<td>Mary 菜单</td>
+</tr>
+<tr>
+<td>MR</td>
+<td>market-research</td>
+<td>市场与竞品研究，产出竞争格局和客户洞察报告</td>
+<td>Mary 菜单</td>
+</tr>
+<tr>
+<td>DR</td>
+<td>domain-research</td>
+<td>领域与行业研究，深入业务领域建模</td>
+<td>Mary 菜单</td>
+</tr>
+<tr>
+<td>TR</td>
+<td>technical-research</td>
+<td>技术与架构研究，评估技术选型和可行性</td>
+<td>Mary 菜单</td>
+</tr>
+<tr>
+<td>CB</td>
+<td>product-brief</td>
+<td>通过引导式或自主发现创建/更新产品简报</td>
+<td>Mary 菜单</td>
+</tr>
+<tr>
+<td>WB</td>
+<td>prfaq</td>
+<td>Working Backwards PRFAQ 挑战，逆向锻造产品概念</td>
+<td>Mary 菜单</td>
+</tr>
+<tr>
+<td>DP</td>
+<td>document-project</td>
+<td>分析现有项目产出文档（分析阶段复用）</td>
+<td>Mary 菜单</td>
+</tr>
+</tbody>
+</table>
+<h4>BMM 规划阶段（7 个）——需求到设计的转化</h4>
+<table>
+<thead>
+<tr>
+<th>代码</th>
+<th>技能名称</th>
+<th>功能描述</th>
+<th>调用方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CP ★</td>
+<td>create-prd</td>
+<td>专家引导式 PRD 创建，产出产品需求文档</td>
+<td>John 菜单</td>
+</tr>
+<tr>
+<td>VP</td>
+<td>validate-prd</td>
+<td>验证 PRD 的完备性、精简性、组织性和一致性</td>
+<td>John 菜单</td>
+</tr>
+<tr>
+<td>EP</td>
+<td>edit-prd</td>
+<td>更新已有的产品需求文档</td>
+<td>John 菜单</td>
+</tr>
+<tr>
+<td>CU</td>
+<td>create-ux-design</td>
+<td>引导完成 UX 设计规格，为架构和实施提供设计依据</td>
+<td>Sally 菜单</td>
+</tr>
+<tr>
+<td>CA ★</td>
+<td>create-architecture</td>
+<td>引导式架构决策文档创建，保持实施不偏离轨道</td>
+<td>Winston 菜单</td>
+</tr>
+<tr>
+<td>CE ★</td>
+<td>create-epics-and-stories</td>
+<td>将 PRD 拆分为 Epic 和 Story 清单驱动开发</td>
+<td>John 菜单</td>
+</tr>
+<tr>
+<td>IR ★</td>
+<td>check-implementation-readiness</td>
+<td>确保 PRD、UX、架构和 Story 清单四方对齐</td>
+<td>John / Winston 菜单</td>
+</tr>
+</tbody>
+</table>
+<h4>BMM 方案设计阶段（1 个）——实施排期</h4>
+<table>
+<thead>
+<tr>
+<th>代码</th>
+<th>技能名称</th>
+<th>功能描述</th>
+<th>调用方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SP ★</td>
+<td>sprint-planning</td>
+<td>生成或更新 Sprint 计划，排列实施任务顺序</td>
+<td>Amelia 菜单</td>
+</tr>
+</tbody>
+</table>
+<h4>BMM 实施阶段（7 个）——编码、测试与交付</h4>
+<table>
+<thead>
+<tr>
+<th>代码</th>
+<th>技能名称</th>
+<th>功能描述</th>
+<th>调用方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CS</td>
+<td>create-story</td>
+<td>为 Story 注入完整实施上下文，准备开发</td>
+<td>Amelia 菜单</td>
+</tr>
+<tr>
+<td>DS ★</td>
+<td>dev-story</td>
+<td>按红-绿-重构循环实现 Story 的测试和代码</td>
+<td>Amelia 菜单</td>
+</tr>
+<tr>
+<td>QD</td>
+<td>quick-dev</td>
+<td>统一快速流程——明确意图、规划、实现、审查、交付</td>
+<td>Amelia 菜单</td>
+</tr>
+<tr>
+<td>CR</td>
+<td>code-review</td>
+<td>发起多维质量面的综合代码审查</td>
+<td>Amelia 菜单</td>
+</tr>
+<tr>
+<td>—</td>
+<td>checkpoint-preview</td>
+<td>LLM 辅助的人机交互式变更审查</td>
+<td>直接调用</td>
+</tr>
+<tr>
+<td>QA</td>
+<td>qa-generate-e2e-tests</td>
+<td>为已有功能生成 API 和端到端自动化测试</td>
+<td>Amelia 菜单</td>
+</tr>
+<tr>
+<td>CC</td>
+<td>correct-course</td>
+<td>实施中途发现重大变更需求时，确定纠偏方案</td>
+<td>John 菜单</td>
+</tr>
+<tr>
+<td>ER</td>
+<td>retrospective</td>
+<td>Epic 级别的工作回顾和经验提炼</td>
+<td>Amelia 菜单</td>
+</tr>
+</tbody>
+</table>
+<h3>2.3 BMM 技能的阶段分布与依赖关系</h3>
+<p>
+28 个 BMM 技能按工作流阶段分布如下：
+</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>技能列表</th>
+<th>必需关卡</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>分析（Analysis）</td>
+<td>brainstorming, market-research, domain-research, technical-research, product-brief, prfaq, document-project</td>
+<td>无（分析阶段鼓励探索）</td>
+</tr>
+<tr>
+<td>规划（Planning）</td>
+<td><strong>create-prd</strong>, validate-prd, edit-prd, create-ux-design, <strong>create-architecture</strong>, <strong>create-epics-and-stories</strong>, <strong>check-implementation-readiness</strong></td>
+<td>create-prd、create-architecture、create-epics-and-stories、check-implementation-readiness</td>
+</tr>
+<tr>
+<td>方案设计（Solutioning）</td>
+<td><strong>sprint-planning</strong></td>
+<td>sprint-planning</td>
+</tr>
+<tr>
+<td>实施（Implementation）</td>
+<td>sprint-status, create-story, <strong>dev-story</strong>, code-review, checkpoint-preview, qa-generate-e2e-tests, retrospective</td>
+<td>dev-story</td>
+</tr>
+</tbody>
+</table>
+<p>
+<strong>必需关卡（Required Gate）</strong> 是理解 BMAD 质量控制机制的关键概念。标记为"必需"的技能是不可跳过的执行节点。它们构成了一条刚性链：
+</p>
+<pre><code>create-prd → create-architecture → create-epics-and-stories
+    → check-implementation-readiness → sprint-planning → dev-story</code></pre>
+<p>
+每一个箭头代表一个前置依赖。开发者不可能在没有 PRD 的情况下创建架构，不可能在没有架构的情况下拆分 Epic，也不可能在没有通过实施就绪检查的情况下进入编码。这不是流程的冗余，而是基于一个工程判断：<strong>上游信息的缺失会在下游被 LLM 以"幻觉"的方式补偿，其代价远高于等待上游就绪</strong>。
+</p>
+<h3>2.4 技能的内部构造</h3>
+<p>
+每个技能由一组结构化文件组成：
+</p>
+<ul>
+<li><strong>SKILL.md</strong>：技能的入口文件，定义目标、角色、激活流程和执行逻辑</li>
+<li><strong>steps/</strong>：分步骤执行文件（大型技能如 dev-story 包含 10 个步骤）</li>
+<li><strong>templates/</strong>：输出模板（如 PRD 模板、架构决策模板）</li>
+<li><strong>checklist.md</strong>：执行检查清单</li>
+<li><strong>customize.toml</strong>：定制化配置面</li>
+</ul>
+<p>
+以 <code>dev-story</code>（开发故事）技能为例，其执行流程包含 10 个严格有序的步骤：
+</p>
+<ol>
+<li><strong>发现并加载故事文件</strong>——从 Sprint 状态文件中定位下一个 <code>ready-for-dev</code> 的故事</li>
+<li><strong>加载项目上下文</strong>——读取项目编码规范、架构约束</li>
+<li><strong>检测审查续做</strong>——判断是全新开始还是代码审查后的续做</li>
+<li><strong>标记故事进行中</strong>——更新 Sprint 状态文件</li>
+<li><strong>红-绿-重构循环实现</strong>——先写失败测试，再最小实现，最后重构</li>
+<li><strong>编写综合测试</strong>——单元测试、集成测试、端到端测试</li>
+<li><strong>运行验证与测试</strong>——运行全量测试套件，确认无回归</li>
+<li><strong>验证并标记完成</strong>——所有验证通过后才能标记任务完成</li>
+<li><strong>故事完成与标记审查</strong>——执行完成定义检查清单，更新状态为 <code>review</code></li>
+<li><strong>完成沟通与用户支持</strong>——向用户报告实现摘要</li>
+</ol>
+<p>
+这个十步流程体现了 BMAD 对"AI 编码"的工程化治理。特别值得注意的是步骤 8 中的验证门禁——SKILL.md 中明确要求"NEVER mark a task complete unless ALL conditions are met — NO LYING OR CHEATING"（除非所有条件满足否则绝不标记任务完成——禁止欺骗）。这种措辞不是夸张，而是对 LLM "讨好型"倾向（倾向于声称任务已完成以取悦用户）的针对性约束。
+</p>
+<h2 id="3-workflow-工作流-四阶段流程编排">3 Workflow 工作流：四阶段流程编排</h2>
+<p>
+Workflow 是 BMAD 的"编排层"，它将 Agent 和 Skills 组织为一条从分析到实施的有序流水线。
+</p>
+<h3>3.1 四阶段的流转逻辑</h3>
+<p>
+BMAD 的四阶段工作流遵循严格的单向依赖关系：
+</p>
+<pre><code>分析（Analysis）
+  ↓ 产出：产品简报、市场研究报告、PRFAQ
+规划（Planning）
+  ↓ 产出：PRD、UX 设计规格、架构决策、Epic/Story 清单
+方案设计（Solutioning）
+  ↓ 产出：Sprint 计划、Story 文件
+实施（Implementation）
+  ↓ 产出：代码、测试、审查报告</code></pre>
+<p>
+每个阶段的输出工件存放在两个标准目录中：
+</p>
+<ul>
+<li><strong>规划工件</strong>：<code>_bmad-output/planning-artifacts/</code>——存放 PRD、架构文档、Epic 清单等</li>
+<li><strong>实施工件</strong>：<code>_bmad-output/implementation-artifacts/</code>——存放 Sprint 状态、Story 文件等</li>
+</ul>
+<p>
+工件目录的位置通过 <code>config.yaml</code> 全局配置，所有 Agent 和技能通过 <code>{planning_artifacts}</code> 和 <code>{implementation_artifacts}</code> 占位符引用。这意味着如果团队希望将工件输出到其他位置，只需修改一处配置即可。
+</p>
+<h3>3.2 状态追踪与断点续做</h3>
+<p>
+BMAD 的状态追踪机制通过文件级元数据实现。以 Sprint 状态文件（<code>sprint-status.yaml</code>）为例，它记录每个 Story 的当前状态：
+</p>
+<pre><code>development_status:
+  epic-1: &quot;complete&quot;
+  1-1-user-registration: &quot;complete&quot;
+  1-2-user-authentication: &quot;in-progress&quot;
+  1-3-password-reset: &quot;ready-for-dev&quot;</code></pre>
+<p>
+Story 文件本身也包含 <code>Status</code> 字段，与 Sprint 状态文件形成<strong>双写一致性</strong>。当 <code>dev-story</code> 技能开始实现一个 Story 时，它会同时更新 Story 文件的 <code>Status</code> 字段和 Sprint 状态文件中对应的条目。
+</p>
+<p>
+这种基于文件的状态追踪带来了两个关键能力：
+</p>
+<p>
+<strong>断点续做。</strong> 会话中断后，Agent 通过读取 Sprint 状态文件即可恢复上下文——找到第一个 <code>ready-for-dev</code> 或 <code>in-progress</code> 的 Story，加载其文件内容，从上次中断的位置继续。无需重新描述项目背景，无需手动指定 Story 编号。
+</p>
+<p>
+<strong>可审计性。</strong> 每个工件的当前状态可通过文件系统直接追溯。在金融行业的合规审查场景中，这意味着审计人员可以直接检查 <code>_bmad-output/</code> 目录下的工件文件和状态标记，确认项目是否遵循了既定流程。
+</p>
+<h3>3.3 实施就绪检查：规划到实施的守门人</h3>
+<p>
+<code>check-implementation-readiness</code>（实施就绪检查）是规划阶段与实施阶段之间最关键的质量闸门。它的角色定位明确表述为：
+</p>
+<blockquote>
+<p>"You are an expert Product Manager, renowned and respected in the field of requirements traceability and spotting gaps in planning. Your success is measured in spotting the failures others have made in planning."</p>
+</blockquote>
+<p>
+这段角色定义揭示了一个精妙的设计意图：就绪检查不是由实施者（Amelia/开发者）执行的自检，而是由产品视角的独立审查者执行的交叉验证。它要回答的核心问题是——"规划文档之间是否存在遗漏、不一致或逻辑断裂？"
+</p>
+<p>
+具体来说，它检查四个维度的对齐性：
+</p>
+<ol>
+<li><strong>PRD 完整性</strong>——需求是否覆盖了所有用户场景和边界条件</li>
+<li><strong>UX 规格对齐</strong>——UX 设计是否与 PRD 中的功能需求一一对应</li>
+<li><strong>架构决策覆盖</strong>——技术架构是否为每个 Epic 提供了实现路径</li>
+<li><strong>Epic/Story 可执行性</strong>——Story 是否具备开发所需的全部上下文（验收标准、技术约束、依赖关系）</li>
+</ol>
+<p>
+只有四个维度全部通过，项目才能获得进入实施阶段的"通行证"。
+</p>
+<h2 id="4-checkpoint-检查点-人机协作的质量闸门">4 Checkpoint 检查点：人机协作的质量闸门</h2>
+<p>
+Checkpoint 是 BMAD 中最具创新性的机制之一。它不是简单的"暂停等待确认"，而是一套精心设计的 <strong>LLM 辅助人机交互式审查流程</strong>。
+</p>
+<h3>4.1 checkpoint-preview 的五步审查流程</h3>
+<p>
+<code>checkpoint-preview</code> 技能将代码审查从"扫一眼 diff"升级为结构化的渐进式审查。其五步流程为：
+</p>
+<pre><code>Step 1: 定位（Orientation）→ Step 2: 导览（Walkthrough）→ Step 3: 细节审查（Detail Pass）→ Step 4: 测试（Testing）→ Step 5: 决策（Wrap-Up）</code></pre>
+<p>
+<strong>Step 1: 定位（Orientation）。</strong> 自动识别需要审查的变更来源——可能是 PR、提交、分支、Story 文件或 Sprint 状态。一旦定位变更，计算变更的"表面积统计"：变更文件数、涉及模块数、逻辑行数、架构边界跨越次数、新增公共接口数。这些量化指标帮助审查者快速建立对变更规模的直觉判断。
+</p>
+<p>
+<strong>Step 2: 导览（Walkthrough）。</strong> 按设计意图（而非文件顺序）组织变更内容。这一步的核心创新是<strong>关注点分组（Concern Grouping）</strong>——将跨文件的、服务于同一设计意图的变更归组。例如，"输入验证"这一关注点可能同时涉及控制器层的参数校验、服务层的业务规则和数据库层的约束。导览将这些分散在不同文件中的相关变更聚合呈现，而非按文件逐个罗列。
+</p>
+<p>
+<strong>Step 3: 细节审查（Detail Pass）。</strong> 聚焦于最高风险的位置。系统通过分析变更模式自动识别风险热点——如跨模块的修改、新引入的公共接口、并发相关的代码路径等。
+</p>
+<p>
+<strong>Step 4: 测试（Testing）。</strong> 引导审查者关注测试覆盖的充分性。
+</p>
+<p>
+<strong>Step 5: 决策（Wrap-Up）。</strong> 审查者做出最终裁决：<strong>Approve</strong>（批准发布）、<strong>Rework</strong>（返回重做）或 <strong>Discuss</strong>（进一步讨论）。
+</p>
+<h3>4.2 从 diff 到审查建议的智能转化</h3>
+<p>
+checkpoint-preview 最有价值的设计在于<strong>审查建议路线（Suggested Review Order）</strong> 的自动生成。当 Story 文件包含 <code>## Suggested Review Order</code> 章节时，审查流程会按预设路线引导审查者逐步浏览关键代码位置，每个位置以 <code>path:line</code> 格式呈现（如 <code>src/auth/middleware.ts:42</code>），在 IDE 终端中可直接点击跳转。
+</p>
+<p>
+当没有预设路线时，系统会通过 <code>generate-trail.md</code> 从 diff 中自动生成一条审查路线。其生成逻辑遵循"从意图到实现"的顺序——先呈现最高层的设计意图（为什么做这个变更），再逐层深入到具体的实现细节（怎么做的），确保审查者始终在理解了"为什么"的前提下去评价"怎么做"。
+</p>
+<h2 id="5-三层配置系统-从框架到团队的适配层">5 三层配置系统：从框架到团队的适配层</h2>
+<p>
+BMAD 的可定制性通过三层配置覆盖机制实现，其合并规则在源码层面有精确的定义：
+</p>
+<table>
+<thead>
+<tr>
+<th>配置层级</th>
+<th>文件位置</th>
+<th>优先级</th>
+<th>合并规则</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基础配置</td>
+<td><code>{skill-root}/customize.toml</code></td>
+<td>最低（默认值）</td>
+<td>提供所有字段的基线</td>
+</tr>
+<tr>
+<td>团队配置</td>
+<td><code>_bmad/custom/{skill-name}.toml</code></td>
+<td>中等</td>
+<td>覆盖基础配置</td>
+</tr>
+<tr>
+<td>个人配置</td>
+<td><code>_bmad/custom/{skill-name}.user.toml</code></td>
+<td>最高</td>
+<td>覆盖团队配置</td>
+</tr>
+</tbody>
+</table>
+<p>
+合并规则遵循以下精确语义：
+</p>
+<ul>
+<li><strong>标量（Scalar）</strong>：覆盖——高优先级的值替换低优先级的值</li>
+<li><strong>表（Table）</strong>：深度合并——递归合并嵌套结构</li>
+<li><strong>以 <code>code</code> 或 <code>id</code> 键索引的表数组</strong>：匹配替换 + 新增——已存在的条目按 code/id 匹配替换，新条目追加</li>
+<li><strong>普通数组</strong>：追加——高优先级的数组元素追加到低优先级数组末尾</li>
+</ul>
+<p>
+这套合并规则由 <code>_bmad/scripts/resolve_customization.py</code> 脚本统一执行。每个 Agent 激活时的第一步就是调用这个脚本解析三层配置，确保运行时行为与定制意图一致。
+</p>
+<p>
+<strong>实际应用场景：</strong> 假设团队希望 Mary（分析师）在分析金融产品时始终遵循"银保监合规优先"的原则。只需在 <code>_bmad/custom/bmad-agent-analyst.toml</code> 中添加：
+</p>
+<pre><code class="language-toml">[[agent.principles]]
+&quot;Compliance with banking regulations takes precedence over market speed.&quot;</code></pre>
+<p>
+这条原则会通过数组追加规则合并到 Mary 默认的三条原则之后，形成团队级别的行为约束。而无需修改框架的任何源文件。
+</p>
+<h2 id="6-agent-skills-workflow-三维协同模型">6 Agent × Skills × Workflow：三维协同模型</h2>
+<p>
+至此，我们已经拆解了 Agent、Skills、Workflow 和 Checkpoint 四大核心概念。但 BMAD 的真正威力不在于单个概念的精巧，而在于它们之间的协同机制。本节将从三个维度揭示这种协同关系。
+</p>
+<h3>6.1 Agent 与 Skills 的绑定：能力菜单机制</h3>
+<p>
+Agent 与 Skills 的关系不是"一个 Agent 执行所有技能"，而是<strong>通过菜单（Menu）机制进行有界绑定</strong>。每个 Agent 的 customize.toml 中定义了一个 <code>[[agent.menu]]</code> 数组，每个条目包含 <code>code</code>（技能代码）、<code>description</code>（描述）和 <code>skill</code>（技能名称）或 <code>prompt</code>（直接指令）。
+</p>
+<p>
+这意味着：
+</p>
+<ul>
+<li>Mary（分析师）<strong>只能</strong>调用 BP、MR、DR、TR、CB、WB、DP 七个技能</li>
+<li>Winston（架构师）<strong>只能</strong>调用 CA、IR 两个技能</li>
+<li>Amelia（开发者）<strong>只能</strong>调用 DS、QD、QA、CR、SP、CS、ER 七个技能</li>
+</ul>
+<p>
+技能菜单的设计逻辑是：<strong>Agent 的专业边界决定了其可调度的技能范围</strong>。Winston 不会去创建 PRD，John 不会去写代码，Amelia 不会去做市场调研。这不是能力的限制，而是<strong>职责的隔离</strong>——确保每个阶段由具备相应专业判断力的 Agent 负责执行。
+</p>
+<h3>6.2 Skills 与 Workflow 的映射：阶段归属机制</h3>
+<p>
+28 个 BMM 技能按阶段归属，形成技能-工作流映射：
+</p>
+<table>
+<thead>
+<tr>
+<th>工作流阶段</th>
+<th>负责的主要 Agent</th>
+<th>该阶段的核心技能链</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>分析</td>
+<td>Mary（分析师）</td>
+<td>brainstorming → market-research / domain-research / technical-research → product-brief → prfaq</td>
+</tr>
+<tr>
+<td>规划</td>
+<td>John（产品经理）+ Sally（UX）+ Winston（架构师）</td>
+<td>create-prd → validate-prd → create-ux-design → create-architecture → create-epics-and-stories → check-implementation-readiness</td>
+</tr>
+<tr>
+<td>方案设计</td>
+<td>John + Winston</td>
+<td>sprint-planning</td>
+</tr>
+<tr>
+<td>实施</td>
+<td>Amelia（开发者）</td>
+<td>create-story → dev-story → code-review → checkpoint-preview → retrospective</td>
+</tr>
+</tbody>
+</table>
+<p>
+注意规划阶段是<strong>多 Agent 协作</strong>的典型场景：John 负责需求定义（PRD），Sally 负责 UX 设计规格，Winston 负责架构决策。三个 Agent 共同贡献于规划阶段的输出工件，但各自只在其专业领域内活动。
+</p>
+<h3>6.3 协同运作的完整实例</h3>
+<p>
+以一个具体的用户场景来展示三维协同的运作方式：
+</p>
+<p>
+<strong>场景：</strong> 开发者启动一个新的金融产品功能——"智能风控规则引擎"。
+</p>
+<p>
+<strong>阶段一：分析。</strong> 开发者激活 Mary（分析师）。Mary 加载项目上下文，展示菜单。开发者选择 MR（市场研究）和 TR（技术研究）。Mary 执行 <code>bmad-market-research</code> 和 <code>bmad-technical-research</code> 技能，产出市场分析报告和技术可行性报告，写入 <code>_bmad-output/planning-artifacts/</code>。
+</p>
+<p>
+<strong>阶段二：规划。</strong> 开发者依次激活 John、Sally、Winston。John 执行 <code>bmad-create-prd</code>，基于 Mary 的分析报告产出 PRD。Sally 执行 <code>bmad-create-ux-design</code>，基于 PRD 产出 UX 设计规格。Winston 执行 <code>bmad-create-architecture</code>，基于 PRD 和 UX 产出架构决策文档。最后，John（或 Winston）执行 <code>bmad-check-implementation-readiness</code>，交叉验证所有规划工件的对齐性。
+</p>
+<p>
+<strong>阶段三：方案设计。</strong> John 执行 <code>bmad-create-epics-and-stories</code>，将 PRD 拆分为 Epic 和 Story 清单。Amelia 执行 <code>bmad-sprint-planning</code>，生成 Sprint 状态文件。
+</p>
+<p>
+<strong>阶段四：实施。</strong> Amelia 执行 <code>bmad-dev-story</code>，按红-绿-重构循环实现每个 Story。每完成一个 Story，状态从 <code>ready-for-dev</code> 变为 <code>in-progress</code> 再变为 <code>review</code>。开发者调用 <code>bmad-checkpoint-preview</code> 对完成的 Story 进行结构化审查。审查通过后，Story 状态更新为 <code>complete</code>。
+</p>
+<p>
+<strong>贯穿全流程：</strong> Paige（文档专家）可以在任意阶段被激活，执行文档生成、图表绘制或概念解释。
+</p>
+<p>
+这个完整流程展示了 BMAD 的核心价值主张：<strong>每一个产出物都有明确的负责人（Agent）、可追溯的输入来源（上游工件）和结构化的质量保障（检查点和必需关卡）</strong>。AI 不再是"无所不能但无所专精"的通用助手，而是以专业角色的身份参与到一个有序的工程流程中。
+</p>
+<h2 id="7-核心概念的协作关系总结">7 核心概念的协作关系总结</h2>
+<p>
+将本章的分析浓缩为一张三维协同模型图：
+</p>
+<pre><code>              Agent（角色层）
+             /    |    \
+           Mary  John  Winston  ...
+          /       |        \
+    Skills（能力层）          Checkpoint（质量层）
+      |        |                |
+  brainstorming  create-prd   checkpoint-preview
+  market-research validate-prd  code-review
+  ...            ...           ...
+         \       |       /
+          Workflow（编排层）
+          分析 → 规划 → 方案设计 → 实施</code></pre>
+<p>
+<strong>Agent 决定"谁来做"</strong>——六个专业角色各自在其领域内提供深度专业判断。
+</p>
+<p>
+<strong>Skills 决定"做什么"</strong>——42 个原子技能覆盖从市场研究到代码审查的全链路能力（速查表见第 2.2 节）。
+</p>
+<p>
+<strong>Workflow 决定"什么时候做"</strong>——四阶段流程编排确保执行的有序性和依赖关系的完整性。
+</p>
+<p>
+<strong>Checkpoint 决定"做到什么程度算合格"</strong>——人机协作的审查机制在每个关键节点设置质量闸门。
+</p>
+<p>
+四者协同，构成了一个从"模糊想法"到"可运行代码"的完整工程化路径。
+</p>
+<h2 id="8-本章小结与下章预告">8 本章小结与下章预告</h2>
+<p>
+本章完成了对 BMAD 四大核心概念的深度拆解。关键结论如下：
+</p>
+<p>
+<strong>Agent 体系的本质是角色化分工。</strong> 六个 Agent 不是六个提示词模板，而是六个具备独立方法论根基、行为准则和技能边界的专业协作者。其价值不在于"谁能做更多"，而在于"每个角色在其专业领域内做到更深"。
+</p>
+<p>
+<strong>Skills 体系的本质是原子化能力编排。</strong> 42 个技能按阶段归属，通过"必需关卡"机制形成刚性依赖链。这种设计将"AI 自由发挥"转变为"按流程执行"，同时保留了"anytime"技能的灵活性。
+</p>
+<p>
+<strong>Workflow 的本质是工件驱动的状态机。</strong> 四阶段流程不是文档化的流程图，而是通过文件系统中的状态标记和工件依赖关系实际执行的工程流程。
+</p>
+<p>
+<strong>Checkpoint 的本质是结构化的人机协作审查。</strong> 五步审查流程将"扫一眼 diff"升级为按设计意图组织的渐进式审查，使人类的审查质量与 AI 的执行质量同步提升。
+</p>
+<p>
+然而，BMAD 并非 AI 驱动开发方法论的唯一选择。OpenSpec 以开放规格驱动为核心范式，Superpowers 以 Claude Code 高效实践为目标，它们从不同角度回应了相同的行业痛点。在下一章中，我们将对三大框架进行横向对比——从设计哲学、能力矩阵到适用场景——帮助你在面对具体项目时做出准确的选型判断。
+</p>
+            </section>
+        </main>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top" onclick="scrollToTop()">↑</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    const targetId = href.substring(1);
+                    const target = document.getElementById(targetId);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // 返回顶部按钮显示/隐藏
+            const backToTop = document.querySelector('.back-to-top');
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    backToTop.classList.add('show');
+                } else {
+                    backToTop.classList.remove('show');
+                }
+            });
+
+            // 活动导航链接
+            window.addEventListener('scroll', () => {
+                const headings = document.querySelectorAll('h2[id]');
+                const scrollPosition = window.pageYOffset + 100;
+
+                headings.forEach(heading => {
+                    const headingTop = heading.offsetTop;
+                    const headingId = heading.getAttribute('id');
+
+                    if (scrollPosition >= headingTop - 50) {
+                        document.querySelectorAll('.nav-link').forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === '#' + headingId) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        // 返回顶部
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+</html>

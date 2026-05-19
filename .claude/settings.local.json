@@ -6,7 +6,10 @@
       "Bash(python convert_md_to_html.py **/*.md)",
       "Bash(ls -lh *.html)",
       "Bash(python test_*.py)",
-      "Bash(python skills/markdown-convert-html/script/convert_md_to_html.py \"**.md\")"
+      "Bash(python skills/markdown-convert-html/script/convert_md_to_html.py \"**.md\")",
+      "Bash(python skills/markdown-convert-html/script/convert_md_to_html.py \"ai/21.agent/03-第三章-Agent的三大核心支柱.md\")",
+      "Bash(python skills/markdown-convert-html/script/convert_md_to_html.py \"ai/31.HarnessEngineering/01-第一章-破题.md\")",
+      "Bash(python *)"
     ]
   }
 }
